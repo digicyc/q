@@ -2,7 +2,7 @@ from django.contrib import admin
 from q.ebooks import models
 
 class BookAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'isbn']
+    search_fields = ['title', 'isbn', 'author__firstname', 'author__lastname']
 
 class FormatAdmin(admin.ModelAdmin):
     search_fields = ['ebook__title', 'ebook__isbn',

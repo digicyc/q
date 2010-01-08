@@ -1,4 +1,7 @@
 <pre>
+<form method="GET">
+<input type="text" name="q">
+</form>
 {% for book in books %}
     {{ book }}
         {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
