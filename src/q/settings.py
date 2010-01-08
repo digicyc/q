@@ -60,6 +60,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
+
 DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"
 
 S3_SETTINGS = { 
