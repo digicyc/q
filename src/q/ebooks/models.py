@@ -32,7 +32,7 @@ def generate_book_filename(title, author, extension):
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
     # m2m in the future
-    author = models.CharField(db_index=True, max_length=100)
+    author = models.ForeignKey("Author")
     #rating = models.IntegerField()
     #tags = models.ManyToMany("Tags")
     isbn = models.CharField(db_index=True, max_length=30, blank=True)
@@ -59,3 +59,10 @@ class Format(models.Model):
     def __str__(self):
         return "%s - %s (%s)" % (self.ebook.title, self.ebook.author,
                 self.format)
+
+class Author(models.Model):
+    firstname = models.CharField(max_length=50, db_index=True)
+    lastname = models.CharField(max_length=50, db_index=True)
+
+    def __str__(self):
+        return "%s %s" % (self.firstname, self.lastname)
