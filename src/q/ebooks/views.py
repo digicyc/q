@@ -12,7 +12,7 @@ def index(request):
     Search for a book
     """
 
-    if request.GET.has_key('q'):
+    if request.GET.has_key('q') and request.GET['q'].strip() != "":
         books = admin_keyword_search(models.Book,
                 BookAdmin.search_fields, request.GET['q'])
     else:
