@@ -1,6 +1,6 @@
 <pre>
 <form method="GET">
-<input type="text" name="q">
+<input type="text" name="q" value="{{ request.GET.q }}">
 </form>
 {% for book in books %}
     {{ book }}
