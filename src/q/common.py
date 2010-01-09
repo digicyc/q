@@ -8,7 +8,8 @@ def admin_keyword_search(model, fields, keywords):
 
     if not keywords:
         return []
-
+    
+    keywords = keywords.split(" ")
     qs = QuerySet(model)
     for keyword in keywords:
         or_queries = [ Q(**{'%s__icontains' % field: keyword}) for field in fields ]
