@@ -16,7 +16,7 @@ def index(request):
         books = admin_keyword_search(models.Book,
                 BookAdmin.search_fields, request.GET['q'])
     else:
-        books = models.Book.objects.all()
+        books = models.Book.objects.all().order_by('author__lastname')
 
     return render_to_response("ebooks/index.html",
         {
