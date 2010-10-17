@@ -70,7 +70,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"
 
-S3_SETTINGS = { 
+S3_SETTINGS = {
     'bucket': 'zzq',
     'default_perm': 'public-read',
     'vanity_url': False
@@ -91,6 +91,8 @@ INSTALLED_APPS = (
     'django_evolution',
     'q.ebooks'
 )
+
+LOGIN_URL = LOGIN_REDIRECT_URL="/admin/"
 
 try:
     from local_settings import *

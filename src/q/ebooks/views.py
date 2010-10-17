@@ -1,12 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.auth.decorators import login_required
 
 from q.common import admin_keyword_search
 
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 
+@login_required
 def index(request):
     """
     Search for a book
