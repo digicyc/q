@@ -1,9 +1,16 @@
-<pre>
 <form method="GET">
-<input type="text" name="q" value="{{ request.GET.q }}">
+search: <input type="text" name="q" value="{{ request.GET.q }}">
 </form>
 {% for book in books %}
-    {{ book }}
+    {% if book.cover %}
+        <div style="float:left;height:150;">
+        <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
+        </div>
+    {% endif %}
+    <div style="display:block;{% if book.cover %}height:150;{% endif %}">
+        {{ book }}<br />
         {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
+    </div>
+    <br/>
+
 {% endfor %}
-</pre>
