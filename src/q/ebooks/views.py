@@ -30,9 +30,9 @@ def books_by_type(request, type, letter="a"):
     Browse books by author
     """
     if type.lower() == "author":
-        books = models.Book.objects.filter(author__lastname__startswith=letter)
+        books = models.Book.objects.filter(author__lastname__istartswith=letter)
     elif type.lower() == "title":
-        books  = models.Book.objects.filter(title__startswith=letter)
+        books  = models.Book.objects.filter(title__istartswith=letter)
 
     return render_to_response("ebooks/index.html",
         {
