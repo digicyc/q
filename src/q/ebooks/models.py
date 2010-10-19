@@ -5,6 +5,7 @@ from django.template.defaultfilters import slugify
 
 FORMAT_CHOICES = (
     ('doc', 'doc'),
+    ('epub', 'epub'),
     ('lit', 'lit'),
     ('mobi', 'mobi'),
     ('pdf', 'pdf'),
