@@ -41,3 +41,14 @@ def books_by_type(request, type, letter="a"):
         context_instance=RequestContext(request)
     )
 
+def latest_books_rss(request):
+    """
+    Return an RSS feed with the latest 10 books uploaded
+    """
+    books = models.Book.objects.all().order_by("-create_time")[:10]
+
+    return render_to_response("ebooks/latest_books.rss",
+        {
+            'books': books,
+        }
+    )

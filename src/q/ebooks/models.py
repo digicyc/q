@@ -57,8 +57,7 @@ class Format(models.Model):
         unique_together = (('ebook', 'format'),)
 
     def __str__(self):
-        return "%s - %s (%s)" % (self.ebook.title, self.ebook.author,
-                self.format)
+        return "%s" % (self.format)
 
 class Author(models.Model):
     firstname = models.CharField(max_length=50, db_index=True)
