@@ -1,0 +1,22 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+	<link rel="stylesheet" href="/css/master.css" /> 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	
+	{% block external_css %}{% endblock %}
+	{% block external_js %}{% endblock %}
+	
+	<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
+</head> 
+<body>
+	<div class="body-width">
+		<header class="main">
+		</header>
+
+		{% block content %}{% endblock %}
+
+
+	</div>
+</body>
+</html>

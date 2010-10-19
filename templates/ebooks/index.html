@@ -1,30 +1,6 @@
-<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
+{% extends 'ebooks/_base.html' %}
 
-<form method="GET" action="{% url ebooks.views.index %}">
-search: <input type="text" name="q" value="{{ request.GET.q }}">
-</form>
-
-by author:{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
-    <a href="{% url ebooks.views.books_by_type "author" char %}">{{ char }}</a>
-{% endfor %}
-<br>
-by title:{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
-    <a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a>
-{% endfor %}
-<p></p>
-
-{% if books %}
-    {% for book in books %}
-        {% if book.cover %}
-            <div style="float:left;height:150;">
-            <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
-            </div>
-        {% endif %}
-        <div style="display:block;{% if book.cover %}height:150;{% endif %}">
-            {{ book }}<br />
-            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
-        </div>
-        <br/>
-
-    {% endfor %}
-{% endif %}
+{% block content %}
+<h1>Hello</h1>
+<p>blah blah balh</p>
+{% endblock %}
