@@ -1,19 +1,21 @@
 <!DOCTYPE html> 
 <html lang="en"> 
 <head>
+	<meta name="robots" content="noindex, nofollow">
+	
 	<title>books</title>
+	
 	<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
 
 	<link href="/css/master.css" rel="stylesheet" /> 
 	
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<script src="/javascript/yetii-min.js"></script>
-
 </head> 
 <body>
 		<header class="main">
 			<div class="body-width">
-				<h1 id="logo">One-eyed Book Pirates</h1>
+				<h1 id="logo"><a href="/books">One-eyed Book Pirates</a></h1>
 			</div>
 		</header>
 		
@@ -34,21 +36,20 @@
 						<li><a href="#sort-title">Title</a></li>
 						<li><a href="#sort-cat">Category</a></li>
 					</ul>
-					
 					<ul class="tab" id="sort-author">
-						{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
+						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
 					    <li><a href="{% url ebooks.views.books_by_type "author" char %}">{{ char }}</a></li>
 						{% endfor %}
 					</ul>
 					
 					<ul class="tab" id="sort-title">
-						{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
+						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
 					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
 						{% endfor %}
 					</ul>
 					
 					<ul class="tab" id="sort-cat">
-						{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
+						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
 					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
 						{% endfor %}
 					</ul>
@@ -69,8 +70,12 @@
 			</aside>
 		</div>
 		
+		<footer class="main body-width">
+			<hr />
+		</footer>
+		
 <script type="text/javascript">
-var alphabetSort = new Yetii({ id: 'sort-alphabet' });
+var alphabetSort = new Yetii({ id: 'sort-alphabet', persist: true });
 </script>
 </body>
 </html>
