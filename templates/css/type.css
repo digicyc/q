@@ -38,14 +38,10 @@
 	font-style: normal;
 }
 
-
-
-
-
-body { font: 12px/18px 'DroidSerifRegular', 'Georgia', 'Palatino', 'Times New Roman', 'Baskerville', 'Hoefler Text', serif; color: rgb(83,55,27); }
+body { font: 12px/18px 'DroidSerifRegular', 'Georgia', 'Palatino', 'Times New Roman', 'Baskerville', 'Hoefler Text', serif; color: rgb(83,55,27); text-shadow: 0 1px 0 rgba(255,255,255,.5); }
 a:focus { outline: 1px dotted invert; }
 
-hr { border: 0 #CCC solid; border-top-width: 1px; clear: both; height:0; }
+hr { border: 0 rgba(172,157,142,.25) solid; border-top-width: 1px; clear: both; height:0; }
 
 ol { list-style: decimal; }
 ul { list-style: square; }
@@ -54,27 +50,12 @@ li { margin-left: 30px; }
 p, dl, hr, h1, h2, h3, h4, h5, h6,
 ol, ul, pre, table, address, fieldset {	margin-bottom: 18px; line-height: 18px; }
 
-h1 {
-	font: 30px/36px BebasNeueRegular;
-}
-h2 {
-	font: 24px/28px BebasNeueRegular;
-}
-h3 {
-	font: 18px/18px BebasNeueRegular;
-}
-h4 {
-	font-size: 14px;
-	line-height: 18px;
-}
-h5 {
-	font-size: 12px;
-	line-height: 18px;
-}
-h6 {
-	font-size: 8px;
-	line-height: 12px;
-}
+h1 { font: 48px/48px BebasNeueRegular; }
+h2 { font: 24px/28px BebasNeueRegular; }
+h3 { font: 18px/18px BebasNeueRegular; }
+h4 { font-size: 14px; line-height: 18px; }
+h5 { font-size: 12px; line-height: 18px; }
+h6 { font-size: 8px; line-height: 12px; }
 
 blockquote { margin: 18px 36px; }
 

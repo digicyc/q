@@ -1,10 +1,152 @@
-.body-width {
-	margin: 0 auto;
-	text-align: left;
-	width: 960px;
+.body-width { margin: 0 auto; text-align: left; width: 960px; }
+
+html { overflow-y: scroll; }
+body, html { background: rgb(253,250,247); text-align: center; }
+
+header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repeat-x 0 0; padding: 1px 0; margin-bottom: 20px; }
+	#logo { margin-top: 30px; text-align: center; }
+
+#global-search {
+	background: rgb(250,244,236);
+	border-bottom: 2px;
+	border-top: 2px;
+	margin-bottom: 20px;
+	-webkit-border-image: url(/images/inset-border-image.png) 2 2 round;
+}
+	#global-search .wrap { background: url(/images/inset-border-vert.png) repeat-y 590px 0; overflow: hidden; padding: 20px 0 18px 0; }
+	#global-search .search { width: 580px; float: left; margin: 0 10px; }
+		#global-search .search label {
+			line-height: 38px;
+			font-weight: bold;
+			font-size: 14px;
+			color: rgba(95,83,67,.75);
+			margin-right: 20px;
+			float: left;
+		}
+		#global-search .search-outline {
+			background: rgb(255,255,255);
+			border: 1px solid rgb(216,208,198);
+			margin-left: 80px;
+			margin-right: 30px;
+			overflow: hidden;
+			padding: 0;
+			height: 30px;
+		}
+		#global-search .search input {
+			-webkit-appearance: none;
+			outline: none;
+			background: none;
+			border: none;
+			margin: 0;
+		}
+		#global-search .search input.input-text {
+			width: 300px;
+			float: left;
+			padding: 0 10px;
+			position: relative;
+			top: 10px;
+		}
+		#global-search .search input.input-submit {
+			float: right;
+			cursor: pointer;
+			font: 18px/18px BebasNeueRegular;
+			background: #f7f6f4;
+			padding: 10px 10px 4px 10px;
+			border-left: 1px solid rgb(216,208,198);
+			color: rgb(83,55,27);
+		}
+	
+	
+	
+	#sort-alphabet { width: 340px; float: left; margin: 0 10px; }
+		#sort-alphabet .title, #sort-alphabet-nav {
+			margin: 0;
+			float: left;
+			font: 14px/14px BebasNeueRegular;
+			color: rgba(95,83,67,.75);
+			margin-bottom: 4px;
+		}
+			#sort-alphabet-nav li { margin: 0; list-style: none; float: left; }
+			#sort-alphabet-nav li:after { content: '/'; }
+			#sort-alphabet-nav li:last-child:after { content: ''; }
+				#sort-alphabet-nav a { border: none; color: rgb(226,214,198); }
+				#sort-alphabet-nav .activeli a { color: rgba(95,83,67,.75); }
+		#sort-alphabet .tab { clear: left; margin: 0; }
+			#sort-alphabet .tab li {
+				margin: 0;
+				list-style-type: none;
+				float: left;
+				text-transform: uppercase;
+				font-weight: bold;
+				font-size: 14px;
+				margin-right: 2px;
+			}
+			#sort-alphabet .tab a { border: none; color: rgba(95,83,67,.75); }
+			#sort-alphabet .tab a:hover {
+				background: rgba(226,214,198,.25);
+				border: 1px dotted rgb(95,83,67);
+				border-left: none;
+				border-right: none;
+				color: rgb(95,83,67);
+			}
+			
+#content {
+	float: left;
+	margin: 0 10px;
+	width: 640px;
+}
+	.book {
+		float: left;
+		margin: 0 20px 20px 0;
+		position: relative;
+	}
+		.book figure a { border: none; }
+		.book figure .overlay {
+			background: transparent url(/images/book-crease.png) repeat-y 0 0;
+			height: 140px;
+			width: 7px;
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.book .book-summary {
+			display: none;
+			
+			position: absolute;
+			top: 100px;
+			left: 20px;
+			z-index: 1;
+			width: 500px;
+			padding: 4px;
+			background: rgba(187,170,153,.75);
+			
+			border-radius: 10px;
+			-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.3);
+		}
+		.book:hover .book-summary { display: block; }
+			.book .summary-wrap {
+				background: rgb(255,255,255);
+				padding: 20px;
+				overflow: hidden;
+				border-radius: 8px;
+				-webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
+			}
+			
+			.book .book-summary h3 { margin: 0 0 5px 0; font-size: 30px; }
+			.book .book-summary .byline { text-transform: uppercase; font-size: 14px; margin: 0 0 5px 0; }
+			.book .book-summary .formats li { margin: 0 8px 0 0; list-style-type: none; float: left; }
+			.book .book-summary .formats .title { font-weight: bold; }
+	
+#rail {
+	margin: 0 10px;
+	float: left;
+	width: 280px;
 }
 
-body, html {
-	background: rgb(253,250,247);
-	text-align: center;
+.section-title {
+	background: url(/images/bg-diagLines.png);
+	padding: 10px 10px 0 10px;
+	border-bottom: 1px solid rgb(226,214,198);
+	color: rgb(156,140,123);
+	margin-bottom: 24px;
 }

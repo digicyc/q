@@ -1,6 +1,63 @@
 {% extends 'ebooks/_base.html' %}
 
 {% block content %}
-<h1>Hello</h1>
-<p>blah blah balh</p>
+	<h2 class="section-title">Books</h2>
+	
+	{% if books %}
+		{% for book in books %}
+		<article class="book">
+			<figure>
+				<a href="">
+			{% if book.cover %}
+				<img src="{{ book.cover.url }}" height="140" />
+			{% else %}
+				<img src="/images/book-no-cover.png" height="140" />
+			{% endif %}
+				</a>
+				
+				<div class="overlay"></div>
+			</figure>
+			<div class="book-summary">
+			<div class="summary-wrap">
+				<p class="series"><a href="">Series Title:</a> Book 3</p>
+				<h3>{{ book.title }}</h3>
+				<p class="byline">{{ book.author }}</p>
+				
+				<hr />
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae porttitor nisi. Mauris a volutpat urna. Praesent nec convallis lorem. Phasellus ac augue non augue dapibus ultricies. Vestibulum non dignissim purus. Nunc eu est dui, a laoreet nulla. Donec a nisl ligula. Aenean sed odio eros.</p>
+				<hr />
+				<ul class="formats">
+					<li class="title">Available Formats:</li>
+					{% for format in book.formats %}
+						<li><a href="{{ format.ebook_file.url }}">{{ format.format }}</a></li>
+					{% endfor %}
+				</ul>
+			</div><!-- /.book-summary -->
+			</div><!-- /.summary-wrap -->
+		</article>
+		{% endfor %}
+	{% else %}
+		<p>Search for something</p>
+	{% endif %}
 {% endblock %}
+
+
+{% comment %}
+
+	{% if books %}
+	    {% for book in books %}
+	        {% if book.cover %}
+	            <div style="float:left;height:150;">
+	            <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
+	            </div>
+	        {% endif %}
+	        <div style="display:block;{% if book.cover %}height:150;{% endif %}">
+	            {{ book }}<br />
+	            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
+	        </div>
+	        <br/>
+	
+	    {% endfor %}
+	{% endif %}
+
+{% endcomment %}

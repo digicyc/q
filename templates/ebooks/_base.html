@@ -1,22 +1,76 @@
 <!DOCTYPE html> 
 <html lang="en"> 
-<head> 
-	<link rel="stylesheet" href="/css/master.css" /> 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	
-	{% block external_css %}{% endblock %}
-	{% block external_js %}{% endblock %}
-	
+<head>
+	<title>books</title>
 	<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
+
+	<link href="/css/master.css" rel="stylesheet" /> 
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="/javascript/yetii-min.js"></script>
+
 </head> 
 <body>
-	<div class="body-width">
 		<header class="main">
+			<div class="body-width">
+				<h1 id="logo">One-eyed Book Pirates</h1>
+			</div>
 		</header>
-
-		{% block content %}{% endblock %}
-
-
-	</div>
+		
+		<section id="global-search">
+			<div class="body-width wrap">
+				<form action="{% url ebooks.views.index %}" method="get" class="search">
+					<label for="search">Search:</label>
+					<div class="search-outline">
+						<input type="text" name="q" value="{{ request.GET.q }}" class="input-text">
+						<input type="submit" name="search-submit" class="input-submit" value="Submit" />
+					</div>
+				</form>
+				
+				<div id="sort-alphabet">
+					<h3 class="title">Alphabetically by&nbsp;</h3>
+					<ul id="sort-alphabet-nav">
+						<li><a href="#sort-author">Author</a></li>
+						<li><a href="#sort-title">Title</a></li>
+						<li><a href="#sort-cat">Category</a></li>
+					</ul>
+					
+					<ul class="tab" id="sort-author">
+						{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
+					    <li><a href="{% url ebooks.views.books_by_type "author" char %}">{{ char }}</a></li>
+						{% endfor %}
+					</ul>
+					
+					<ul class="tab" id="sort-title">
+						{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
+					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
+						{% endfor %}
+					</ul>
+					
+					<ul class="tab" id="sort-cat">
+						{% for char in "abcdefghijklmnopqrstuvwgxyz" %}
+					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</section>
+		
+		<div class="body-width">
+			<section id="content">
+				{% block content %}{% endblock %}
+			</section>
+			
+			<aside id="rail">
+				{% block rail %}
+					<h2 class="section-title">Most Popular</h2>
+					<h2 class="section-title">Recent Comments</h2>
+				{% endblock %}
+			</aside>
+		</div>
+		
+<script type="text/javascript">
+var alphabetSort = new Yetii({ id: 'sort-alphabet' });
+</script>
 </body>
 </html>
