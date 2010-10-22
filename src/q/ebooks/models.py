@@ -41,6 +41,7 @@ class Book(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to=cover_save, blank=True)
+    slug = models.SlugField(max_length=255)
 
     def __str__(self):
         return "%s - %s" % (self.title, self.author)

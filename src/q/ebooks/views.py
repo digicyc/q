@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
@@ -50,5 +50,18 @@ def latest_books_rss(request):
     return render_to_response("ebooks/latest_books.rss",
         {
             'books': books,
-        }
+        },
+        context_instance=RequestContext(request)
     )
+
+def book_info(request, book_slug):
+    """
+    Display the information for the book
+    """
+    book = get_object_or_404(models.Book, slug=book_slug)
+
+    return render_to_response("ebooks/book_info.html",
+        {
+            'book': book,
+        },
+        context_instance=RequestContext(request))
