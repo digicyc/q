@@ -1,0 +1,30 @@
+{% extends 'ebooks/_base.html' %}
+
+{% block content %}
+	<h2 class="section-title">Books</h2>
+
+	{% if book %}
+        {{ book.title }}
+	{% endif %}
+{% endblock %}
+
+
+{% comment %}
+
+	{% if books %}
+	    {% for book in books %}
+	        {% if book.cover %}
+	            <div style="float:left;height:150;">
+	            <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
+	            </div>
+	        {% endif %}
+	        <div style="display:block;{% if book.cover %}height:150;{% endif %}">
+	            {{ book }}<br />
+	            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
+	        </div>
+	        <br/>
+
+	    {% endfor %}
+	{% endif %}
+
+{% endcomment %}
