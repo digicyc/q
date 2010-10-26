@@ -42,7 +42,8 @@ def cache_book_info(book_id, gid=None):
 
     book.title = gbook.title.text
     book.metarating = gbook.rating.average
-    book.description = gbook.description.text
+    if gbook.description is not None:
+        book.description = gbook.description.text
     book.published_year = gbook.date.text
 
     for gauthor in gbook.creator:
