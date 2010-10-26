@@ -23,6 +23,8 @@ def index(request):
             },
             context_instance=RequestContext(request)
         )
+    else:
+        books = models.Book.objects.order_by("-create_time")[:15]
 
     return render_to_response("ebooks/index.html",
         {
