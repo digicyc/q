@@ -34,7 +34,7 @@ def generate_book_filename(title, author, extension):
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
     # m2m in the future
-    authors = models.ManyToManyField("Author")
+    authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField()
     rating = models.FloatField()
     #tags = models.ManyToMany("Tags")
