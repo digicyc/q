@@ -2,7 +2,7 @@
 
 {% block content %}
 	<h2 class="section-title">Books</h2>
-	
+
 	{% if books %}
 		{% for book in books %}
 		<article class="book">
@@ -14,17 +14,17 @@
 				<img src="/images/book-no-cover.png" height="140" />
 			{% endif %}
 				</a>
-				
+
 				<div class="overlay"></div>
 			</figure>
 			<div class="book-summary">
 			<div class="summary-wrap">
 				<p class="series"><a href="">Series Title:</a> Book 3</p>
 				<h3>{{ book.title }}</h3>
-				<p class="byline">{{ book.author }}</p>
-				
+				<p class="byline">{{ book.authors.0 }}</p>
+
 				<hr />
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae porttitor nisi. Mauris a volutpat urna. Praesent nec convallis lorem. Phasellus ac augue non augue dapibus ultricies. Vestibulum non dignissim purus. Nunc eu est dui, a laoreet nulla. Donec a nisl ligula. Aenean sed odio eros.</p>
+				<p>{{ book.description }}</p>
 				<hr />
 				<ul class="formats">
 					<li class="title">Available Formats:</li>
@@ -56,7 +56,7 @@
 	            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
 	        </div>
 	        <br/>
-	
+
 	    {% endfor %}
 	{% endif %}
 
