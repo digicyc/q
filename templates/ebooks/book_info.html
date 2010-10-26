@@ -5,6 +5,9 @@
 
 	{% if book %}
         {{ book.title }}
+        {% for cat in book.categories %}
+        {{ cat }}
+        {% endfor %}
 	{% endif %}
 {% endblock %}
 

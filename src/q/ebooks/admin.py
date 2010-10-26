@@ -6,17 +6,22 @@ class FormatInline(admin.TabularInline):
     extra = 5
 
 class BookAdmin(admin.ModelAdmin):
-    search_fields = ['title', 'isbn', 'author__firstname', 'author__lastname']
+    search_fields = ['title', 'isbn']#, 'authors__firstname', 'authors__lastname']
     inlines = [
         FormatInline,
     ]
 
 class FormatAdmin(admin.ModelAdmin):
-    search_fields = ['ebook__title', 'ebook__isbn',
-            'ebook__author__firstname', 'ebook__author__lastname']
+    search_fields = ['ebook__title', 'ebook__isbn',]
+            #'ebook__authors__firstname', 'ebook__authors__lastname', 'ebook__categories']
+
 class AuthorAdmin(admin.ModelAdmin):
     search_fields = ['firstname', 'lastname']
 
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Book, BookAdmin)
 admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)

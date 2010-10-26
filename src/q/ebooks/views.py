@@ -17,6 +17,12 @@ def index(request):
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
         books = admin_keyword_search(models.Book,
                 BookAdmin.search_fields, request.GET['q'])
+        return render_to_response("ebooks/search.html",
+            {
+                'books': books,
+            },
+            context_instance=RequestContext(request)
+        )
 
     return render_to_response("ebooks/index.html",
         {
@@ -65,3 +71,21 @@ def book_info(request, book_slug):
             'book': book,
         },
         context_instance=RequestContext(request))
+
+def isbn_search(isbn):
+    """
+    Search places for the ISBN
+    """
+    from gdata.books import Book, BookFeed
+    from urllib2 import urlopen
+
+    search_xml = urlopen("http://books.google.com/books/feeds/volumes?q=ISBN%s" % isbn).read()
+    search_feed = BookFeed.FromString(xml)
+    google_id = feed.entry[0].identifier[0].text
+
+    volume_xml = urlopen("http://www.google.com/books/feeds/volumes/%s" % google_id).read()
+    book_feed = Book.FromString(volume_xml)
+
+
+
+

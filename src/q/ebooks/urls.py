@@ -6,4 +6,5 @@ urlpatterns = patterns('q.ebooks.views',
     (r'^book/(?P<book_slug>[\w\d\-]+)/$', 'book_info'),
     (r'^(?P<type>(author|title))/$', 'books_by_type'),
     (r'^(?P<type>(author|title))/(?P<letter>[\w]+)/$', 'books_by_type'),
+    (r'^add/(?P<isbn>\d+)/$', 'isbn_search'),
 )

@@ -88,8 +88,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'django_evolution',
-    'q.ebooks'
+    'q.ebooks',
+    'south',
 )
 
 LOGIN_URL = LOGIN_REDIRECT_URL="/admin/"

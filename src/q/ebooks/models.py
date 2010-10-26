@@ -2,6 +2,7 @@ import os.path
 
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
 
 FORMAT_CHOICES = (
     ('doc', 'doc'),
@@ -33,18 +34,29 @@ def generate_book_filename(title, author, extension):
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
     # m2m in the future
-    author = models.ForeignKey("Author")
-    #rating = models.IntegerField()
+    authors = models.ManyToManyField("Author")
+    metarating = models.FloatField()
+    rating = models.FloatField()
     #tags = models.ManyToMany("Tags")
-    isbn = models.CharField(db_index=True, max_length=30, blank=True)
-    published_year = models.IntegerField(blank=True, null=True)
+    isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
+    isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
+    gid = models.CharField(db_index=True, max_length=20, blank=True)
+    description = models.TextField(blank=True)
+    published = models.DateField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to=cover_save, blank=True)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, blank=True)
+    is_physical = models.BooleanField(default=False)
+    is_ebook = models.BooleanField(default=False)
+    checked_out = models.ForeignKey(User, null=True, blank=True)
+
+    def _get_categories(self):
+        return Category.objects.filter(books=self)
+    categories = property(_get_categories)
 
     def __str__(self):
-        return "%s - %s" % (self.title, self.author)
+        return "%s" % (self.title)
 
     def _get_formats(self):
         return Format.objects.filter(ebook=self).order_by('format')
@@ -60,6 +72,13 @@ class Format(models.Model):
 
     def __str__(self):
         return "%s" % (self.format)
+
+class Category(models.Model):
+    name = models.CharField(max_length=20)
+    books = models.ManyToManyField(Book)
+
+    def __str__(self):
+        return "%s" % (self.name)
 
 class Author(models.Model):
     firstname = models.CharField(max_length=50, db_index=True)
