@@ -21,7 +21,7 @@
 			<div class="summary-wrap">
 				<p class="series"><a href="">Series Title:</a> Book 3</p>
 				<h3>{{ book.title }}</h3>
-                {% for author in book.authors %}
+                {% for author in book.authors.all %}
                     <p class="byline">{{ author }}</p>
                 {% endfor %}
 
