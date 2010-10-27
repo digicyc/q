@@ -12,32 +12,32 @@ from q.ebooks import models
 def index(request, template_name="ebooks/index.html"):
     ctx = {}
     books = None
-    
+
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
         template_name = "ebooks/search.html"
         books = admin_keyword_search(models.Book,
-                BookAdmin.search_fields, request.GET['q'])  
-        
+                BookAdmin.search_fields, request.GET['q'])
+
     else:
         books = models.Book.objects.order_by("-create_time")[:15]
-    
-    ctx.update({ 'books': books })    
+
+    ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
 
-@login_required    
+@login_required
 def books_by_type(request, template_name="ebooks/index.html",  *args, **kwargs):
     ctx = {}
-    
+
     filter_type = kwargs.get('type').lower()
-    
+
     if filter_type == "author":
         letter = kwargs.get('letter')
         books = models.Book.objects.filter(authors__lastname__istartswith=letter)
     elif filter_type == "title":
         letter = kwargs.get('letter')
         books = models.Book.objects.filter(title__istartswith=letter)
-    
-    ctx.update({ 'books': books })  
+
+    ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
 
 
@@ -48,7 +48,7 @@ def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     ctx = {}
     books = models.Book.objects.all().order_by("-create_time")[:10]
 
-    ctx.update({ 'books': books })  
+    ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
@@ -57,9 +57,10 @@ def book_info(request, template_name="ebooks/index.html", *args, **kwargs):
     Display the information for the book
     """
     ctx = {}
+    book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
-    
-    ctx.update({ 'books': books })  
+
+    ctx.update({ 'book': book })
     return render_to_response(template_name, RequestContext(request, ctx))
 
 def isbn_search(isbn):
