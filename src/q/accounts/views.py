@@ -14,7 +14,7 @@ from q.accounts import forms
                                 
 def login(request, template_name="accounts/login.html"):
     ctx = {} 
-    messages = {}
+    messages = []
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('index'))
 
