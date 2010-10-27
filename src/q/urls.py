@@ -9,6 +9,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^books/', include('q.ebooks.urls')),
+    (r'^users/', include('q.accounts.urls')),
     (r'^admin/', include(admin.site.urls)),
     url(r'^login/$',  login, name='login'),
     url(r'^logout/$',  logout, name='logout'),
