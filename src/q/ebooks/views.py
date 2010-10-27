@@ -88,7 +88,12 @@ def book_checkout(request,  *args, **kwargs):
     book = get_object_or_404(models.Book, key__exact=book_key)
     user = User.objects.get(username__exact=request.user.username)
 	
-    book.checked_out = user
+    try:
+        if book.checked_out.username == user.username:
+	        book.checked_out = None
+    except:
+        book.checked_out = user
+        
     book.save()
 	
     return HttpResponseRedirect(reverse('book_info', kwargs={'book_slug': book.slug}))

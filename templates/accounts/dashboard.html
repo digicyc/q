@@ -4,11 +4,26 @@
 
 <h2>{{ user }}</h2>
 
+
+
 <h3>recent uploads</h3>
 <ul></ul>
 
 <h3>recent comments</h3>
 <ul></ul>
 
-<h3>recent checkouts</h3>
-<ul></ul>
+{% if can_edit %}
+    <h3>checkin books</h3>
+    <ul>
+        {% for checkout in checkouts %}
+            <li>{{checkout.title}}<br /><a href="{% url book_checkout checkout.key %}">{{ checkout.show_qr_code|safe }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h3>checkouts</h3>
+    <ul>
+        {% for checkout in checkouts %}
+        <li>{{ checkout.title }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
