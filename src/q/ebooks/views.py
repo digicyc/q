@@ -62,8 +62,8 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
 
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
-
-    ctx.update({ 'book': book })  
+    checkouts = models.CheckOut.objects.filter(book=book)
+    ctx.update({ 'book': book, 'checkouts':checkouts })  
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
@@ -93,6 +93,10 @@ def book_checkout(request,  *args, **kwargs):
 	        book.checked_out = None
     except:
         book.checked_out = user
+        checkout = models.CheckOut()
+        checkout.user = user
+        checkout.book = book
+        checkout.save()
         
     book.save()
 	

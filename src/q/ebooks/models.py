@@ -168,7 +168,8 @@ class Book(models.Model):
             self.is_ebook = False
 
         super(Book, self).save()
-
+    
+    
 class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
@@ -193,3 +194,11 @@ class Author(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.firstname, self.lastname)
+
+class CheckOut(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True)
+    book = models.ForeignKey(Book, null=True, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "%s" % (self.user.username)
