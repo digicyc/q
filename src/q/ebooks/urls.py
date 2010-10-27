@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     url(r'^(?P<type>(author|title))/$', books_by_type, name="books_by_type"),
     url(r'^(?P<type>(author|title))/(?P<letter>[\w]+)/$', books_by_type, name="books_by_author"),
     url(r'^add/(?P<isbn>\d+)/$', isbn_search, name="isbn_search"),
-	url(r'^checkout/(?P<book_key>[\w\d\-]+)/$', book_checkout, name="book_checkout"),
+    url(r'^checkout/(?P<book_key>[\w\d\-]+)/$', book_checkout, name="book_checkout"),
 )
