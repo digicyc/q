@@ -19,7 +19,6 @@ class BookAdmin(admin.ModelAdmin):
         if instance.gid != "":
             instance.cache_book_info()
         instance.save()
-        print instance.authors.all()
         return instance
 
 class FormatAdmin(admin.ModelAdmin):
