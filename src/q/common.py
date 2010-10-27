@@ -47,7 +47,7 @@ def cache_book_info(book_id, gid=None):
     cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
 
     book.title = gbook.title.text
-    if gbook.rating.average is not None:
+    if gbook.rating is not None:
         book.metarating = gbook.rating.average
     if gbook.description is not None:
         book.description = gbook.description.text
