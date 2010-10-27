@@ -8,7 +8,7 @@ from q.common import admin_keyword_search
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 
-#@login_required
+@login_required
 def index(request, template_name="ebooks/index.html"):
     ctx = {}
     books = None
@@ -23,7 +23,8 @@ def index(request, template_name="ebooks/index.html"):
     
     ctx.update({ 'books': books })    
     return render_to_response(template_name, RequestContext(request, ctx))
-    
+
+@login_required    
 def books_by_type(request, template_name="ebooks/index.html",  *args, **kwargs):
     ctx = {}
     
@@ -50,6 +51,7 @@ def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     ctx.update({ 'books': books })  
     return render_to_response(template_name, RequestContext(request, ctx))
 
+@login_required
 def book_info(request, template_name="ebooks/index.html", *args, **kwargs):
     """
     Display the information for the book

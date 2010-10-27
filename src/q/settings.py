@@ -92,7 +92,7 @@ INSTALLED_APPS = (
     'south',
 )
 
-LOGIN_URL = LOGIN_REDIRECT_URL="/admin/"
+LOGIN_URL = LOGIN_REDIRECT_URL="/login/"
 
 try:
     from local_settings import *
