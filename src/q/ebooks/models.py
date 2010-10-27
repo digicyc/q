@@ -1,8 +1,10 @@
 import os.path
-
+import random
+from hashlib import sha256 as sha
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 
 FORMAT_CHOICES = (
     ('doc', 'doc'),
@@ -57,6 +59,7 @@ class Book(models.Model):
     is_physical = models.BooleanField(default=False)
     is_ebook = models.BooleanField(default=False)
     checked_out = models.ForeignKey(User, null=True, blank=True)
+    key = models.CharField( max_length=30, blank=True)
 
     def _get_categories(self):
         return Category.objects.filter(books=self)
@@ -68,6 +71,25 @@ class Book(models.Model):
     def _get_formats(self):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
+
+    def show_qr_code(self):
+        current_site = Site.objects.get_current()
+        img_size = "140x140"
+        url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
+        url += current_site.name+"/books/checkout/"+self.key
+        url += "&choe=UTF-8"
+    
+        return "<img src='"+url+"' />"
+
+    def save(self):
+        if self.slug == "":
+            self.slug = slugify(self.title)
+			
+        if self.key == "":
+            salt = sha.new(str(random.random())).hexdigest()[:5]
+            self.key = sha.new(salt+self.title).hexdigest()[:30]
+	
+        super(Book, self).save()
 
 class Format(models.Model):
     ebook = models.ForeignKey(Book)

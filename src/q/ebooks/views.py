@@ -1,7 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
+from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from q.common import admin_keyword_search
 
@@ -57,10 +59,12 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     Display the information for the book
     """
     ctx = {}
+
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
 
-    ctx.update({ 'book': book })
+    ctx.update({ 'book': book })  
+
     return render_to_response(template_name, RequestContext(request, ctx))
 
 def isbn_search(isbn):
@@ -76,3 +80,16 @@ def isbn_search(isbn):
 
     volume_xml = urlopen("http://www.google.com/books/feeds/volumes/%s" % google_id).read()
     book_feed = Book.FromString(volume_xml)
+
+@login_required
+def book_checkout(request,  *args, **kwargs):
+	
+    book_key = kwargs.get('book_key')
+    book = get_object_or_404(models.Book, key__exact=book_key)
+    user = User.objects.get(username__exact=request.user.username)
+	
+    book.checked_out = user
+    book.save()
+	
+    return HttpResponseRedirect(reverse('book_info', kwargs={'book_slug': book.slug}))
+	
