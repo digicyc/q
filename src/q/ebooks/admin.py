@@ -6,6 +6,7 @@ class FormatInline(admin.TabularInline):
     extra = 5
 
 class BookAdmin(admin.ModelAdmin):
+    exclude = ['authors',]
     list_display = ['title', 'gid',]
     search_fields = ['title', 'isbn10']#, 'authors__firstname', 'authors__lastname']
     inlines = [
@@ -14,8 +15,11 @@ class BookAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         instance = form.save(commit=False)
-        instance.save(True)
         form.save_m2m()
+        if instance.gid != "":
+            instance.cache_book_info()
+        instance.save()
+        print instance.authors.all()
         return instance
 
 class FormatAdmin(admin.ModelAdmin):
