@@ -90,7 +90,8 @@ class Book(models.Model):
             self.key = sha(salt+self.title).hexdigest()[:30]
 	
         super(Book, self).save()
-
+    
+    
 class Format(models.Model):
     ebook = models.ForeignKey(Book)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
@@ -115,3 +116,11 @@ class Author(models.Model):
 
     def __str__(self):
         return "%s %s" % (self.firstname, self.lastname)
+
+class CheckOut(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True)
+    book = models.ForeignKey(Book, null=True, blank=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "%s" % (self.user.username)
