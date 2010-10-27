@@ -55,7 +55,7 @@ def cache_book_info(book_id, gid=None):
 
     for gauthor in gbook.creator:
         try:
-            author = Author.objects.get(lastname=gauthor.text.split(" ")[-1])
+            author = Author.objects.get(firstname=" ".join(gauthor.text.split(" ")[:-1]), lastname=gauthor.text.split(" ")[-1])
         except Author.DoesNotExist, e:
             author = Author()
             author.firstname = " ".join(gauthor.text.split(" ")[:-1])
