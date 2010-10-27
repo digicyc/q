@@ -12,6 +12,12 @@ class BookAdmin(admin.ModelAdmin):
         FormatInline,
     ]
 
+    def save_model(self, request, obj, form, change):
+        instance = form.save(commit=False)
+        instance.save(True)
+        form.save_m2m()
+        return instance
+
 class FormatAdmin(admin.ModelAdmin):
     search_fields = ['ebook__title', 'ebook__isbn10',]
             #'ebook__authors__firstname', 'ebook__authors__lastname', 'ebook__categories']

@@ -38,7 +38,7 @@ def cache_book_info(book_id, gid=None):
         gid = book.gid
 
     if gid is None:
-        return -1
+        return
 
     volume_xml = urllib2.urlopen("http://www.google.com/books/feeds/volumes/%s" % gid).read()
     gbook = GBook.FromString(volume_xml)
@@ -90,5 +90,5 @@ def cache_book_info(book_id, gid=None):
 
     os.unlink(f.name)
 
-    book.save()
+    book.save(False)
 

@@ -1,10 +1,13 @@
+import os
 import os.path
 import random
 from hashlib import sha256 as sha
+
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
+from django.core.files import File
 
 FORMAT_CHOICES = (
     ('doc', 'doc'),
@@ -78,21 +81,101 @@ class Book(models.Model):
         url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
         url += current_site.name+"/books/checkout/"+self.key
         url += "&choe=UTF-8"
-    
+
         return "<img src='"+url+"' />"
 
-    def save(self):
+    def cache_book_info(self, gid=None):
+        import urllib2
+        from tempfile import NamedTemporaryFile
+
+        from gdata.books import Book as GBook
+
+        if gid is None:
+            gid = self.gid
+
+        if gid is None:
+            return
+
+        volume_xml = urllib2.urlopen("http://www.google.com/books/feeds/volumes/%s" % gid).read()
+        gbook = GBook.FromString(volume_xml)
+
+        thumbnail_link = gbook.GetThumbnailLink().href
+        cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
+
+        self.title = gbook.title.text
+        if gbook.rating is not None:
+            self.metarating = gbook.rating.average
+        if gbook.description is not None:
+            self.description = gbook.description.text
+        self.published_year = gbook.date.text
+
+        for gauthor in gbook.creator:
+            try:
+                author = Author.objects.get(firstname=" ".join(gauthor.text.split(" ")[:-1]), lastname=gauthor.text.split(" ")[-1])
+            except Author.DoesNotExist, e:
+                author = Author()
+                author.firstname = " ".join(gauthor.text.split(" ")[:-1])
+                author.lastname = gauthor.text.split(" ")[-1]
+                author.save()
+
+
+            self.authors.add(author)
+
+        for identifier in gbook.identifier:
+            id = identifier.text
+            if id.startswith("ISBN:"):
+                isbn = id.replace("ISBN:", "")
+                if len(isbn) == 13:
+                    self.isbn13 = isbn
+                elif len(isbn) == 10:
+                    self.isbn10 = isbn
+            else:
+                self.gid = id
+
+        headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
+
+        f = NamedTemporaryFile(delete=False)
+        f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
+        f.filename = f.name
+        f.close()
+
+        #self.cover.save(
+        #    "temp_filename.jpg",
+        #    File(open(f.name))
+        #)
+
+        #os.unlink(f.name)
+
+        return f.name
+
+    def save(self, cache_book_info=False):
+        cover_temp_name = False
+        if self.gid != "" and cache_book_info:
+            cover_temp_name = self.cache_book_info(self.gid)
+
         if self.slug == "":
             self.slug = slugify(self.title)
-			
+
         if self.key == "":
-            salt = salt = sha(str(random.random())).hexdigest()[:5]
+            salt = sha(str(random.random())).hexdigest()[:5]
             self.key = sha(salt+self.title).hexdigest()[:30]
-	
+
+        if len(Format.objects.filter(ebook=self)) > 0:
+            self.is_ebook = True
+        else:
+            self.is_ebook = False
+
         super(Book, self).save()
 
+        if cover_temp_name:
+            self.cover.save(
+                "temp_filename.jpg",
+                File(open(cover_temp_name))
+            )
+            os.unlink(cover_temp_name)
+
 class Format(models.Model):
-    ebook = models.ForeignKey(Book)
+    ebook = models.ForeignKey(Book, db_index=True)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
     ebook_file = models.FileField(upload_to=book_save)
 
