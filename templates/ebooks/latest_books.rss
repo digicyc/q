@@ -3,12 +3,12 @@
 
 <channel>
   <title>Q Latest Books</title>
-  <link>http://q.zzq.org/books/m</link>
+  <link>http://q.zzq.org/books/</link>
   <description>Yaaaarrr</description>
   {% for book in books %}
   <item>
     <title>{{ book.title }} by {{ book.authors.all.0 }}</title>
-    <link>http://q.zzq.org/books/</link>
+    <link>http://q.zzq.org/books/book/{{ book.slug }}/</link>
     <pubDate>{{ book.create_time|date:"D, d N Y H:i:s T" }}</pubDate>
     <description>{{ book.formats|join:"," }}</description>
   </item>
