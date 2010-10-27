@@ -17,13 +17,19 @@ FORMAT_CHOICES = (
 def book_save(instance, original_filename):
     extension = os.path.splitext(original_filename)[1].lower()
     filename = generate_book_filename(instance.ebook.title,
-            instance.ebook.author, extension)
+            instance.ebook.authors.all()[0], extension)
     return os.path.join("books", "files", filename)
 
 def cover_save(instance, original_filename):
     extension = os.path.splitext(original_filename)[1].lower()
     filename = generate_book_filename(instance.title,
-            instance.author, extension)
+            instance.authors.all()[0], extension)
+    return os.path.join("books", "covers", filename)
+
+def thumb_save(instance, original_filename):
+    extension = os.path.splitext(original_filename)[1].lower()
+    filename = generate_book_filename(instance.title,
+            instance.authors.all()[0], extension)
     return os.path.join("books", "covers", filename)
 
 def generate_book_filename(title, author, extension):
@@ -46,6 +52,7 @@ class Book(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to=cover_save, blank=True)
+    thumbnail = models.ImageField(upload_to=thumb_save, blank=True)
     slug = models.SlugField(max_length=255, blank=True)
     is_physical = models.BooleanField(default=False)
     is_ebook = models.BooleanField(default=False)
