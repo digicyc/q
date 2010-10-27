@@ -92,6 +92,8 @@ INSTALLED_APPS = (
     'south',
 )
 
+AUTH_PROFILE_MODULE = 'accounts.userprofile'
+
 LOGIN_URL = LOGIN_REDIRECT_URL="/login/"
 
 try:
