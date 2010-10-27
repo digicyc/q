@@ -97,13 +97,22 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	margin: 0 10px;
 	width: 640px;
 }
+	body.page-view #content { width: 700px; }
+		.book-sidebar { float: left; margin-right: 20px; width: 160px; }
+			.book-sidebar .cover { margin-bottom: 18px; }
+		.book-main { float: left; width: 520px;	}
+			.sub-title { border-bottom: 1px rgba(172,157,142,.25) solid; }
+		.book-main .series-info { margin-bottom: 0; }
+		.book-main .byline { font-size: 16px; text-transform: uppercase; margin-bottom: 36px; }
+			.book-main .byline i { font-size: 12px; text-transform: none; }
+	
 	.book {
 		float: left;
 		margin: 0 20px 20px 0;
 		position: relative;
 	}
-		.book figure a { border: none; }
-		.book figure .overlay {
+		.book .cover a { border: none; }
+		.book .cover .overlay {
 			background: transparent url(/images/book-crease.png) repeat-y 0 0;
 			height: 140px;
 			width: 7px;
@@ -111,6 +120,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			top: 0;
 			left: 0;
 		}
+
 		.book .book-summary {
 			display: none;
 			
@@ -139,12 +149,9 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			.book .book-summary .formats li { margin: 0 8px 0 0; list-style-type: none; float: left; }
 			.book .book-summary .formats .title { font-weight: bold; }
 	
-#rail {
-	margin: 0 10px;
-	float: left;
-	width: 280px;
-}
-
+#rail { margin: 0 10px; float: left; width: 280px; }
+body.page-view #rail { width: 220px; }
+	
 .section-title {
 	background: url(/images/bg-diagLines.png);
 	padding: 10px 10px 0 10px;
@@ -153,7 +160,6 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	margin-bottom: 24px;
 }
 
-footer.main {
-	clear: both;
-	padding-top: 200px;
-}
+footer.main { clear: both; padding-top: 200px; }
+
+

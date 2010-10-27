@@ -12,12 +12,9 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 	<script src="/javascript/yetii-min.js"></script>
 </head> 
-<body>
+<body{% block body_class %}{% endblock %}>
 		<header class="main">
 			<div class="body-width">
-				<div style="float: right">
-					<a href="{% url view_user user.username %}">{{ user }}</a> | <a href="{% url logout %}">logout</a>
-				</div>
 				<h1 id="logo"><a href="/books">One-eyed Book Pirates</a></h1>
 			</div>
 		</header>
@@ -75,6 +72,9 @@
 		
 		<footer class="main body-width">
 			<hr />
+			<p style="float: right">
+				<a href="{% url view_user user.username %}">{{ user }}</a> | <a href="{% url logout %}">logout</a>
+			</p>
 		</footer>
 		
 <script type="text/javascript">

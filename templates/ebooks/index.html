@@ -7,11 +7,13 @@
 		{% for book in books %}
 		<article class="book">
 			<figure>
+
 				{% if book.slug %}
 					<a href="{% url book_info book.slug %}">
 				{% else %}
 					<a href="">
 				{% endif %}
+
 			{% if book.cover %}
 				<img src="{{ book.cover.url }}" height="140" />
 			{% else %}
