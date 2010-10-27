@@ -1,16 +1,58 @@
 {% extends 'ebooks/_base.html' %}
 
+{% block body_class %} class="page-view"{% endblock %}
 {% block content %}
-	<h2 class="section-title">Books</h2>
-
 	{% if book %}
-        {{ book.title }}
-        {% for cat in book.categories %}
-        {{ cat }}
-        {% endfor %}
+		<div class="book-sidebar">
+			<figure class="cover">
+				{% if book.cover %}
+					<img src="{{ book.cover.url }}" width="160" />
+				{% else %}
+					<img src="/images/book-no-cover.png" width="160" />
+				{% endif %}
+				<div class="overlay"></div>
+			</figure>
+			<h2 class="section-title">Formats</h2>
+			<ul class="formats">
+				{% for format in book.formats %}
+					<li><a href="{{ format.ebook_file.url }}">{{ format.format }}</a></li>
+				{% endfor %}
+			</ul>
+			
+			{% if book.is_physical %}
+				<h2 class="section-title">Check Out</h2>
+				{% if book.checked_out %}
+					<p>Checked Out To: {{ book.checked_out.username }}</p>
+				{% else %}
+					<a href="{% url book_checkout book.key %}">{{ book.show_qr_code|safe }}</a>
+				{% endif %}
+			{% endif %}
+		</div>
+		
+		<div class="book-main">
+			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
+			<hr />
+			
+	        <h1>{{ book.title }}</h1>
+			{% for author in book.authors.all %}
+                <p class="byline"><i>written by:</i> {{ author }}</p>
+            {% endfor %}
+
+			<h2 class="sub-title">Description:</h2>
+			<p>{{ book.description|safe }}</p>
+			
+			<h2 class="sub-title">What people are saying:</h2>
+			
+			<h2 class="sub-title">Related Books:</h2>
+			
+			<h2 class="sub-title">Tags:</h2>
+		</div>
 	{% endif %}
 {% endblock %}
 
+{% block rail %}
+	<h2 class="section-title">Check Out History</h2>
+{% endblock %}
 
 {% comment %}
 
