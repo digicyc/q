@@ -24,7 +24,7 @@
 				{% if book.checked_out %}
 					<p>Checked Out To: {{ book.checked_out.username }}</p>
 				{% else %}
-					<a href="{% url book_checkout book.key %}">{{ book.show_qr_code|safe }}</a>
+					<div class="qr-code"><a href="{% url book_checkout book.key %}">{{ book.show_qr_code|safe }}</a></div>
 				{% endif %}
 			{% endif %}
 		</div>

@@ -6,7 +6,7 @@
 	{% if books %}
 		{% for book in books %}
 		<article class="book">
-			<figure>
+			<figure class="cover">
 
 				{% if book.slug %}
 					<a href="{% url book_info book.slug %}">
@@ -26,7 +26,16 @@
 			<div class="book-summary">
 			<div class="summary-wrap">
 				<p class="series"><a href="">Series Title:</a> Book 3</p>
-				<h3>{{ book.title }}</h3>
+				<h3>
+					{% if book.slug %}
+						<a href="{% url book_info book.slug %}">
+					{% else %}
+						<a href="">
+					{% endif %}
+					{{ book.title }}
+					</a>
+				</h3>
+				
                 {% for author in book.authors.all %}
                     <p class="byline">{{ author }}</p>
                 {% endfor %}
