@@ -86,8 +86,8 @@ class Book(models.Model):
             self.slug = slugify(self.title)
 			
         if self.key == "":
-            salt = sha.new(str(random.random())).hexdigest()[:5]
-            self.key = sha.new(salt+self.title).hexdigest()[:30]
+            salt = salt = sha(str(random.random())).hexdigest()[:5]
+            self.key = sha(salt+self.title).hexdigest()[:30]
 	
         super(Book, self).save()
 
