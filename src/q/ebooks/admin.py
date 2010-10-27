@@ -6,6 +6,7 @@ class FormatInline(admin.TabularInline):
     extra = 5
 
 class BookAdmin(admin.ModelAdmin):
+    list_display = ['title', 'gid',]
     search_fields = ['title', 'isbn10']#, 'authors__firstname', 'authors__lastname']
     inlines = [
         FormatInline,
