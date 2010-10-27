@@ -33,6 +33,7 @@ def books_by_type(request, template_name="ebooks/index.html",  *args, **kwargs):
         letter = kwargs.get('letter')
         books = models.Book.objects.filter(authors__lastname__istartswith=letter)
     elif filter_type == "title":
+        letter = kwargs.get('letter')
         books = models.Book.objects.filter(title__istartswith=letter)
     
     ctx.update({ 'books': books })  
@@ -72,7 +73,3 @@ def isbn_search(isbn):
 
     volume_xml = urlopen("http://www.google.com/books/feeds/volumes/%s" % google_id).read()
     book_feed = Book.FromString(volume_xml)
-
-
-
-
