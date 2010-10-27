@@ -35,3 +35,5 @@ admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Book, BookAdmin)
 admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)
+
+admin.site.register(models.CheckOut)
