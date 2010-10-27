@@ -73,25 +73,23 @@ class Book(models.Model):
 
     def show_qr_code(self):
 		
-		current_site = Site.objects.get_current()
-		#current_site = "127.0.0.1:8000"
-		img_size = "140x140"
-		url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
-		url += current_site.name+"/books/checkout/"+self.key
-		url += "&choe=UTF-8"
-        
-
-		return "<img src='"+url+"' />"
+        current_site = Site.objects.get_current()
+        img_size = "140x140"
+        url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
+        url += current_site.name+"/books/checkout/"+self.key
+        url += "&choe=UTF-8"
+    
+        return "<img src='"+url+"' />"
 
     def save(self):
-		if self.slug == "":
-			self.slug = slugify(self.title)
+        if self.slug == "":
+            self.slug = slugify(self.title)
 			
-		if self.key == "":
-			salt = sha.new(str(random.random())).hexdigest()[:5]
-			self.key = sha.new(salt+self.title).hexdigest()[:30]
+        if self.key == "":
+            salt = sha.new(str(random.random())).hexdigest()[:5]
+            self.key = sha.new(salt+self.title).hexdigest()[:30]
 	
-		super(Book, self).save()
+        super(Book, self).save()
 
 class Format(models.Model):
     ebook = models.ForeignKey(Book)
