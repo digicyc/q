@@ -168,10 +168,11 @@ class Book(models.Model):
         super(Book, self).save()
 
         if cover_temp_name:
-            self.cover.save(
-                "temp_filename.jpg",
-                File(open(cover_temp_name))
-            )
+            if self.cover is None:
+                self.cover.save(
+                    "temp_filename.jpg",
+                    File(open(cover_temp_name))
+                )
             os.unlink(cover_temp_name)
 
 class Format(models.Model):
