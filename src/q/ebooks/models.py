@@ -102,22 +102,25 @@ class Book(models.Model):
         thumbnail_link = gbook.GetThumbnailLink().href
         cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
 
-        self.title = gbook.title.text
+        if self.title == "":
+            self.title = gbook.title.text
+
         if gbook.rating is not None:
             self.metarating = gbook.rating.average
-        if gbook.description is not None:
+
+        if gbook.description is not None and self.description == "":
             self.description = gbook.description.text
         self.published_year = gbook.date.text
 
         for gauthor in gbook.creator:
+            gauthor = gauthor.text
             try:
-                author = Author.objects.get(firstname=" ".join(gauthor.text.split(" ")[:-1]), lastname=gauthor.text.split(" ")[-1])
+                author = Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
             except Author.DoesNotExist, e:
                 author = Author()
-                author.firstname = " ".join(gauthor.text.split(" ")[:-1])
-                author.lastname = gauthor.text.split(" ")[-1]
+                author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
+                author.lastname = gauthor.split(" ")[-1]
                 author.save()
-
 
             self.authors.add(author)
 
@@ -125,33 +128,32 @@ class Book(models.Model):
             id = identifier.text
             if id.startswith("ISBN:"):
                 isbn = id.replace("ISBN:", "")
-                if len(isbn) == 13:
+                if len(isbn) == 13 and self.isbn13 == "":
                     self.isbn13 = isbn
-                elif len(isbn) == 10:
+                elif len(isbn) == 10 and self.isbn10 == "":
                     self.isbn10 = isbn
             else:
-                self.gid = id
+                if self.gid == "":
+                    self.gid = id
 
-        headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
 
-        f = NamedTemporaryFile(delete=False)
-        f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
-        f.filename = f.name
-        f.close()
+        if self.cover is None:
+            headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
+            f = NamedTemporaryFile(delete=False)
+            f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
+            f.filename = f.name
+            f.close()
 
-        #self.cover.save(
-        #    "temp_filename.jpg",
-        #    File(open(f.name))
-        #)
+            self.cover.save(
+                "temp_filename.jpg",
+                File(open(f.name))
+            )
 
-        #os.unlink(f.name)
-
-        return f.name
+            os.unlink(f.name)
 
     def save(self, cache_book_info=False):
-        cover_temp_name = False
         if self.gid != "" and cache_book_info:
-            cover_temp_name = self.cache_book_info(self.gid)
+            self.cache_book_info(self.gid)
 
         if self.slug == "":
             self.slug = slugify(self.title)
@@ -166,14 +168,6 @@ class Book(models.Model):
             self.is_ebook = False
 
         super(Book, self).save()
-
-        if cover_temp_name:
-            if self.cover is None:
-                self.cover.save(
-                    "temp_filename.jpg",
-                    File(open(cover_temp_name))
-                )
-            os.unlink(cover_temp_name)
 
 class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
