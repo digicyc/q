@@ -1,5 +1,4 @@
 import os.path
-
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
@@ -68,6 +67,11 @@ class Book(models.Model):
     def _get_formats(self):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
+
+    def save(self):
+		if self.slug == "":
+			self.slug = slugify(self.title)
+		super(Book, self).save()
 
 class Format(models.Model):
     ebook = models.ForeignKey(Book)
