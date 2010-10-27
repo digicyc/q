@@ -7,7 +7,7 @@
 		{% for book in books %}
 		<article class="book">
 			<figure>
-				<a href="">
+				<a href="/books/book/{{ book.slug }}">
 			{% if book.cover %}
 				<img src="{{ book.cover.url }}" height="140" />
 			{% else %}

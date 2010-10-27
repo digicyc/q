@@ -52,7 +52,7 @@ def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
-def book_info(request, template_name="ebooks/index.html", *args, **kwargs):
+def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     """
     Display the information for the book
     """
