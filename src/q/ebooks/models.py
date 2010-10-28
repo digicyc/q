@@ -3,6 +3,7 @@ import os.path
 import random
 from hashlib import sha256 as sha
 
+from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
@@ -58,11 +59,11 @@ class Book(models.Model):
     update_time = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to=cover_save, blank=True)
     thumbnail = models.ImageField(upload_to=thumb_save, blank=True)
-    slug = models.SlugField(max_length=255, blank=True)
+    slug = models.SlugField(max_length=255, blank=True, db_index=True)
     is_physical = models.BooleanField(default=False)
     is_ebook = models.BooleanField(default=False)
     checked_out = models.ForeignKey(User, null=True, blank=True)
-    key = models.CharField( max_length=30, blank=True)
+    key = models.CharField(max_length=30, blank=True, db_index=True)
 
     def _get_categories(self):
         return Category.objects.filter(books=self)
@@ -138,7 +139,7 @@ class Book(models.Model):
 
 
         if self.cover is None or self.cover == "":
-            headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
+            headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
             f = NamedTemporaryFile(delete=False)
             f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
             f.filename = f.name
