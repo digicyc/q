@@ -7,14 +7,14 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'q',
-        'USER': 'root',
-        'HOST': 'localhost',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'q',
+#        'USER': 'root',
+#        'HOST': 'localhost',
+#    }
+#}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = "q@zzq.org"
@@ -72,7 +72,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
 )
 
-DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"
+#DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"
 
 S3_SETTINGS = {
     'bucket': 'zzq',
@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'south',
 )
 
+GRAVATAR_DEFAULT_IMAGE = 'http://q.zzq.org/images/blank-avatar.png'
 AUTH_PROFILE_MODULE = 'accounts.userprofile'
 
 LOGIN_URL = LOGIN_REDIRECT_URL="/login/"
