@@ -137,7 +137,7 @@ class Book(models.Model):
                     self.gid = id
 
 
-        if self.cover is None:
+        if self.cover is None or self.cover == "":
             headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
             f = NamedTemporaryFile(delete=False)
             f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
@@ -168,8 +168,8 @@ class Book(models.Model):
             self.is_ebook = False
 
         super(Book, self).save()
-    
-    
+
+
 class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
@@ -199,6 +199,6 @@ class CheckOut(models.Model):
     user = models.ForeignKey(User, null=True, blank=True)
     book = models.ForeignKey(Book, null=True, blank=True)
     create_time = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self):
         return "%s" % (self.user.username)
