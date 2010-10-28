@@ -89,7 +89,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'q.ebooks',
-    'accounts',
+    'q.accounts',
     'south',
 )
 
