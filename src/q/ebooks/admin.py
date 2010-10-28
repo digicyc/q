@@ -38,3 +38,5 @@ admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)
 
 admin.site.register(models.CheckOut)
+admin.site.register(models.Ownership)
+

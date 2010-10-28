@@ -23,6 +23,9 @@
 			</ul>
 
 			{% if book.is_physical %}
+                {% for owner in book.owners.all %}
+                    {{ owner }}<br>
+                {% endfor %}
 				<h2 class="section-title">Check Out</h2>
 				{% if book.checked_out %}
 					<p>
