@@ -27,17 +27,17 @@ def index(request, template_name="ebooks/index.html"):
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
-def books_by_type(request, template_name="ebooks/index.html",  *args, **kwargs):
+def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs):
     ctx = {}
 
     filter_type = kwargs.get('type').lower()
 
     if filter_type == "author":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(authors__lastname__istartswith=letter).distinct()
+        books = models.Book.objects.filter(authors__lastname__istartswith=letter).distinct().order_by('authors__lastname', 'authors__firstname', 'title')
     elif filter_type == "title":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(title__istartswith=letter).distinct()
+        books = models.Book.objects.filter(title__istartswith=letter).distinct().order_by('title', 'authors__lastname', 'authors__firstname')
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
