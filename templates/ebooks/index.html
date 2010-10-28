@@ -1,7 +1,9 @@
 {% extends 'ebooks/_base.html' %}
 
+{% block body_class %} class="home"{% endblock %}
+
 {% block content %}
-	<h2 class="section-title">Books</h2>
+	<h2 class="section-title">Recent Uploads</h2>
 
 	{% if books %}
 		{% for book in books %}
@@ -11,7 +13,7 @@
 				{% if book.slug %}
 					<a href="{% url book_info book.slug %}">
 				{% else %}
-					<a href="">
+					<a href="/">
 				{% endif %}
 
 			{% if book.cover %}
@@ -36,12 +38,15 @@
 					</a>
 				</h3>
 				
+                <ul class="byline">
+					<li class="title">written by:</li>
                 {% for author in book.authors.all %}
-                    <p class="byline">{{ author }}</p>
+                    <li>{{ author }}</li>
                 {% endfor %}
+				</ul>
 
 				<hr />
-				<p>{{ book.description }}</p>
+				<p>{{ book.description|truncatewords:40|safe }}</p>
 				<hr />
 				<ul class="formats">
 					<li class="title">Available Formats:</li>
