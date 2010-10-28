@@ -100,30 +100,56 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 				color: rgb(95,83,67);
 			}
 			
-#content {
-	float: left;
-	margin: 0 10px 20px 10px;
-	width: 640px;
-}
-	body.page-view #content { width: 700px; }
-		.book-sidebar { float: left; margin-right: 20px; width: 160px; }
-			.book-sidebar .cover { margin-bottom: 18px; }
-			.book-sidebar .qr-code { background: rgba(172,157,142,.05); padding: 10px; }
-			.book-sidebar .qr-code a { border: none; }
-			.book-sidebar .qr-code:hover { -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3); }
-		.book-main { float: left; width: 520px;	}
-			.sub-title { border-bottom: 1px rgba(172,157,142,.25) solid; }
-		.book-main .series-info { margin-bottom: 0; }
-		.book-main .byline { font-size: 16px; text-transform: uppercase; margin-bottom: 36px; }
-			.book-main .byline i { font-size: 12px; text-transform: none; }
+#content { 	float: left; margin: 0 10px 20px 10px; width: 640px; }
+	body.page-view #content, body.search-view #content { width: 700px; }
 	
-	.book {
-		float: left;
-		margin: 0 20px 20px 0;
-		position: relative;
-	}
-		.book .cover a { border: none; }
-		.book .cover .overlay {
+#rail { margin: 0 10px; float: left; width: 280px; }
+	body.page-view #rail, body.search-view #rail { width: 220px; }
+	
+	/* COMMON BOOK STYLES */
+	.book-sidebar { float: left; margin-right: 20px; }
+		.book-sidebar .cover { margin-bottom: 18px; }
+		.book-sidebar .qr-code { background: rgba(172,157,142,.05); padding: 10px; }
+		.book-sidebar .qr-code a { border: none; }
+		.book-sidebar .qr-code:hover { -webkit-box-shadow: 0 0 3px rgba(0,0,0,.2); }
+	.book-main { float: left; }
+		.sub-title { border-bottom: 1px rgba(172,157,142,.25) solid; clear: both; }
+	.book .cover { position: relative; }
+	.book .cover a { border: none; }
+	.byline { margin: 0 0 20px 0; overflow: hidden; }
+		.byline li {
+			text-transform: uppercase; font-size: 14px; margin: 0;
+			list-style: none; float: left; margin-left: 4px;
+		}
+		.byline li:after { content: ' &'; }
+		.byline li.title:after, .byline li:last-child:after { content: ''; }
+		.byline li.title {
+			font-size: 12px; line-height: 18px; text-transform: none; font-style: italic;
+			position: relative; top: 1px; margin: 0 4px 0 0;
+		}
+	.book-summary h3 { margin: 0 0 8px 0; font-size: 30px; }
+		.book-summary h3 a { color: inherit; border: none; cursor: pointer; }
+		.book-summary .formats { margin: 0 0 20px 0; }
+		.book-summary .formats li { margin: 0 8px 0 0; list-style-type: none; float: left; }
+		.book-summary .formats .title { font-weight: bold; }
+
+	/* BOOK INFO PAGE LAYOUT */
+	.page-view .book-sidebar { width: 160px; }
+	.page-view .book-main { width: 520px;	}
+	.book-main .series-info { margin-bottom: 0; }
+
+
+	/* SEARCH PAGE LAYOUT */
+	.search-view .book { border-bottom: 1px solid rgb(226,214,198); overflow: hidden; }
+		.search-view .book:last-child { border-bottom: none; }
+	.search-view .book-sidebar { width: 110px; margin: 20px; }
+	.search-view .book-summary { width: 530px; float: left; margin: 20px 20px 20px 0; }
+	.search-view .book:nth-child(odd) { background-color: rgba(172,157,142,.1); }
+	
+	
+	/* HOME PAGE LAYOUT */
+	.home .book { float: left; margin: 0 20px 20px 0; position: relative; }	
+		.home .book .cover .overlay {
 			background: transparent url(/images/book-crease.png) repeat-y 0 0;
 			height: 140px;
 			width: 7px;
@@ -132,8 +158,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			top: 0;
 			left: 0;
 		}
-
-		.book .book-summary {
+		.home .book .book-summary {
 			display: none;
 			
 			position: absolute;
@@ -147,7 +172,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			border-radius: 10px;
 			-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.3);
 		}
-		.book:hover .book-summary { display: block; }
+		.home .book:hover .book-summary { display: block; }
 			.book .summary-wrap {
 				background: rgb(255,255,255);
 				padding: 20px;
@@ -156,14 +181,8 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 				-webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
 			}
 			
-			.book .book-summary h3 { margin: 0 0 5px 0; font-size: 30px; }
-			.book .book-summary h3 a { color: inherit; border: none; cursor: pointer; }
-			.book .book-summary .byline { text-transform: uppercase; font-size: 14px; margin: 0 0 5px 0; }
-			.book .book-summary .formats li { margin: 0 8px 0 0; list-style-type: none; float: left; }
-			.book .book-summary .formats .title { font-weight: bold; }
 	
-#rail { margin: 0 10px; float: left; width: 280px; }
-body.page-view #rail { width: 220px; }
+
 	
 .section-title {
 	background: url(/images/bg-diagLines.png);
