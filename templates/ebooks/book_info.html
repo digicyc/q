@@ -1,5 +1,5 @@
 {% extends 'ebooks/_base.html' %}
-
+{% load gravatar %}
 {% block body_class %} class="page-view"{% endblock %}
 {% block content %}
 	{% if book %}
@@ -23,15 +23,31 @@
 			</ul>
 
 			{% if book.is_physical %}
-                {% for owner in book.owners.all %}
-                    {{ owner }}<br>
-                {% endfor %}
+			    <h2 class="section-title">Owners</h2>
+			    {% with book.owners.all as owners %}
+			        {% if owners %}
+			        <ul style="list-style-type: none; margin: 0 0 15px 0;">
+			            {% for owner in owners %}
+			                <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
+			                 <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
+					            <a href="{% url view_user owner.username  %}" style="border: none">
+					                {% gravatar owner 35 %}
+					            </a>
+					         </div>
+					         <div style=" float: left; margin-left: 10px">
+					             Ask <a href="{% url view_user owner.username  %}"> {{ owner.username }}</a><br /> to borrow it.
+					         </div>
+			                </li>
+			            {% endfor %}
+                    </ul>
+                    {% endif %}
+                {% endwith %}
 				<h2 class="section-title">Check Out</h2>
 				{% if book.checked_out %}
 					<p>
 					    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
 					       <a href="{% url view_user book.checked_out.username  %}" style="border: none">
-					           <img src="/images/blank-avatar.png" style="height: 35px; width: 35px;" />
+					           {% gravatar book.checked_out 35 %}
 					       </a>
 					    </div>
 					    <div style=" float: left; margin-left: 10px">
@@ -55,12 +71,13 @@
 
 			<h2 class="sub-title">Description:</h2>
 			<p>{{ book.description|safe }}</p>
-
+            {% comment %}
 			<h2 class="sub-title">What people are saying:</h2>
 
 			<h2 class="sub-title">Related Books:</h2>
 
 			<h2 class="sub-title">Tags:</h2>
+			{% endcomment %}
 		</div>
 	{% endif %}
 {% endblock %}
@@ -72,7 +89,7 @@
 	    <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
     	    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
     	       <a href="{% url view_user checkout.user.username %}" style="border: none">
-    	           <img src="/images/blank-avatar.png" style="height: 35px; width: 35px;" />
+    	           {% gravatar checkout.user 35 %}
     	       </a>
     	    </div>
     	    <div style=" float: left; margin-left: 10px">
