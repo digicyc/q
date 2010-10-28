@@ -46,8 +46,8 @@ class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
     # m2m in the future
     authors = models.ManyToManyField("Author", blank=True)
-    metarating = models.FloatField()
-    rating = models.FloatField()
+    metarating = models.FloatField(default=0.0)
+    rating = models.FloatField(default=0.0)
     #tags = models.ManyToMany("Tags")
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
