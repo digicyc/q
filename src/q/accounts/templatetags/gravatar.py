@@ -23,7 +23,7 @@ def get_user(user):
 def gravatar_for_email(email, size=80):
     url = "%savatar/%s/?" % (GRAVATAR_URL_PREFIX, md5_constructor(email).hexdigest())
     url += urllib.urlencode({"s": str(size), "default": GRAVATAR_DEFAULT_IMAGE})
-    return escape(url)
+    return url
 
 def gravatar_for_user(user, size=80):
     user = get_user(user)
