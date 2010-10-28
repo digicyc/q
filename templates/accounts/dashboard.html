@@ -9,13 +9,16 @@
     </div>
     <div class="book-main">
         <h1>{{ view_user.username }}</h1>
+        
         {% if can_edit %}
-        <h2 class="sub-title">Checkin Books</h2>
-        <ul>
-            {% for checkout in current_checkouts %}
-                <li><a href="{% url book_checkout checkout.key %}">{{checkout.title}}</a></li>
-            {% endfor %}
-        </ul>
+            {% if current_checkouts %}
+            <h2 class="sub-title">Checkin Books</h2>
+            <ul>
+                {% for checkout in current_checkouts %}
+                    <li><a href="{% url book_checkout checkout.key %}">{{checkout.title}}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         {% endif %}
         
         {% if checkout_history %}
