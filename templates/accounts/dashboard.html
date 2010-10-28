@@ -23,7 +23,7 @@
         
         {% if checkout_history %}
         <h2 class="sub-title">Checkout History</h2>
-        <ul style="list-style-type: none">
+        <ul style="list-style-type: none; overflow: hidden">
             {% for checkout in checkout_history %}
             <li style="float: left; margin-bottom: 15px">
                 <a href="{% url book_info checkout.book.slug %}">
@@ -39,7 +39,7 @@
         {% endif %}
         {% if books_owned %}
         <h2 class="sub-title">Books Owned</h2>
-        <ul style="list-style-type: none">
+        <ul style="list-style-type: none; overflow: hidden">
             {% for book in books_owned %}
             <li style="float: left; margin-bottom: 15px">
                 <a href="{% url book_info book.book.slug %}">
