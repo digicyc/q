@@ -21,7 +21,7 @@ def index(request, template_name="ebooks/index.html"):
                 BookAdmin.search_fields, request.GET['q'])
 
     else:
-        books = models.Book.objects.order_by("-create_time")[:15]
+        books = models.Book.objects.order_by("-create_time")[:15].distinct()
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
@@ -34,10 +34,10 @@ def books_by_type(request, template_name="ebooks/index.html",  *args, **kwargs):
 
     if filter_type == "author":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(authors__lastname__istartswith=letter)
+        books = models.Book.objects.filter(authors__lastname__istartswith=letter).distinct()
     elif filter_type == "title":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(title__istartswith=letter)
+        books = models.Book.objects.filter(title__istartswith=letter).distinct()
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
@@ -63,7 +63,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
     checkouts = models.CheckOut.objects.filter(book=book)
-    ctx.update({ 'book': book, 'checkouts':checkouts })  
+    ctx.update({ 'book': book, 'checkouts':checkouts })
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
@@ -83,11 +83,11 @@ def isbn_search(isbn):
 
 @login_required
 def book_checkout(request,  *args, **kwargs):
-	
+
     book_key = kwargs.get('book_key')
     book = get_object_or_404(models.Book, key__exact=book_key)
     user = User.objects.get(username__exact=request.user.username)
-	
+
     try:
         if book.checked_out.username == user.username:
 	        book.checked_out = None
@@ -97,8 +97,8 @@ def book_checkout(request,  *args, **kwargs):
         checkout.user = user
         checkout.book = book
         checkout.save()
-        
+
     book.save()
-	
+
     return HttpResponseRedirect(reverse('book_info', kwargs={'book_slug': book.slug}))
-	
+
