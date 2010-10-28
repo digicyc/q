@@ -21,12 +21,11 @@
                     {% endif %}
 				{% endfor %}
 			</ul>
-			
-			{% if book.is_physical %}
-		        {% for owner in book.owners.all %}
-		            {{ owner }}<br>
-		        {% endfor %}
 
+			{% if book.is_physical %}
+                {% for owner in book.owners.all %}
+                    {{ owner }}<br>
+                {% endfor %}
 				<h2 class="section-title">Check Out</h2>
 				{% if book.checked_out %}
 					<p>
@@ -50,15 +49,10 @@
 			<hr />
 
 	        <h1>{{ book.title }}</h1>
-			
-			<ul class="byline">
-				<li class="title">written by:</li>
-            {% for author in book.authors.all %}
-                <li>{{ author }}</li>
+			{% for author in book.authors.all %}
+                <p class="byline"><i>written by:</i> {{ author }}</p>
             {% endfor %}
-			</ul>
 
-			<br />
 			<h2 class="sub-title">Description:</h2>
 			<p>{{ book.description|safe }}</p>
 
@@ -72,7 +66,7 @@
 {% endblock %}
 
 {% block rail %}
-	<h2 class="section-title" style="clear:both">Check Out History</h2>
+	<h2 class="section-title">Check Out History</h2>
 	<ul>
 	{% for checkout in checkouts %}
 	    <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
@@ -90,6 +84,24 @@
 	    </li>
 	{% endfor %}
     </ul>
-
 {% endblock %}
 
+{% comment %}
+
+	{% if books %}
+	    {% for book in books %}
+	        {% if book.cover %}
+	            <div style="float:left;height:150;">
+	            <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
+	            </div>
+	        {% endif %}
+	        <div style="display:block;{% if book.cover %}height:150;{% endif %}">
+	            {{ book }}<br />
+	            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
+	        </div>
+	        <br/>
+
+	    {% endfor %}
+	{% endif %}
+
+{% endcomment %}

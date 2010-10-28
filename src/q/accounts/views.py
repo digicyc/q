@@ -10,7 +10,7 @@ from django.contrib.auth import (authenticate,
                                 logout as auth_logout)
 
 from q.accounts import forms
-from q.ebooks.models import Book, CheckOut
+from q.ebooks.models import Book, CheckOut, Ownership
 
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}
@@ -26,15 +26,21 @@ def view_user(request, template_name="accounts/dashboard.html",  *args, **kwargs
     
     can_edit = False
     username = kwargs.get('username').lower()
-    user = get_object_or_404(User,username=username)
+    view_user = get_object_or_404(User,username=username)
+
+    current_checkouts = Book.objects.filter(checked_out=view_user)
+    checkout_history = CheckOut.objects.filter(user=view_user)[:10]
+    books_owned = Ownership.objects.filter(user=view_user)
     
-    current_checkouts = Book.objects.filter(checked_out=user)
-    checkout_history = CheckOut.objects.filter(user=user)[:10]
-    
-    if user.username == request.user.username:
+    if view_user.username == request.user.username:
         can_edit = True
 
-    ctx.update({'user': user, 'can_edit':can_edit, 'current_checkouts':current_checkouts, 'checkout_history':checkout_history})
+    ctx.update({'view_user': view_user, 
+                'can_edit':can_edit, 
+                'current_checkouts':current_checkouts, 
+                'checkout_history':checkout_history,
+                'books_owned': books_owned,
+                })
     return render_to_response(template_name, RequestContext(request, ctx))
 
 def login(request, template_name="accounts/login.html"):

@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'south',
 )
 
+GRAVATAR_DEFAULT_IMAGE = 'http://q.zzq.org/images/blank-avatar.png'
 AUTH_PROFILE_MODULE = 'accounts.userprofile'
 
 LOGIN_URL = LOGIN_REDIRECT_URL="/login/"
