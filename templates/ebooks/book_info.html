@@ -1,5 +1,6 @@
 {% extends 'ebooks/_base.html' %}
 {% load gravatar %}
+
 {% block body_class %} class="page-view"{% endblock %}
 {% block content %}
 	{% if book %}
@@ -47,7 +48,7 @@
 					<p>
 					    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
 					       <a href="{% url view_user book.checked_out.username  %}" style="border: none">
-					           {% gravatar book.checked_out 35 %}
+					           <img src="/images/blank-avatar.png" style="height: 35px; width: 35px;" />
 					       </a>
 					    </div>
 					    <div style=" float: left; margin-left: 10px">
@@ -65,36 +66,32 @@
 			<hr />
 
 	        <h1>{{ book.title }}</h1>
-
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
                 <li>{{ author }}</li>
             {% endfor %}
-			</ul>
 
-			<br />
 			<h2 class="sub-title">Description:</h2>
 			<p>{{ book.description|safe }}</p>
-            {% comment %}
+
 			<h2 class="sub-title">What people are saying:</h2>
 
 			<h2 class="sub-title">Related Books:</h2>
 
 			<h2 class="sub-title">Tags:</h2>
-			{% endcomment %}
 		</div>
 	{% endif %}
 {% endblock %}
 
 {% block rail %}
-	<h2 class="section-title" style="clear:both">Check Out History</h2>
+	<h2 class="section-title">Check Out History</h2>
 	<ul>
 	{% for checkout in checkouts %}
 	    <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
     	    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
     	       <a href="{% url view_user checkout.user.username %}" style="border: none">
-    	           {% gravatar checkout.user 35 %}
+    	           <img src="/images/blank-avatar.png" style="height: 35px; width: 35px;" />
     	       </a>
     	    </div>
     	    <div style=" float: left; margin-left: 10px">
@@ -106,6 +103,24 @@
 	    </li>
 	{% endfor %}
     </ul>
-
 {% endblock %}
 
+{% comment %}
+
+	{% if books %}
+	    {% for book in books %}
+	        {% if book.cover %}
+	            <div style="float:left;height:150;">
+	            <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
+	            </div>
+	        {% endif %}
+	        <div style="display:block;{% if book.cover %}height:150;{% endif %}">
+	            {{ book }}<br />
+	            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
+	        </div>
+	        <br/>
+
+	    {% endfor %}
+	{% endif %}
+
+{% endcomment %}
