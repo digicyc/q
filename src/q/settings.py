@@ -25,6 +25,7 @@ EMAIL_HOST_PASSWORD = ""
 EMAIL_SUBJECT_PREFIX = "[q] "
 EMAIL_USE_TLS = True
 
+DEFAULT_HTTP_HEADERS = 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'
 
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'America/Denver'
