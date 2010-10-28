@@ -15,6 +15,7 @@ class BookAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         instance = form.save(commit=False)
+        instance.save()
         form.save_m2m()
         if instance.gid != "":
             instance.cache_book_info()
