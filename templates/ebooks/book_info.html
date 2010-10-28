@@ -16,9 +16,12 @@
 			<ul class="formats">
 				{% for format in book.formats %}
 					<li><a href="{{ format.ebook_file.url }}">{{ format.format }}</a></li>
+                    {% if format.format == 'mobi' and request.user.get_profile.kindle_email %}
+                    <li><a href="{% url email_kindle book.id %}">email to kindle</a></li>
+                    {% endif %}
 				{% endfor %}
 			</ul>
-			
+
 			{% if book.is_physical %}
 				<h2 class="section-title">Check Out</h2>
 				{% if book.checked_out %}
@@ -37,11 +40,11 @@
 				{% endif %}
 			{% endif %}
 		</div>
-		
+
 		<div class="book-main">
 			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
 			<hr />
-			
+
 	        <h1>{{ book.title }}</h1>
 			{% for author in book.authors.all %}
                 <p class="byline"><i>written by:</i> {{ author }}</p>
@@ -49,11 +52,11 @@
 
 			<h2 class="sub-title">Description:</h2>
 			<p>{{ book.description|safe }}</p>
-			
+
 			<h2 class="sub-title">What people are saying:</h2>
-			
+
 			<h2 class="sub-title">Related Books:</h2>
-			
+
 			<h2 class="sub-title">Tags:</h2>
 		</div>
 	{% endif %}
@@ -72,7 +75,7 @@
     	    <div style=" float: left; margin-left: 10px">
     	        <a href="{% url view_user checkout.user.username  %}">
     	            {{ checkout.user.username }}
-    	        </a> 
+    	        </a>
     	        checked it out<br /> on <em>{{ checkout.create_time|date:"F j, Y" }}.</em>
     	    </div>
 	    </li>
