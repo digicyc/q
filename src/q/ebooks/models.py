@@ -43,6 +43,18 @@ def generate_book_filename(title, author, extension):
 
     return "%s.%s" % (filename, extension.replace('.', ''))
 
+
+class Ownership(models.Model):
+    user = models.ForeignKey(User, db_index=True )
+    book = models.ForeignKey('Book', db_index=True)
+    checked_out = models.ForeignKey(User, related_name="checkout_to", null=True, blank=True)
+    
+    def __str__(self):
+        return "%s" % (self.user)
+    
+    class Meta:
+        unique_together = (("user", "book"),)
+
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
     # m2m in the future
@@ -64,7 +76,7 @@ class Book(models.Model):
     is_ebook = models.BooleanField(default=False)
     checked_out = models.ForeignKey(User, null=True, blank=True, related_name="checked_out")
     key = models.CharField(max_length=30, blank=True, db_index=True)
-    owners = models.ManyToManyField(User, through="Ownership", related_name="owners")
+    owners = models.ManyToManyField(Ownership, related_name="owners", blank=True)
 
     def _get_categories(self):
         return Category.objects.filter(books=self)
@@ -170,13 +182,6 @@ class Book(models.Model):
             self.is_ebook = False
 
         super(Book, self).save()
-
-class Ownership(models.Model):
-    user = models.ForeignKey(User, db_index=True)
-    book = models.ForeignKey(Book, db_index=True)
-
-    class Meta:
-        unique_together = (("user", "book"),)
 
 class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
