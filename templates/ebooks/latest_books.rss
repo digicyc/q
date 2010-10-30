@@ -8,7 +8,7 @@
   {% for book in books %}
   <item>
     <title>{{ book.title }} by {{ book.authors.all.0 }}</title>
-    <link>http://q.zzq.org/books/book/{{ book.slug }}/</link>
+    <link>http://q.zzq.org/books/{{ book.slug }}/</link>
     <pubDate>{{ book.create_time|date:"D, d N Y H:i:s T" }}</pubDate>
     <description>{{ book.formats|join:"," }}</description>
   </item>
