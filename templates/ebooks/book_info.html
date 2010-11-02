@@ -16,7 +16,7 @@
 			<h2 class="section-title">Formats</h2>
 			<ul class="formats">
 				{% for format in book.formats %}
-					<li><a href="{{ format.ebook_file.url }}">{{ format.format }}</a></li>
+					<li class="{{ format.format }}"><a href="{{ format.ebook_file.url }}">{{ format.format }}</a></li>
                     {% if format.format == 'mobi' and request.user.get_profile.kindle_email %}
                     <li><a href="{% url email_kindle book.id %}">email to kindle</a></li>
                     {% endif %}
@@ -62,7 +62,7 @@
 			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
 			<hr />
 
-	        <h1>{{ book.title }}</h1>
+	        <h1>{{ book.title }} <a href="/edit-link/" class="edit">edit</a></h1>
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
@@ -70,14 +70,14 @@
             {% endfor %}
 			</ul>
 
-			<h2 class="sub-title">Description:</h2>
+			<h2 class="sub-title">Description: <a href="/edit-link/" class="edit">edit</a></h2>
 			<p>{{ book.description|safe }}</p>
 
 			<h2 class="sub-title">What people are saying:</h2>
 
 			<h2 class="sub-title">Related Books:</h2>
 
-			<h2 class="sub-title">Tags:</h2>
+			<h2 class="sub-title">Tags: <a href="/edit-link/" class="edit">edit</a></h2>
 		</div>
 	{% endif %}
 {% endblock %}

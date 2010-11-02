@@ -114,6 +114,14 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		.book-sidebar .qr-code:hover { -webkit-box-shadow: 0 0 3px rgba(0,0,0,.2); }
 	.book-main { float: left; }
 		.sub-title { border-bottom: 1px rgba(172,157,142,.25) solid; clear: both; }
+	.edit {
+		font: 10px/1em Helvetica, Arial, sans-serif;
+		float: right;
+		border: none;
+		padding: 7px 0 0 17px;
+		height: 13px;
+		background: url(/images/icon-edit.png) no-repeat 0 50%;
+	}
 	.book .cover { position: relative; }
 	.book .cover a { border: none; }
 	.byline { margin: 0 0 20px 0; overflow: hidden; }
@@ -137,6 +145,15 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	.page-view .book-sidebar { width: 160px; }
 	.page-view .book-main { width: 520px;	}
 	.book-main .series-info { margin-bottom: 0; }
+	.page-view .formats li {
+		background: url(/images/icon-.png) no-repeat 0 50%;
+		margin: 0 10px 8px 10px;
+		list-style: none;
+		padding: 0 0 0 25px;
+		height: 16px;
+		display: block;
+	}
+	.page-view .formats li.pdf { background-image: url(/images/icon-pdf.png); }
 
 
 	/* SEARCH PAGE LAYOUT */
