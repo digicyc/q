@@ -74,7 +74,7 @@ class Book(models.Model):
     slug = models.SlugField(max_length=255, blank=True, db_index=True)
     is_physical = models.BooleanField(default=False)
     is_ebook = models.BooleanField(default=False)
-    checked_out = models.ForeignKey(User, null=True, blank=True, related_name="checked_out")
+    checked_out = models.ForeignKey("CheckOut", null=True, blank=True, related_name="checked_out")
     key = models.CharField(max_length=30, blank=True, db_index=True)
 
     def _get_owners(self):
