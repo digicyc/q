@@ -50,7 +50,7 @@ class Ownership(models.Model):
     checked_out = models.ForeignKey(User, related_name="checkout_to", null=True, blank=True)
 
     def __str__(self):
-        return "%s" % (self.user)
+        return "%s's copy of %s" % (self.user, self.book)
 
     class Meta:
         unique_together = (("user", "book"),)
@@ -76,7 +76,12 @@ class Book(models.Model):
     is_ebook = models.BooleanField(default=False)
     checked_out = models.ForeignKey(User, null=True, blank=True, related_name="checked_out")
     key = models.CharField(max_length=30, blank=True, db_index=True)
-    owners = models.ManyToManyField(Ownership, related_name="owners", blank=True)
+
+    def _get_owners(self):
+        ownerships = Ownership.objects.filter(books=self)
+        owners = [user for o.user in ownerships]
+        return owners
+    owners = property(_get_owners)
 
     def _get_categories(self):
         return Category.objects.filter(books=self)
@@ -212,6 +217,7 @@ class CheckOut(models.Model):
     user = models.ForeignKey(User, null=True)
     book = models.ForeignKey(Ownership, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
+    check_in_time = models.DateTimeField(default=None, null=True)
 
     class Meta:
         unique_together = (("user", "book"))
