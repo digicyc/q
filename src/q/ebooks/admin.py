@@ -35,11 +35,14 @@ class CategoryAdmin(admin.ModelAdmin):
 class CheckOutAdmin(admin.ModelAdmin):
     list_display = ['user', 'book', 'create_time']
 
+class Ownership(admin.ModelAdmin):
+    list_display = ['user', 'book']
+
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Book, BookAdmin)
 admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)
 
-admin.site.register(models.CheckOut)
-admin.site.register(models.Ownership)
+admin.site.register(models.CheckOut, CheckOutAdmin)
+admin.site.register(models.Ownership, OwnershipAdmin)
 
