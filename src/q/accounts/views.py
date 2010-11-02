@@ -10,7 +10,7 @@ from django.contrib.auth import (authenticate,
                                 logout as auth_logout)
 
 from q.accounts import forms
-from q.ebooks.models import Book, CheckOut, Ownership
+from q.ebooks.models import CheckOut, Ownership
 
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}
@@ -23,21 +23,17 @@ def view_user_list(request, template_name="accounts/users_list.html"):
 @login_required
 def view_user(request, template_name="accounts/dashboard.html",  *args, **kwargs):
     ctx = {}
-    
+
     can_edit = False
     username = kwargs.get('username').lower()
     view_user = get_object_or_404(User,username=username)
 
-    current_checkouts = Book.objects.filter(checked_out=view_user)
-    checkout_history = CheckOut.objects.filter(user=view_user)[:10]
+    current_checkouts = CheckOut.objects.filter(user=view_user).filter(check_in_time=None)
+    checkout_history = CheckOut.objects.filter(user=view_user).order_by('-create_time')[:10]
     books_owned = Ownership.objects.filter(user=view_user)
-    
-    if view_user.username == request.user.username:
-        can_edit = True
 
-    ctx.update({'view_user': view_user, 
-                'can_edit':can_edit, 
-                'current_checkouts':current_checkouts, 
+    ctx.update({'view_user': view_user,
+                'current_checkouts':current_checkouts,
                 'checkout_history':checkout_history,
                 'books_owned': books_owned,
                 })

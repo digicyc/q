@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -63,8 +64,14 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
 
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
-    checkouts = models.CheckOut.objects.filter(book=book)
-    ctx.update({ 'book': book, 'checkouts':checkouts })
+    checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
+
+    try:
+        my_ownership = models.Ownership.objects.get(book=book, user=request.user)
+    except models.Ownership.DoesNotExist, e:
+        my_ownership = None
+
+    ctx.update({ 'book': book, 'checkouts':checkouts, 'my_ownership': my_ownership })
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
@@ -83,60 +90,42 @@ def isbn_search(isbn):
     book_feed = Book.FromString(volume_xml)
 
 @login_required
-def book_checkout(request,  *args, **kwargs):
+def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs):
     ctx = {}
 
     book_key = kwargs.get('book_key')
-    book = get_object_or_404(models.Book, key__exact=book_key)
-    user = User.objects.get(username__exact=request.user.username)
-    owners = book.owners.all()
+    ownership = get_object_or_404(models.Ownership, key__exact=book_key)
+    users = User.objects.all()
 
-    # is this a checkin??
-    try:
-        if book.checked_out.username == user.username:
-            book.checked_out = None
-            book.save()
+    if request.POST:
+        if request.POST.has_key('submit'):
+            if request.POST['submit'] == "Checkout":
+                checkout_form = forms.CheckOutForm(request.POST, users=users)
+                if checkout_form.is_valid():
+                    print "valid"
+                    recipient_id = checkout_form.cleaned_data["to_who"]
 
-            book_owner_id = owners[0].user.pk
-            ownership = models.Ownership.objects.get(user__pk=book_owner_id, book=book)
-            ownership.checked_out = None
-            ownership.save()
+                    checkout = models.CheckOut()
+                    checkout.user = User.objects.get(id=recipient_id)
+                    checkout.book = ownership
+                    checkout.save()
+                    ownership.checked_out = checkout
+                    ownership.save()
+            if request.POST['submit'] == "Checkin":
+                checkout = ownership.checked_out
+                checkout.check_in_time = datetime.now()
+                checkout.save()
 
-            return HttpResponseRedirect(reverse('book_info', kwargs={'book_slug': book.slug}))
-    except:
-        pass
+                ownership.checked_out = None
+                ownership.save()
 
-    # or is it a checkout?
-    if len(owners) > 1:
-        if request.method == "POST":
-            # owner has been selected.
-            checkout_form = forms.CheckOutFromUser(request.POST, owners=owners)
-            if checkout_form.is_valid():
-
-                book_owner_id = checkout_form.cleaned_data["owners"]
-                print book_owner_id
-
-        else:
-            checkout_form = forms.CheckOutFromUser(owners=owners)
-            ctx.update({ 'book': book, 'checkout_form':checkout_form })
-            template_name = "ebooks/checkout_from_user.html"
-            return render_to_response(template_name, RequestContext(request, ctx))
+                checkout_form = forms.CheckOutForm(users=users)
+                ctx['checkout_form'] = checkout_form
     else:
-        book_owner_id = owners[0].user.pk
+        checkout_form = forms.CheckOutForm(users=users)
+        ctx['checkout_form'] = checkout_form
 
-    book_owner = User.objects.get(pk__exact=book_owner_id)
-    #update Ownership to reflect Checkout.
-    ownership = models.Ownership.objects.get(user=book_owner, book=book)
-    ownership.checked_out = user
-    ownership.save()
+    ctx.update({'ownership': ownership})
 
-    #update book to reflect Checkout Status
-    checkout = models.CheckOut()
-    checkout.user = user
-    checkout.book = book
-    checkout.save()
+    return render_to_response(template_name, RequestContext(request, ctx))
 
-    book.checked_out = user
-    book.save()
-
-    return HttpResponseRedirect(reverse('book_info', kwargs={'book_slug': book.slug}))
