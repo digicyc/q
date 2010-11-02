@@ -47,7 +47,7 @@ def generate_book_filename(title, author, extension):
 class Ownership(models.Model):
     user = models.ForeignKey(User, db_index=True )
     book = models.ForeignKey('Book', db_index=True)
-    checked_out = models.ForeignKey(User, related_name="checkout_to", null=True, blank=True)
+    checked_out = models.ForeignKey("CheckOut", related_name="checkout_to", null=True, blank=True)
 
     def __str__(self):
         return "%s's copy of %s" % (self.user, self.book)
@@ -74,7 +74,6 @@ class Book(models.Model):
     slug = models.SlugField(max_length=255, blank=True, db_index=True)
     is_physical = models.BooleanField(default=False)
     is_ebook = models.BooleanField(default=False)
-    checked_out = models.ForeignKey("CheckOut", null=True, blank=True, related_name="checked_out")
     key = models.CharField(max_length=30, blank=True, db_index=True)
 
     def _get_owners(self):

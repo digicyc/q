@@ -9,7 +9,7 @@
     </div>
     <div class="book-main">
         <h1>{{ view_user.username }}</h1>
-        
+
         {% if can_edit %}
             {% if current_checkouts %}
             <h2 class="sub-title">Checkin Books</h2>
@@ -20,7 +20,7 @@
             </ul>
             {% endif %}
         {% endif %}
-        
+
         {% if checkout_history %}
         <h2 class="sub-title">Checkout History</h2>
         <ul style="list-style-type: none; overflow: hidden">
@@ -35,7 +35,7 @@
 				</a>
 			</li>
             {% endfor %}
-        </ul>    
+        </ul>
         {% endif %}
         {% if books_owned %}
         <h2 class="sub-title">Books Owned</h2>
@@ -43,7 +43,7 @@
             {% for book in books_owned %}
             <li style="float: left; margin-bottom: 15px">
                 <a href="{% url book_info book.book.slug %}">
-                {% if book.cover %}
+                {% if book.book.cover %}
 					<img src="{{ book.book.cover.url }}" width="70" />
 				{% else %}
 					<img src="/images/book-no-cover.png" width="70" />
