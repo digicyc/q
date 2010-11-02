@@ -32,7 +32,7 @@ class AuthorAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
-class CheckOutAdmin(admin.ModelAmin):
+class CheckOutAdmin(admin.ModelAdmin):
     list_display = ['user', 'book', 'create_time']
 
 admin.site.register(models.Category, CategoryAdmin)
