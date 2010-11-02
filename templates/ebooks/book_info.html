@@ -73,6 +73,7 @@
             {% for author in book.authors.all %}
                 <li>{{ author }}</li>
             {% endfor %}
+			</ul>
 
 			<h2 class="sub-title">Description:</h2>
 			<p>{{ book.description|safe }}</p>

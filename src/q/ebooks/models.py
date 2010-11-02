@@ -48,10 +48,10 @@ class Ownership(models.Model):
     user = models.ForeignKey(User, db_index=True )
     book = models.ForeignKey('Book', db_index=True)
     checked_out = models.ForeignKey(User, related_name="checkout_to", null=True, blank=True)
-    
+
     def __str__(self):
         return "%s" % (self.user)
-    
+
     class Meta:
         unique_together = (("user", "book"),)
 
@@ -209,9 +209,12 @@ class Author(models.Model):
         return "%s %s" % (self.firstname, self.lastname)
 
 class CheckOut(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True)
-    book = models.ForeignKey(Book, null=True, blank=True)
+    user = models.ForeignKey(User)
+    book = models.ForeignKey(Ownership)
     create_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = (("user", "book"))
 
     def __str__(self):
         return "%s" % (self.user.username)
