@@ -79,7 +79,7 @@ class Book(models.Model):
 
     def _get_owners(self):
         ownerships = Ownership.objects.filter(book=self)
-        owners = [user for o.user in ownerships]
+        owners = [user for user in ownerships]
         return owners
     owners = property(_get_owners)
 
