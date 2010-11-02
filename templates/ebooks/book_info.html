@@ -29,7 +29,6 @@
 			        {% if owners %}
 			        <ul style="list-style-type: none; margin: 0 0 15px 0;">
 			            {% for owner in owners %}
-			            {% if not owner.checked_out %}
 			                <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
 			                 <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
 					            <a href="{% url view_user owner.user.username  %}" style="border: none">
@@ -40,7 +39,6 @@
 					             Ask <a href="{% url view_user owner.user.username  %}"> {{ owner.user.username }}</a><br /> to borrow it.
 					         </div>
 			                </li>
-			            {% endif %}
 			            {% endfor %}
                     </ul>
                     {% endif %}
@@ -49,12 +47,12 @@
 				{% if book.checked_out %}
 					<p>
 					    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
-					       <a href="{% url view_user book.checked_out.username  %}" style="border: none">
+					       <a href="{% url view_user book.checked_out.user.username  %}" style="border: none">
 					           <img src="/images/blank-avatar.png" style="height: 35px; width: 35px;" />
 					       </a>
 					    </div>
 					    <div style=" float: left; margin-left: 10px">
-					        <a href="{% url view_user book.checked_out.username  %}">{{ book.checked_out.username }}</a> has it, <br /> ask him for it.
+					        <a href="{% url view_user book.checked_out.user.username  %}">{{ book.checked_out.user.username }}</a> has {{ book.checked_out.book.owner.user.username }}'s copy.
 					    </div>
 					</p>
 				{% else %}
