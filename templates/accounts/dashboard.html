@@ -9,33 +9,40 @@
     </div>
     <div class="book-main">
         <h1>{{ view_user.username }}</h1>
-        
-        {% if can_edit %}
-            {% if current_checkouts %}
-            <h2 class="sub-title">Checkin Books</h2>
-            <ul>
-                {% for checkout in current_checkouts %}
-                    <li><a href="{% url book_checkout checkout.key %}">{{checkout.title}}</a></li>
-                {% endfor %}
-            </ul>
-            {% endif %}
+
+        {% if current_checkouts %}
+        <h2 class="sub-title">Current Checkouts</h2>
+        <ul>
+            {% for checkout in current_checkouts %}
+                <li>
+                <a href="{% url book_info checkout.book.book.slug %}">
+                {% if checkout.book.book.cover %}
+					<img src="{{ checkout.book.book.cover.url }}" width="70" />
+				{% else %}
+					<img src="/images/book-no-cover.png" width="70" />
+				{% endif %}
+                </a>
+                <a href="{% url view_user checkout.book.user %}">{{ checkout.book.user }}'s</a> copy of {{ checkout.book.book.title }}
+                </li>
+            {% endfor %}
+        </ul>
         {% endif %}
-        
+
         {% if checkout_history %}
         <h2 class="sub-title">Checkout History</h2>
         <ul style="list-style-type: none; overflow: hidden">
             {% for checkout in checkout_history %}
             <li style="float: left; margin-bottom: 15px">
-                <a href="{% url book_info checkout.book.slug %}">
-                {% if book.cover %}
-					<img src="{{ checkout.book.cover.url }}" width="70" />
+                <a href="{% url book_info checkout.book.book.slug %}">
+                {% if checkout.book.book.cover %}
+					<img src="{{ checkout.book.book.cover.url }}" width="70" />
 				{% else %}
 					<img src="/images/book-no-cover.png" width="70" />
 				{% endif %}
 				</a>
 			</li>
             {% endfor %}
-        </ul>    
+        </ul>
         {% endif %}
         {% if books_owned %}
         <h2 class="sub-title">Books Owned</h2>
@@ -43,7 +50,7 @@
             {% for book in books_owned %}
             <li style="float: left; margin-bottom: 15px">
                 <a href="{% url book_info book.book.slug %}">
-                {% if book.cover %}
+                {% if book.book.cover %}
 					<img src="{{ book.book.cover.url }}" width="70" />
 				{% else %}
 					<img src="/images/book-no-cover.png" width="70" />

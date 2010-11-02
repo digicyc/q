@@ -32,11 +32,28 @@ class AuthorAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+class CheckOutAdmin(admin.ModelAdmin):
+    list_display = ['user', 'book', 'create_time']
+
+class OwnershipAdmin(admin.ModelAdmin):
+    list_display = ['user', 'book']
+
+    def save_model(self, request, obj, form, change):
+        instance = form.save(commit=False)
+        instance.save()
+        form.save_m2m()
+
+        instance.book.is_physical = True
+        instance.book.save()
+
+        return instance
+
+
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Book, BookAdmin)
 admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)
 
-admin.site.register(models.CheckOut)
-admin.site.register(models.Ownership)
+admin.site.register(models.CheckOut, CheckOutAdmin)
+admin.site.register(models.Ownership, OwnershipAdmin)
 
