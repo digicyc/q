@@ -25,7 +25,7 @@
 
 			{% if book.is_physical %}
 			    <h2 class="section-title">Owners</h2>
-			    {% with book.owners.all as owners %}
+			    {% with book.owners as owners %}
 			        {% if owners %}
 			        <ul style="list-style-type: none; margin: 0 0 15px 0;">
 			            {% for owner in owners %}
