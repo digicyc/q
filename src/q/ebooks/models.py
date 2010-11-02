@@ -209,8 +209,8 @@ class Author(models.Model):
         return "%s %s" % (self.firstname, self.lastname)
 
 class CheckOut(models.Model):
-    user = models.ForeignKey(User)
-    book = models.ForeignKey(Ownership)
+    user = models.ForeignKey(User, null=True)
+    book = models.ForeignKey(Ownership, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
