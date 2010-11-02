@@ -78,7 +78,7 @@ class Book(models.Model):
     key = models.CharField(max_length=30, blank=True, db_index=True)
 
     def _get_owners(self):
-        ownerships = Ownership.objects.filter(books=self)
+        ownerships = Ownership.objects.filter(book=self)
         owners = [user for o.user in ownerships]
         return owners
     owners = property(_get_owners)
