@@ -83,6 +83,7 @@
 {% endblock %}
 
 {% block rail %}
+    {% if book.is_physical %}
 	<h2 class="section-title">Check Out History</h2>
 	<ul>
 	{% for checkout in checkouts %}
@@ -101,6 +102,7 @@
 	    </li>
 	{% endfor %}
     </ul>
+    {% endif %}
 {% endblock %}
 
 {% comment %}
