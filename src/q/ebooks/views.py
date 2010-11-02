@@ -9,7 +9,7 @@ from q.common import admin_keyword_search
 
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
-from q.ebooks import forms 
+from q.ebooks import forms
 
 @login_required
 def index(request, template_name="ebooks/index.html"):
@@ -38,7 +38,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
         books = models.Book.objects.filter(authors__lastname__istartswith=letter).distinct().order_by('authors__lastname', 'authors__firstname')
     elif filter_type == "title":
         letter = kwargs.get('letter')
-        books = models.Book.objects.exclude(title__iregex=r'^(an?|the)+').filter(title__istartswith=letter).distinct().order_by('title', 'authors__lastname', 'authors__firstname')
+        books = models.Book.objects.filter(title__istartswith=letter).distinct().order_by('title', 'authors__lastname', 'authors__firstname')
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
@@ -85,37 +85,37 @@ def isbn_search(isbn):
 @login_required
 def book_checkout(request,  *args, **kwargs):
     ctx = {}
-    
+
     book_key = kwargs.get('book_key')
     book = get_object_or_404(models.Book, key__exact=book_key)
     user = User.objects.get(username__exact=request.user.username)
     owners = book.owners.all()
-    
+
     # is this a checkin??
     try:
         if book.checked_out.username == user.username:
             book.checked_out = None
             book.save()
-            
+
             book_owner_id = owners[0].user.pk
             ownership = models.Ownership.objects.get(user__pk=book_owner_id, book=book)
             ownership.checked_out = None
             ownership.save()
-            
+
             return HttpResponseRedirect(reverse('book_info', kwargs={'book_slug': book.slug}))
     except:
         pass
-        
-    # or is it a checkout?  
+
+    # or is it a checkout?
     if len(owners) > 1:
         if request.method == "POST":
             # owner has been selected.
-            checkout_form = forms.CheckOutFromUser(request.POST, owners=owners) 
+            checkout_form = forms.CheckOutFromUser(request.POST, owners=owners)
             if checkout_form.is_valid():
- 
+
                 book_owner_id = checkout_form.cleaned_data["owners"]
                 print book_owner_id
-            
+
         else:
             checkout_form = forms.CheckOutFromUser(owners=owners)
             ctx.update({ 'book': book, 'checkout_form':checkout_form })
@@ -123,19 +123,19 @@ def book_checkout(request,  *args, **kwargs):
             return render_to_response(template_name, RequestContext(request, ctx))
     else:
         book_owner_id = owners[0].user.pk
-    
+
     book_owner = User.objects.get(pk__exact=book_owner_id)
     #update Ownership to reflect Checkout.
     ownership = models.Ownership.objects.get(user=book_owner, book=book)
     ownership.checked_out = user
     ownership.save()
-    
+
     #update book to reflect Checkout Status
     checkout = models.CheckOut()
     checkout.user = user
     checkout.book = book
     checkout.save()
-    
+
     book.checked_out = user
     book.save()
 
