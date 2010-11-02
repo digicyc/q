@@ -48,12 +48,28 @@ class Ownership(models.Model):
     user = models.ForeignKey(User, db_index=True )
     book = models.ForeignKey('Book', db_index=True)
     checked_out = models.ForeignKey("CheckOut", related_name="checkout_to", null=True, blank=True)
+    key = models.CharField(max_length=30, blank=True, db_index=True)
 
     def __str__(self):
         return "%s's copy of %s" % (self.user, self.book)
 
     class Meta:
         unique_together = (("user", "book"),)
+
+    def show_qr_code(self):
+            current_site = Site.objects.get_current()
+            img_size = "140x140"
+            url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
+            url += current_site.name+"/books/checkout/"+self.key
+            url += "&choe=UTF-8"
+
+            return "<img src='"+url+"' />"
+
+    def save(self):
+        if self.key == "":
+            self.key = sha(self.user.username+self.book.title).hexdigest()[:30]
+        super(Ownership, self).save()
+
 
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
@@ -74,7 +90,6 @@ class Book(models.Model):
     slug = models.SlugField(max_length=255, blank=True, db_index=True)
     is_physical = models.BooleanField(default=False)
     is_ebook = models.BooleanField(default=False)
-    key = models.CharField(max_length=30, blank=True, db_index=True)
 
     def _get_owners(self):
         ownerships = Ownership.objects.filter(book=self)
@@ -93,14 +108,6 @@ class Book(models.Model):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
 
-    def show_qr_code(self):
-        current_site = Site.objects.get_current()
-        img_size = "140x140"
-        url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
-        url += current_site.name+"/books/checkout/"+self.key
-        url += "&choe=UTF-8"
-
-        return "<img src='"+url+"' />"
 
     def cache_book_info(self, gid=None):
         import urllib2
@@ -175,10 +182,6 @@ class Book(models.Model):
 
         if self.slug == "":
             self.slug = slugify(self.title)
-
-        if self.key == "":
-            salt = sha(str(random.random())).hexdigest()[:5]
-            self.key = sha(salt+self.title).hexdigest()[:30]
 
         if len(Format.objects.filter(ebook=self)) > 0:
             self.is_ebook = True
