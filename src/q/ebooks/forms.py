@@ -1,10 +1,14 @@
 from django import forms
 
-class CheckOutFromUser(forms.Form):
-    
-    owners = forms.ChoiceField(required=True, label='Check Out From')
-    
+class CheckOutForm(forms.Form):
+
+    to_who = forms.ChoiceField(required=True, label='Checkout To')
+
     def __init__(self, *args, **kwargs):
-        owners = kwargs.pop('owners')
-        super(CheckOutFromUser, self).__init__(*args, **kwargs)
-        self.fields['owners'].choices = [(t.user.id, t.user.username) for t in owners]
+        if kwargs.has_key('users'):
+            users = kwargs.pop('users')
+
+        super(CheckOutForm, self).__init__(*args, **kwargs)
+
+        self.fields['to_who'].choices = [(u.id, u.username) for u in users]
+

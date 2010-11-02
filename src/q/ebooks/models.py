@@ -56,14 +56,15 @@ class Ownership(models.Model):
     class Meta:
         unique_together = (("user", "book"),)
 
-    def show_qr_code(self):
+    def _get_qr_url(self):
             current_site = Site.objects.get_current()
             img_size = "140x140"
             url = "http://chart.apis.google.com/chart?chs="+img_size+"&cht=qr&chl="
             url += current_site.name+"/books/checkout/"+self.key
             url += "&choe=UTF-8"
 
-            return "<img src='"+url+"' />"
+            return url
+    qr_url = property(_get_qr_url)
 
     def save(self):
         if self.key == "":
