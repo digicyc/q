@@ -89,8 +89,18 @@ class Book(models.Model):
     cover = models.ImageField(upload_to=cover_save, blank=True)
     thumbnail = models.ImageField(upload_to=thumb_save, blank=True)
     slug = models.SlugField(max_length=255, blank=True, db_index=True)
-    is_physical = models.BooleanField(default=False)
-    is_ebook = models.BooleanField(default=False)
+    #is_physical = models.BooleanField(default=False)
+    #is_ebook = models.BooleanField(default=False)
+
+    def _get_is_physical(self):
+        if len(owners) > 0:
+            return True
+        return False
+
+    def _get_is_ebook(self):
+        if len(formats) > 0:
+            return True
+        return False
 
     def _get_owners(self):
         ownerships = Ownership.objects.filter(book=self)
