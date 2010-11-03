@@ -36,6 +36,8 @@
 
 		function saveChanges(el, title, tag, info, book_id, cancel) {
 			if(!cancel) {
+                var old_info = info;
+                info = $(el).parent().siblings(0).val();
 				var ajaxData = 'info=' + info + '&name=' + title;
 
 				$.ajax({
