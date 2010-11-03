@@ -49,7 +49,7 @@
 			}
 			else { var info = info; }
 
-			$(el).parent().parent().after('<' + tag + ' class="edited" id="' + title + '">' + info + '</' + tag +'>').remove();
+			$(el).parent().parent().after('<' + tag + ' class="editable" id="' + title + '">' + info + '</' + tag +'>').remove();
 		}
 
 		function editSuccess() {
