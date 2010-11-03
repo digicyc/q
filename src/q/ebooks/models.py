@@ -195,11 +195,6 @@ class Book(models.Model):
         if self.slug == "":
             self.slug = slugify(self.title)
 
-        if len(Format.objects.filter(ebook=self)) > 0:
-            self.is_ebook = True
-        else:
-            self.is_ebook = False
-
         super(Book, self).save()
 
 class Format(models.Model):
