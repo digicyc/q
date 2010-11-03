@@ -93,14 +93,16 @@ class Book(models.Model):
     #is_ebook = models.BooleanField(default=False)
 
     def _get_is_physical(self):
-        if len(owners) > 0:
+        if len(self.owners) > 0:
             return True
         return False
+    is_physical = property(_get_is_physical)
 
     def _get_is_ebook(self):
-        if len(formats) > 0:
+        if len(self.formats) > 0:
             return True
         return False
+    is_ebook = property(_get_is_ebook)
 
     def _get_owners(self):
         ownerships = Ownership.objects.filter(book=self)
