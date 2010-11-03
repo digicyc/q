@@ -66,7 +66,7 @@
 			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
 			<hr />
 
-	        <h1 class="editable" id="title">{{ book.title }}</h1>
+	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
@@ -74,9 +74,9 @@
             {% endfor %}
 			</ul>
 
-			<h2 class="sub-title editable">Description:</h2>
-			<p class="editable" id="description">{{ book.description|safe }}</p>
-			
+			<h2 class="sub-title">Description:</h2>
+			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
+
 
 			<h2 class="sub-title">What people are saying:</h2>
 

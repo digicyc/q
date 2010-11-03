@@ -109,7 +109,6 @@ class Book(models.Model):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
 
-
     def cache_book_info(self, gid=None):
         import urllib2
         from tempfile import NamedTemporaryFile

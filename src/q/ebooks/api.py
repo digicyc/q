@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
+from q.common import group_required
 from q.ebooks.models import Book, Format
 
 @login_required
@@ -35,3 +36,28 @@ def email_kindle(request, book_id):
     email.send()
 
     return HttpResponse('Okay')
+
+@login_required
+@group_required('Librarian')
+def change_book_attribute(request, book_id):
+    """
+    Changes the book's attribute
+    """
+    if not request.POST:
+        return HttpResponse('Fail')
+
+    attribute = None
+    if request.POST.has_key('name'):
+        attribute = request.POST['name']
+    else:
+        return HttpResponse('Fail')
+
+    if request.POST.has_key("info"):
+        book = Book.objects.get(id=book_id)
+        if hasattr(book, attribute):
+            setattr(book, attribute, request.POST["info"])
+            book.save()
+
+            return HttpResponse('Okay')
+
+    return HttpResponse('Fail')
