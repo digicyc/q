@@ -201,6 +201,17 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			}
 			
 	
+	/* USER DASHBOARD */
+	.current-checkouts { overflow: hidden; }
+		.current-checkouts .book { list-style: none; border-bottom: 1px solid rgb(226,214,198); margin: 00; padding-top: 20px; overflow: hidden; }
+			.current-checkouts .book:last-child { border-bottom: none; }
+		.current-checkouts .cover { float: left; width: 110px; margin: 0 20px 20px 20px; }
+		.current-checkouts .book-summary { width: 350px; float: left; margin: 20px 20px 20px 0; }
+		.current-checkouts .book:nth-child(odd) { background-color: rgba(172,157,142,.1); }
+
+	.checkout-history { overflow: hidden; }
+		.checkout-history li { float: left; margin: 0 20px 20px 0; list-style: none; }
+			.checkout-history a { border: none; }
 
 	
 .section-title {
