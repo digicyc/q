@@ -1,66 +1,91 @@
 {% extends 'ebooks/_base.html' %}
 {% load gravatar %}
 
-{% block body_class %} class="page-view"{% endblock %}
+{% block body_class %} class="page-view dashboard"{% endblock %}
 
 {% block content %}
     <div class="book-sidebar">
-        {% gravatar view_user 160 %}
+		{% gravatar view_user 160 %}
+        <h1>{{ view_user.username }}</h1>
     </div>
     <div class="book-main">
-        <h1>{{ view_user.username }}</h1>
 
+        <h2 class="section-title">Books Checked Out</h2>
         {% if current_checkouts %}
-        <h2 class="sub-title">Current Checkouts</h2>
-        <ul>
-            {% for checkout in current_checkouts %}
-                <li>
-                <a href="{% url book_info checkout.book.book.slug %}">
-                {% if checkout.book.book.cover %}
-					<img src="{{ checkout.book.book.cover.url }}" width="70" />
-				{% else %}
-					<img src="/images/book-no-cover.png" width="70" />
-				{% endif %}
-                </a>
-                <a href="{% url view_user checkout.book.user %}">{{ checkout.book.user }}'s</a> copy of {{ checkout.book.book.title }}
-                </li>
-            {% endfor %}
-        </ul>
+			<ul class="current-checkouts">
+				{% for checkout in current_checkouts %}
+				<li class="book">
+					<figure class="cover">
+					{% if checkout.book.book.slug %}
+						<a href="{% url book_info checkout.book.book.slug %}">
+					{% else %}
+						<a href="/">
+					{% endif %}
+
+					{% if checkout.book.book.cover %}
+						<img src="{{ checkout.book.book.cover.url }}" width="110" />
+					{% else %}
+						<img src="/images/book-no-cover.png" width="110" />
+					{% endif %}
+						</a>
+					</figure>
+					
+					<div class="book-summary">
+						<h3>{{ checkout.book.book.title }}</h3>
+						
+						<ul class="byline">
+							<li class="title">written by:</li>
+			                {% for author in checkout.book.book.authors.all %}
+		                    <li>{{ author }}</li>
+			                {% endfor %}
+						</ul>
+						<hr />
+						
+						<p>This copy belongs to <a href="{% url view_user checkout.book.user %}">{{ checkout.book.user }}</a></p>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p>{{ view_user.username }} has no books currently checked out.</p>
+        {% endif %}
+		
+		<h2 class="section-title">Checkout History</h2>
+        {% if checkout_history %}
+			<ul class="checkout-history">
+	            {% for checkout in checkout_history %}
+	            <li>
+	                <a href="{% url book_info checkout.book.book.slug %}">
+	                {% if checkout.book.book.cover %}
+						<img src="{{ checkout.book.book.cover.url }}" height="100" />
+					{% else %}
+						<img src="/images/book-no-cover.png" height="100" />
+					{% endif %}
+					</a>
+				</li>
+	            {% endfor %}
+	        </ul>
+		{% else %}
+        	<p>{{ view_user.username }} has no checkout history.</p>
         {% endif %}
 
-        {% if checkout_history %}
-        <h2 class="sub-title">Checkout History</h2>
-        <ul style="list-style-type: none; overflow: hidden">
-            {% for checkout in checkout_history %}
-            <li style="float: left; margin-bottom: 15px">
-                <a href="{% url book_info checkout.book.book.slug %}">
-                {% if checkout.book.book.cover %}
-					<img src="{{ checkout.book.book.cover.url }}" width="70" />
-				{% else %}
-					<img src="/images/book-no-cover.png" width="70" />
-				{% endif %}
-				</a>
-			</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        <h2 class="section-title">Books Owned</h2>
         {% if books_owned %}
-        <h2 class="sub-title">Books Owned</h2>
-        <ul style="list-style-type: none; overflow: hidden">
+        <ul class="checkout-history">
             {% for book in books_owned %}
-            <li style="float: left; margin-bottom: 15px">
+            <li>
                 <a href="{% url book_info book.book.slug %}">
                 {% if book.book.cover %}
-					<img src="{{ book.book.cover.url }}" width="70" />
+					<img src="{{ book.book.cover.url }}" height="100" />
 				{% else %}
-					<img src="/images/book-no-cover.png" width="70" />
+					<img src="/images/book-no-cover.png" height="100" />
 				{% endif %}
 				</a>
             </li>
             {% endfor %}
         </ul>
+		{% else %}
+			<p>{{ view_user.username }} doesn't own any books.</p>
         {% endif %}
     </div>
 {% endblock %}
-
-{% block rail %}{% endblock %}
