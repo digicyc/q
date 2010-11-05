@@ -3,6 +3,8 @@ import os.path
 import random
 from hashlib import sha256 as sha
 
+from tagging.fields import TagField
+
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -78,7 +80,7 @@ class Book(models.Model):
     authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField(default=0.0)
     rating = models.FloatField(default=0.0)
-    #tags = models.ManyToMany("Tags")
+    tags = TagField()
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
@@ -233,3 +235,18 @@ class CheckOut(models.Model):
 
     def __str__(self):
         return "%s" % (self.user.username)
+
+#SOUTH RULES
+from south.modelsinspector import add_introspection_rules
+rules = [
+        (
+            (TagField, ),
+            [],
+            {
+                "blank": ["blank", {"default": True}],
+                "max_length": ["max_length", {"default": 255}],
+            },
+        ),
+    ]
+
+add_introspection_rules(rules, ["^tagging\.fields",])

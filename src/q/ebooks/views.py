@@ -6,6 +6,8 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from tagging.models import Tag, TaggedItem
+
 from q.common import admin_keyword_search
 
 from q.ebooks.admin import BookAdmin
@@ -65,7 +67,10 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
-
+    
+    print book.tags
+    #related_tags = Tag.objects.related_for_model([tag], Entry)
+    
     try:
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
     except models.Ownership.DoesNotExist, e:
@@ -128,4 +133,13 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
     ctx.update({'ownership': ownership})
 
     return render_to_response(template_name, RequestContext(request, ctx))
-
+    
+    
+def view_tag(request, template_name="ebooks/view_tag.html", *args, **kwargs):
+    ctx = {}
+    
+    tag = kwargs.get('tag')
+    books = TaggedItem.objects.get_by_model(models.Book, tag)
+    
+    ctx.update({'tag':tag, 'books': books})
+    return render_to_response(template_name, RequestContext(request, ctx))
