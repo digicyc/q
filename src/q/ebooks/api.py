@@ -5,6 +5,7 @@ import urllib2
 from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from tagging.models import Tag
 
 from q.common import group_required
 from q.ebooks.models import Book, Format
@@ -61,3 +62,18 @@ def change_book_attribute(request, book_id):
             return HttpResponse('Okay')
 
     return HttpResponse('Fail')
+
+@login_required
+def update_tag(request):
+
+    tags = request.POST.getlist('tags[]')
+    tag_list = ",".join(tags)
+
+    book_id = request.POST.get('book_id')
+    book = Book.objects.get(id=book_id)
+    
+    Tag.objects.update_tags(book, tag_list)
+
+    return HttpResponse('Success')
+    
+    
