@@ -1,0 +1,6 @@
+<h2>Books Tagged "{{ tag }}"</h2>
+<ul>
+    {% for book in books %}
+        <li><a href="{% url book_info book.slug %}">{{ book }}</a></li>
+    {% endfor %}
+</ul>

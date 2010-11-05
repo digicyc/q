@@ -95,6 +95,7 @@ INSTALLED_APPS = (
     'q.ebooks',
     'q.accounts',
     'south',
+    'tagging',
 )
 
 GRAVATAR_DEFAULT_IMAGE = 'http://q.zzq.org/images/blank-avatar.png'

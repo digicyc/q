@@ -1,5 +1,6 @@
 {% extends 'ebooks/_base.html' %}
 {% load gravatar %}
+{% load tagging_tags %}
 
 {% block extra_javascript %}
 	<script src="/javascript/librarian.js"></script>
@@ -83,6 +84,15 @@
 			<h2 class="sub-title">Related Books:</h2>
 
 			<h2 class="sub-title">Tags:</h2>
+			
+			
+            {% tags_for_object book as tags %}
+            <ul id="book-tags">
+            {% for tag in tags %}
+                <li><a href="{% url view_tag tag %}">{{ tag }}</a></li>
+            {% endfor %}
+			</ul>
+			
 		</div>
 	{% endif %}
 {% endblock %}
