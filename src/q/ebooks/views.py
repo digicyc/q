@@ -128,4 +128,3 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
     ctx.update({'ownership': ownership})
 
     return render_to_response(template_name, RequestContext(request, ctx))
-
