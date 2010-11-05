@@ -4,6 +4,8 @@
 
 {% block extra_javascript %}
 	<script src="/javascript/librarian.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/jquery.taghandler.css" />
+	<script src="/javascript/jquery.taghandler.js"></script>
 {% endblock %}
 
 {% block body_class %} class="page-view"{% endblock %}
@@ -84,15 +86,24 @@
 			<h2 class="sub-title">Related Books:</h2>
 
 			<h2 class="sub-title">Tags:</h2>
-			
-			
             {% tags_for_object book as tags %}
-            <ul id="book-tags">
-            {% for tag in tags %}
-                <li><a href="{% url view_tag tag %}">{{ tag }}</a></li>
-            {% endfor %}
-			</ul>
-			
+            
+            
+            <ul id="book-tags"></ul>
+            <script>
+           $("#book-tags").tagHandler({
+               assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
+               autocomplete: false,
+               autoUpdate: true,
+               updateURL: '/books/api/update_tag/',
+               updateData: {book_id: "{{book.pk}}"},
+               {% ifequal user.groups.all.0.name "librarian" %}
+			    allowEdit: true
+			    {% else %}
+			    allowEdit: false
+			    {% endifequal %}
+           });
+           </script>
 		</div>
 	{% endif %}
 {% endblock %}
