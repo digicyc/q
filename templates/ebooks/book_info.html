@@ -100,7 +100,7 @@
                autoUpdate: true,
                updateURL: '/books/api/update_tag/',
                updateData: {book_id: "{{book.pk}}"},
-               {% ifequal user.groups.all.0.name "librarian" %}
+               {% ifequal user.groups.all.0.name|lower "librarian" %}
 			    allowEdit: true
 			    {% else %}
 			    allowEdit: false
