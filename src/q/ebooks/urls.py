@@ -16,5 +16,4 @@ urlpatterns = patterns('',
     url(r'^api/change_attribute/(?P<book_id>\d+)/$', change_book_attribute, name="change_book_attribute"),
     url(r'^api/update_tag/$', update_tag, name="update_tag"),
     url(r'^api/get_tags/$', get_tags, name="get_tags"),
-    
 )

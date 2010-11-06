@@ -66,7 +66,7 @@ def change_book_attribute(request, book_id):
 
 @login_required
 def get_tags(request):
-    
+
     q = request.GET.get('q')
     tags = Tag.objects.filter(name__startswith=q)
     taglist = [tag.name for tag in tags]

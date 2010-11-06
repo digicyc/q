@@ -94,8 +94,6 @@
             <script>
            $("#book-tags").tagHandler({
                assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
-               //getData: {book_id: "{{book.pk}}"},
-			   //getURL: '/books/api/get_tags/',
 			   autocomplete: true,
                autoUpdate: true,
                updateURL: '/books/api/update_tag/',

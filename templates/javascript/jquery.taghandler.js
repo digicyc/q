@@ -463,5 +463,4 @@
             window.console.log($.fn.tagHandler.defaults);
         }
     }
-
 })(jQuery);
