@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 from q.ebooks.views import index, book_info, view_tag, latest_books_rss, books_by_type, isbn_search, book_checkout
-from q.ebooks.api import email_kindle, change_book_attribute, update_tag
+from q.ebooks.api import email_kindle, change_book_attribute, update_tag, get_tags
 
 urlpatterns = patterns('',
     url(r'^$', index, name="index"),
@@ -15,4 +15,6 @@ urlpatterns = patterns('',
     url(r'^api/email_kindle/(?P<book_id>\d+)/$', email_kindle, name="email_kindle"),
     url(r'^api/change_attribute/(?P<book_id>\d+)/$', change_book_attribute, name="change_book_attribute"),
     url(r'^api/update_tag/$', update_tag, name="update_tag"),
+    url(r'^api/get_tags/$', get_tags, name="get_tags"),
+    
 )

@@ -67,3 +67,20 @@
     height: 16px;
     cursor: pointer;
 }
+
+.ac_results {
+    margin: 0;
+    padding: 0;
+    list-style-type: none !important;
+    background: #fff;
+}
+
+.ac_results li {
+    text-align: left;
+    margin: 0;
+    padding: 3px;
+    list-style-type: none !important;
+    }
+    
+    
+}

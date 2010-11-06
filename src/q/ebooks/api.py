@@ -2,6 +2,7 @@ import os.path
 from tempfile import NamedTemporaryFile
 import urllib2
 
+from django.utils import simplejson
 from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -64,8 +65,16 @@ def change_book_attribute(request, book_id):
     return HttpResponse('Fail')
 
 @login_required
-def update_tag(request):
+def get_tags(request):
+    
+    q = request.GET.get('q')
+    tags = Tag.objects.filter(name__startswith=q)
+    taglist = [tag.name for tag in tags]
 
+    return HttpResponse("\n".join(taglist), mimetype='text/plain')
+    
+@login_required
+def update_tag(request):
     tags = request.POST.getlist('tags[]')
     tag_list = ",".join(tags)
 

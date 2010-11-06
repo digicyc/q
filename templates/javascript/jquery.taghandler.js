@@ -187,6 +187,7 @@
                     data: opts.getData,
                     dataType: 'json',
                     success: function(data, text, xhr) {
+                        
                         if (data.availableTags.length) {
                             tags.availableTags = data.availableTags.slice();
                             tags.originalTags = tags.availableTags.slice();
@@ -212,7 +213,8 @@
                             }
                         }
                         if (opts.autocomplete && opts.allowEdit) {
-                            $(inputField).autocomplete("option", "source", tags.availableTags);
+                            
+                            $(inputField).autocomplete("/books/api/get_tags/", tags.availableTags);
                         }
                     },
                     error: function(xhr, text, error) {
@@ -244,7 +246,7 @@
                     }
                 }
                 if (opts.autocomplete && opts.allowEdit) {
-                    $(inputField).autocomplete("option", "source", tags.availableTags);
+                    $(inputField).autocomplete("/books/api/get_tags/", tags.availableTags);
                 }
             }
             
@@ -265,13 +267,14 @@
                         saveTags(tags, opts, tagContainer.id);
                     }
                     if (opts.autocomplete) {
-                        $(inputField).autocomplete("option", "source", tags.availableTags);
+                        $(inputField).autocomplete("/books/api/get_tags/", tags.availableTags);
                     }
                 });*/
 
                 // checks the keypress event for enter or comma, and adds a new tag
                 // when either of those keys are pressed
                 $(inputField).keypress(function(e) {
+                   
                     if (e.which == 13 || e.which == 44 || e.which == opts.delimiter.charCodeAt(0)) {
                         e.preventDefault();
                         if ($(this).val() != "" && !checkTag($.trim($(this).val()), tags.assignedTags)) {
@@ -280,7 +283,7 @@
                                 saveTags(tags, opts, tagContainer.id);
                             }
                             if (opts.autocomplete) {
-                                $(inputField).autocomplete("option", "source", tags.availableTags);
+                                $(inputField).autocomplete("/books/api/get_tags/", tags.availableTags);
                             }
                             $(this).val("");
                             $(this).focus();
@@ -297,7 +300,7 @@
                             saveTags(tags, opts, tagContainer.id);
                         }
                         if (opts.autocomplete) {
-                            $(inputField).autocomplete("option", "source", tags.availableTags);
+                            $(inputField).autocomplete("/books/api/get_tags/", tags.availableTags);
                         }
                         $(this).focus();
                     }
@@ -313,7 +316,7 @@
                                 if (opts.updateURL != '' && opts.autoUpdate) {
                                     saveTags(tags, opts, tagContainer.id);
                                 }
-                                $(inputField).autocomplete("option", "source", tags.availableTags);
+                                $(inputField).autocomplete("/books/api/get_tags/", tags.availableTags);
                                 $(this).focus();
                             }
                             $(this).val("");
@@ -327,7 +330,7 @@
                 // when there is no value
                 $(inputField).focus(function() {
                     if ($(inputField).val() == "" && opts.autocomplete) {
-                        $(inputField).autocomplete("search", "");
+                        $(inputField).autocomplete("/books/api/get_tags/");
                     }
                 });
 
