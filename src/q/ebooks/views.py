@@ -1,10 +1,17 @@
+import os
+import urllib2
+from tempfile import NamedTemporaryFile
 from datetime import datetime
-from django.http import HttpResponse, HttpResponseRedirect
+
+from django.core.files import File
+from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
-from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+
+from django.conf import settings
 
 from tagging.models import Tag, TaggedItem
 
@@ -67,10 +74,10 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
-    
+
     print book.tags
     #related_tags = Tag.objects.related_for_model([tag], Entry)
-    
+
     try:
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
     except models.Ownership.DoesNotExist, e:
@@ -80,7 +87,88 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
-def isbn_search(isbn):
+@login_required
+def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, **kwargs):
+    """
+    Begins the add book wizard process
+    """
+    from q.ebooks.forms import BookForm
+    ctx = {}
+
+    if request.POST.has_key('title'):
+        book = models.Book()
+        book.title = request.POST['title']
+        book.tags = request.POST['tags']
+        book.isbn10 = request.POST['isbn10']
+        book.isbn13 = request.POST['isbn13']
+        book.gid = request.POST['gid']
+        book.description = request.POST['description']
+
+        book.save()
+        for gauthor in request.POST['authors'].split(','):
+            try:
+                author = models.Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
+            except Author.DoesNotExist, e:
+                author = models.Author()
+                author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
+                author.lastname = gauthor.split(" ")[-1]
+                author.save()
+            book.authors.add(author)
+
+        if book.cover == "":
+            cover_link = request.POST['cover_url']
+            headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
+            f = NamedTemporaryFile(delete=False)
+            f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
+            f.filename = f.name
+            f.close()
+
+            book.cover.save(
+                "temp_filename.jpg",
+                File(open(f.name))
+            )
+
+            os.unlink(f.name)
+        book.save()
+
+        return HttpResponseRedirect(reverse(book_info, kwargs={'book_slug': book.slug}))
+
+    if request.POST.has_key("isbn") and isbn is None:
+        isbn= request.POST['isbn']
+
+    if isbn:
+        from gdata.books import Book, BookFeed
+        from urllib2 import urlopen
+
+        search_xml = urlopen("http://books.google.com/books/feeds/volumes?q=ISBN%s" % isbn).read()
+        search_feed = BookFeed.FromString(search_xml)
+        google_id = search_feed.entry[0].identifier[0].text
+
+        #volume_xml = urlopen("http://www.google.com/books/feeds/volumes/%s" % google_id).read()
+        #book_feed = Book.FromString(volume_xml)
+
+        #cover_link = book_feed.GetThumbnailLink().href.replace('zoom=5','zoom=1')
+
+        book = models.Book()
+        book.cache_book_info(google_id, save_cover=False)
+
+        book_form = BookForm(
+            {
+             'title':book.title,
+             'authors': ",".join(book._authors),
+             'isbn10': book.isbn10,
+             'isbn13': book.isbn13,
+             'gid': book.gid,
+             'description': book.description,
+             'metarating': book.metarating,
+             }
+        )
+
+        ctx.update({'book': book, 'book_form': book_form})
+
+    return render_to_response(template_name, RequestContext(request, ctx))
+
+def temp_(isbn):
     """
     Search places for the ISBN
     """
@@ -133,13 +221,13 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
     ctx.update({'ownership': ownership})
 
     return render_to_response(template_name, RequestContext(request, ctx))
-    
-    
+
+
 def view_tag(request, template_name="ebooks/view_tag.html", *args, **kwargs):
     ctx = {}
-    
+
     tag = kwargs.get('tag')
     books = TaggedItem.objects.get_by_model(models.Book, tag)
-    
+
     ctx.update({'tag':tag, 'books': books})
     return render_to_response(template_name, RequestContext(request, ctx))
