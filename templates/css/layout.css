@@ -11,8 +11,9 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		#main-account-details li {
 			float: left; margin: 0; list-style: none; font: 11px/1em Helvetica, sans-serif;
 			color: rgba(255,255,255,.5); text-shadow: 0 1px 0 rgba(255,255,255,0);
+			margin-right: 5px; padding-right: 5px; border-right: 1px solid rgba(255,255,255,.2);
 		}
-		#main-account-details li:first-child { margin-right: 5px; padding-right: 5px; border-right: 1px solid rgba(255,255,255,.2); }
+		#main-account-details li:last-child { margin-right: 0; padding-right: 0; border-right: none; }
 		#main-account-details a { color: rgb(255,255,255); border-color: rgb(255,255,255); }
 
 #global-search {
@@ -165,6 +166,15 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	.search-view .book-summary { width: 530px; float: left; margin: 20px 20px 20px 0; }
 	.search-view .book:nth-child(odd) { background-color: rgba(172,157,142,.1); }
 	
+	/* ADD BOOK PAGE */
+	.add-view #content { float: right;  }
+		.add-view label { font-size: 12px; line-height: 28px; }
+		.add-view input[type="text"], .add-view textarea, .add-view select {
+			border: 1px solid #BBB; color: #333; display: block;
+			font: 12px/18px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			margin: 0 4px 10px 0; padding: 3px 4px; background-color: transparent; width: 90%;
+			text-shadow: 0px 0px 1px #FFF;
+		}
 	
 	/* HOME PAGE LAYOUT */
 	.home .book { float: left; margin: 0 20px 20px 0; position: relative; }	
@@ -230,3 +240,36 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 footer.main { clear: both; /*padding-top: 200px;*/ }
 
 
+/* BTN CLASSES */
+input.submit-large {
+	margin: 0 0 18px 0;
+	background: none;
+	border: none;
+	white-space: nowrap;
+	padding: 8px 25px;
+	color: #FFF;
+	cursor: pointer;
+	font: 14px/14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: bold;
+	border: 1px solid #0DA40D;
+	
+	border-bottom-color: #036E03;
+	text-shadow: 0px 1px 0px #056905;
+	background-color: #0DA40D; /* fallback color */
+	    background-image: url(''); /* fallback image */
+	    background-image: -moz-linear-gradient(100% 100% 90deg, #0DA40D, #3bb53b);
+	    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3bb53b), to(#0DA40D));
+	box-shadow: 0 0 2px rgb(150,150,150);
+		-webkit-box-shadow: 0 0 2px rgb(150,150,150);
+		-moz-box-shadow: 0 0 2px rgb(150,150,150);
+	-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+	
+}
+	input.submit-large:hover {
+		background-color: #088508; /* fallback color */
+		    background-image: url(''); /* fallback image */
+		    background-image: -moz-linear-gradient(100% 100% 90deg, #088508, #3bb53b);
+		    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3bb53b), to(#088508));
+	}

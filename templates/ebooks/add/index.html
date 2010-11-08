@@ -1,30 +1,47 @@
 {% extends 'ebooks/_base.html' %}
 
+{% block body_class %} class="page-view add-view dashboard"{% endblock %}
+
 {% block content %}
+	{% if book %}
+		<h2 class="section-title">Add a Book</h2>
+		
+		<div class="book-sidebar">
+			<figure class="cover">
+	        {% if book.cover %}
+	            <img src="{{ book.cover.url }}" width="160" />
+	        {% else %}
+	            <img src="{{ book.temp_cover_url }}" width="160" />
+	        {% endif %}
+			</figure>
+		</div>
 
-    <form method="post">
-    add book<br/>
-        isbn:<input type="text" name="isbn" value="{{ book.isbn13 }}"><input type="submit">
-    </form>
-
-    {% if book %}
-
-        {% if book.cover %}
-            <img src="{{ book.cover.url }}">
-        {% else %}
-            <img src="{{ book.temp_cover_url }}">
-        {% endif %}
-
-        <hr>
+		<div class="book-main">
         {% if book_form.is_multipart %}
             <form enctype="multipart/form-data" method="POST">
         {% else %}
             <form method="POST">
         {% endif %}
-        {{ book_form.as_ul }}
-        <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}">
-        <input type="submit">
-        </form>
-    {% endif %}
 
+		        {{ book_form.as_p }}
+				
+				<hr />
+				
+				<input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}" />	
+				<p>
+					<input type="submit" value="Add {{ book.title }}" class="submit-large" />
+				</p>
+	        </form>
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block rail %}
+	<h1>Add Book</h2>
+	<form method="post">
+		<p>
+			<label for="id_isbn">ISBN:</label>
+			<input type="text" name="isbn" id="id_isbn" value="{{ book.isbn13 }}" />
+		</p>
+    </form>
 {% endblock %}
