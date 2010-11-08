@@ -21,6 +21,8 @@
 				{% endif %}
 				<div class="overlay"></div>
 			</figure>
+			
+			
 			<h2 class="section-title">Formats</h2>
 			<ul class="formats">
 				{% for format in book.formats %}
@@ -32,14 +34,33 @@
 			</ul>
 
 			{% if book.is_physical %}
-
+                
+                
 				{% if my_ownership %}
+				<div id="i-own-this-box">
                     <h2 class="section-title">My QR Code</h2>
                     <p>
-                        <div class="qr-code"><a href="{% url book_checkout my_ownership.key %}"><img src="{{ my_ownership.qr_url }}" /></a></div>
+                        <div class="qr-code">
+                            <a href="{% url book_checkout my_ownership.key %}">
+                                <img src="{{ my_ownership.qr_url }}" />
+                            </a>
+                        </div>
+                        <div id="i-own-this" style="text-align: right; padding: 7px">
+                            <small><a href="#" id="book_{{ book.pk }}">. . . I don't own this.</a></small>
+                        </div>
                     </p>
+                </div>
+                {% else %}
+                    {% if user.is_authenticated %}
+                        <div id="i-own-this-box">
+			                <p id="i-own-this">
+			                    <a href="#" id="book_{{ book.pk }}">i own this</a>
+			                </p>
+			            </div>
+			        {% endif %}
+                
 				{% endif %}
-
+                    
                 {% with book.owners as owners %}
                 {% if owners %}
                     <h2 class="section-title">Owners</h2>
