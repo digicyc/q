@@ -212,7 +212,7 @@ class Format(models.Model):
     
     def download_key(self):
         import base64
-        return base64.b64encode('%s:%s:%s'% (self.ebook_file.url, self.ebook.pk, self.format))
+        return base64.b64encode('%s::%s::%s'% (self.ebook_file.url, self.ebook.pk, self.format))
 
 class Category(models.Model):
     name = models.CharField(max_length=20)

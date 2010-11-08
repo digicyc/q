@@ -19,14 +19,14 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return self.__str__()
         
-class UserDownloads(models.Model):
+class UserDownload(models.Model):
     user = models.ForeignKey(User)
     book = models.ForeignKey(Book)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
     download_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return "User: %s" % self.user
+        return "User: %s - Download: %s" % (self.user, self.book)
 
     def __unicode__(self):
         return self.__str__()
