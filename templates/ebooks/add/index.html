@@ -1,0 +1,30 @@
+{% extends 'ebooks/_base.html' %}
+
+{% block content %}
+
+    <form method="post">
+    add book<br/>
+        isbn:<input type="text" name="isbn" value="{{ book.isbn13 }}"><input type="submit">
+    </form>
+
+    {% if book %}
+
+        {% if book.cover %}
+            <img src="{{ book.cover.url }}">
+        {% else %}
+            <img src="{{ book.temp_cover_url }}">
+        {% endif %}
+
+        <hr>
+        {% if book_form.is_multipart %}
+            <form enctype="multipart/form-data" method="POST">
+        {% else %}
+            <form method="POST">
+        {% endif %}
+        {{ book_form.as_ul }}
+        <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}">
+        <input type="submit">
+        </form>
+    {% endif %}
+
+{% endblock %}

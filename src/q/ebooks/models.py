@@ -81,9 +81,9 @@ class Book(models.Model):
     metarating = models.FloatField(default=0.0)
     rating = models.FloatField(default=0.0)
     tags = TagField()
-    isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
-    isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
-    gid = models.CharField(db_index=True, max_length=20, blank=True)
+    isbn10 = models.CharField(db_index=True, max_length=20, blank=True, unique=True)
+    isbn13 = models.CharField(db_index=True, max_length=20, blank=True, unique=True)
+    gid = models.CharField(db_index=True, max_length=20, blank=True, unique=True)
     description = models.TextField(blank=True)
     published = models.DateField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -123,7 +123,7 @@ class Book(models.Model):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
 
-    def cache_book_info(self, gid=None):
+    def cache_book_info(self, gid=None, save_cover=True):
         import urllib2
         from tempfile import NamedTemporaryFile
 
@@ -140,6 +140,7 @@ class Book(models.Model):
 
         thumbnail_link = gbook.GetThumbnailLink().href
         cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
+        self.temp_cover_url = cover_link
 
         if self.title == "":
             self.title = gbook.title.text
@@ -151,6 +152,7 @@ class Book(models.Model):
             self.description = gbook.description.text
         self.published_year = gbook.date.text
 
+        self._authors = []
         for gauthor in gbook.creator:
             gauthor = gauthor.text
             try:
@@ -161,7 +163,10 @@ class Book(models.Model):
                 author.lastname = gauthor.split(" ")[-1]
                 author.save()
 
-            self.authors.add(author)
+
+            self._authors.append(gauthor)
+            if self.id is not None:
+                self.authors.add(author)
 
         for identifier in gbook.identifier:
             id = identifier.text
@@ -176,7 +181,7 @@ class Book(models.Model):
                     self.gid = id
 
 
-        if self.cover is None or self.cover == "":
+        if self.cover is None or self.cover == "" and save_cover:
             headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
             f = NamedTemporaryFile(delete=False)
             f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
