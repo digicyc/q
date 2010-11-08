@@ -22,6 +22,6 @@ class BookForm(forms.Form):
     isbn13 = forms.CharField(max_length=20, label="ISBN13")
     gid = forms.CharField(max_length=20, label="Google Id")
     description = forms.CharField(label="Description", widget=forms.Textarea)
-    cover = forms.ImageField(label="Cover", required=False)
+    #cover = forms.ImageField(label="Cover", required=False)
     metarating = forms.FloatField(label="metarating", widget=forms.HiddenInput, initial="0.0")
 
