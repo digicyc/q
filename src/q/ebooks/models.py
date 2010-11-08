@@ -209,6 +209,10 @@ class Format(models.Model):
 
     def __str__(self):
         return "%s" % (self.format)
+    
+    def download_key(self):
+        import base64
+        return base64.b64encode('%s:%s:%s'% (self.ebook_file.url, self.ebook.pk, self.format))
 
 class Category(models.Model):
     name = models.CharField(max_length=20)

@@ -24,7 +24,7 @@
 			<h2 class="section-title">Formats</h2>
 			<ul class="formats">
 				{% for format in book.formats %}
-					<li class="{{ format.format }}"><a href="{{ format.ebook_file.url }}">{{ format.format }}</a></li>
+					<li class="{{ format.format }}"><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
                     {% if format.format == 'mobi' and request.user.get_profile.kindle_email %}
                     <li><a href="{% url email_kindle book.id %}">email to kindle</a></li>
                     {% endif %}

@@ -1,3 +1,4 @@
+from base64 import b64decode
 from datetime import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -13,6 +14,7 @@ from q.common import admin_keyword_search
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 from q.ebooks import forms
+from q.accounts.models import UserDownloads
 
 @login_required
 def index(request, template_name="ebooks/index.html"):
@@ -67,9 +69,6 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     book_slug = kwargs.get('book_slug')
     book = get_object_or_404(models.Book, slug=book_slug)
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
-    
-    print book.tags
-    #related_tags = Tag.objects.related_for_model([tag], Entry)
     
     try:
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
@@ -143,3 +142,21 @@ def view_tag(request, template_name="ebooks/view_tag.html", *args, **kwargs):
     
     ctx.update({'tag':tag, 'books': books})
     return render_to_response(template_name, RequestContext(request, ctx))
+    
+    
+def download_format(request, *args, **kwargs):
+    download_key = kwargs.get('download_key')
+    
+    book_info = b64decode(download_key).split(':')
+    download_url = book_info[0]
+    book = models.Book.objects.get(pk__exact=book_info[1])
+    book_format = book_info[2]
+    
+    # count the download towards the user.
+    user_download = UserDownloads()
+    user_download.user = request.user
+    user_download.book =book
+    user_download.format = book_format
+    user_download.save()
+
+    return HttpResponseRedirect(download_url)
