@@ -140,11 +140,16 @@
                    {% gravatar checkout.user 35 %}
     	       </a>
     	    </div>
-    	    <div style=" float: left; margin-left: 10px">
+    	    <div style=" float: left; margin-left: 10px; width: 150px">
     	        <a href="{% url view_user checkout.user.username  %}">
     	            {{ checkout.user.username }}
     	        </a>
     	        checked it out<br /> on <em>{{ checkout.create_time|date:"F j, Y" }}.</em>
+    	        {% if checkout.check_in_time %}
+    	        <div style="border-top: 1px dashed  #dedede; margin-top: 7px; padding: 7px 0;">
+    	        Then it was returned on <em>{{ checkout.check_in_time|date:"F j, Y" }}.</em>
+    	        </div>
+    	        {% endif %}
     	    </div>
 	    </li>
 	{% endfor %}
