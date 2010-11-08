@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from tagging.models import Tag
 
 from q.common import group_required
-from q.ebooks.models import Book, Format
+from q.ebooks.models import Book, Format, Ownership
 
 @login_required
 def email_kindle(request, book_id):
@@ -84,5 +84,24 @@ def update_tag(request):
     Tag.objects.update_tags(book, tag_list)
 
     return HttpResponse('Success')
+
+@login_required
+def i_own_this_book(request):
     
+    response_dict = {}
+    response_dict['success'] = True
+
+    book_id = request.GET.get('book_id')
+    book = Book.objects.get(pk=book_id)
     
+    try:
+        ownership = Ownership.objects.get(book=book, user=request.user)
+        ownership.delete()
+    except Ownership.DoesNotExist:
+        ownership = Ownership()
+        ownership.user = request.user
+        ownership.book = book
+        ownership.save()
+        response_dict['ownership'] = {'key': ownership.key, 'qr_code':ownership.qr_url}
+    
+    return HttpResponse(simplejson.dumps(response_dict), mimetype='application/json')

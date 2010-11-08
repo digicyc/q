@@ -209,12 +209,11 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 				border-radius: 8px;
 				-webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
 			}
-	/* TAGS *//*
-	#book-tags { list-style-type: none; }
-	#book-tags li {float: left; margin:0 0 0 5px; padding:0;}
-	#book-tags li:after { content: ','; }
-	#book-tags li:last-child:after { content: ''; }*/
-	/* /002C */		
+	#i-own-this {
+	    text-align: center; 
+	    padding-top: 15px; 
+	    border-top: 1px dashed rgb(226,214,198);
+	}	
 	
 	/* USER DASHBOARD */
 	.current-checkouts { overflow: hidden; }
