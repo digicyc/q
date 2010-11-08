@@ -22,6 +22,7 @@ var QKinderHook = function(){ this.init.apply(this, arguments); }
            
                if(data['ownership'])
                {
+                   //qr.
                    html_out += '<h2 class="section-title">My QR Code</h2>';
                    html_out += '<div class="qr-code"><p><a href="/books/checkout/'+data['key']+'">';
                    html_out += '<img src="'+data['ownership']['qr_code']+'" />';
@@ -29,10 +30,18 @@ var QKinderHook = function(){ this.init.apply(this, arguments); }
                    html_out += '<div id="i-own-this" style="text-align: right; padding: 7px">';
                    html_out += '<small><a href="#" id="book_'+book_id+'">. . . I don\'t own this.</a></small>';
                    html_out += '</div>';
+                   
+                   
+                   
                 } else {
+
+
+                    
                     html_out += '<div id="i-own-this-box">';
                     html_out += '<p id="i-own-this"><a href="#" id="book_'+book_id+'">i own this</a></p>';
                     html_out += '</div>';
+                    
+                    $('#owner_'+data['remove_ownership']['id']).fadeOut();
                 }
 
                $('#i-own-this-box').fadeOut(function(){

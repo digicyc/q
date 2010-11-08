@@ -96,6 +96,8 @@ def i_own_this_book(request):
     
     try:
         ownership = Ownership.objects.get(book=book, user=request.user)
+        response_dict['remove_ownership'] = {'id':ownership.pk}
+        
         ownership.delete()
     except Ownership.DoesNotExist:
         ownership = Ownership()

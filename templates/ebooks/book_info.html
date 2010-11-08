@@ -64,10 +64,10 @@
             {% if book.is_physical %}
                 {% with book.owners as owners %}
                 {% if owners %}
-                    <h2 class="section-title">Owners</h2>
+                    <h2 id="owners-box" class="section-title">Owners</h2>
                         <ul style="list-style-type: none; margin: 0 0 15px 0;">
                             {% for owner in owners %}
-                                <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
+                                <li id="owner_{{ owner.pk }}" style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
                                  <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
                                     <a href="{% url view_user owner.user.username  %}" style="border: none">
                                         {% gravatar owner.user 35 %}
