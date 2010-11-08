@@ -27,7 +27,9 @@
 			</div>
 			
 			<div class="book-summary">
+				{% comment %}
 				<p class="series"><a href="">Series Title:</a> Book 3</p>
+				{% endcomment %}
 				<h3>
 					{% if book.slug %}
 						<a href="{% url book_info book.slug %}">

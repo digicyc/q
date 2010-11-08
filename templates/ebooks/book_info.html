@@ -67,9 +67,10 @@
 		</div>
 
 		<div class="book-main">
+			{% comment %}
 			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
 			<hr />
-
+			{% endcomment %}
 	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
 			<ul class="byline">
 				<li class="title">written by:</li>
@@ -80,9 +81,6 @@
 
 			<h2 class="sub-title">Description:</h2>
 			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
-
-
-			<h2 class="sub-title">What people are saying:</h2>
 
 			<h2 class="sub-title">Related Books:</h2>
 

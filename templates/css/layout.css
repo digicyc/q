@@ -138,7 +138,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			font-size: 12px; line-height: 18px; text-transform: none; font-style: italic;
 			position: relative; top: 1px; margin: 0 4px 0 0;
 		}
-	.book-summary h3 { margin: 0 0 8px 0; font-size: 30px; }
+	.book-summary h3 { margin: 8px 0; font-size: 30px; }
 		.book-summary h3 a { color: inherit; border: none; cursor: pointer; }
 		.book-summary .formats { margin: 0 0 20px 0; }
 		.book-summary .formats li { margin: 0 8px 0 0; list-style-type: none; float: left; }
