@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from q.ebooks.models import FORMAT_CHOICES, Book
 
 class UserProfile(models.Model):
     """
@@ -14,6 +15,18 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return "<UserProfile: %s>" % self.user
+
+    def __unicode__(self):
+        return self.__str__()
+        
+class UserDownload(models.Model):
+    user = models.ForeignKey(User)
+    book = models.ForeignKey(Book)
+    format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
+    download_date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "User: %s - Download: %s" % (self.user, self.book)
 
     def __unicode__(self):
         return self.__str__()
