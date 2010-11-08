@@ -27,7 +27,9 @@
 			</figure>
 			<div class="book-summary">
 			<div class="summary-wrap">
+				{% comment %}
 				<p class="series"><a href="">Series Title:</a> Book 3</p>
+				{% endcomment %}
 				<h3>
 					{% if book.slug %}
 						<a href="{% url book_info book.slug %}">
@@ -62,24 +64,3 @@
 		<p>Search for something</p>
 	{% endif %}
 {% endblock %}
-
-
-{% comment %}
-
-	{% if books %}
-	    {% for book in books %}
-	        {% if book.cover %}
-	            <div style="float:left;height:150;">
-	            <img src="{{ book.cover.url }}" height="150" style="margin-right:5px;" />
-	            </div>
-	        {% endif %}
-	        <div style="display:block;{% if book.cover %}height:150;{% endif %}">
-	            {{ book }}<br />
-	            {% for format in book.formats %} <a href="{{ format.ebook_file.url }}">{{ format.format }}</a> {% endfor %}
-	        </div>
-	        <br/>
-
-	    {% endfor %}
-	{% endif %}
-
-{% endcomment %}

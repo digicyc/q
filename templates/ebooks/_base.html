@@ -43,7 +43,6 @@
 					<ul id="sort-alphabet-nav">
 						<li><a href="#sort-author">Author</a></li>
 						<li><a href="#sort-title">Title</a></li>
-						<li><a href="#sort-cat">Category</a></li>
 					</ul>
 					<ul class="tab" id="sort-author">
 						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
@@ -52,12 +51,6 @@
 					</ul>
 
 					<ul class="tab" id="sort-title">
-						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
-					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
-						{% endfor %}
-					</ul>
-
-					<ul class="tab" id="sort-cat">
 						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
 					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
 						{% endfor %}
