@@ -62,6 +62,8 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfResponseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
@@ -96,8 +98,11 @@ INSTALLED_APPS = (
     'q.accounts',
     'south',
     'tagging',
+    'django.contrib.comments',
+    'threadedcomments',
 )
 
+COMMENTS_APP = 'threadedcomments'
 GRAVATAR_DEFAULT_IMAGE = 'http://q.zzq.org/images/blank-avatar.png'
 AUTH_PROFILE_MODULE = 'accounts.userprofile'
 

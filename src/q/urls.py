@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     (r'^$', login),
     url(r'^login/$',  login, name='login'),
     url(r'^logout/$',  logout, name='logout'),
+    (r'^comments/', include('django.contrib.comments.urls')),
 )
 
 if settings.DEBUG:
