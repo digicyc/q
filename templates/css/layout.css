@@ -216,8 +216,8 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			display: none;
 
 			position: absolute;
-			top: 100px;
-			left: 20px;
+			bottom: 40px;
+			left: 80px;
 			z-index: 1;
 			width: 500px;
 			padding: 4px;
