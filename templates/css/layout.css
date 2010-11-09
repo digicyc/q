@@ -157,6 +157,31 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		display: block;
 	}
 	.page-view .formats li.pdf { background-image: url(/images/icon-pdf.png); }
+	
+		/* TAGHANDLER */
+		.tagHandler { position: relative; }
+		#book-tags { overflow: hidden; }
+			#book-tags li { 
+				float: left; margin: 0 5px 5px 0; list-style: none; cursor: pointer;
+				color: rgb(83,55,27); border-bottom: 1px dotted rgba(83,55,27,.2);
+			}
+			#book-tags li.tagInput, #book-tags li.tagInput:hover { border: none; }
+			#book-tags li.tagInput { clear: both; margin: 18px 0 0 0; }
+			#book-tags li.tagInput input {
+				width: 150px;
+				border: 1px solid #BBB; color: #333; padding: 3px 4px; margin-left: 10px;
+				background: transparent url(/images/icon-edit.png) no-repeat 98% 50%;
+			}
+			#book-tags li:hover { border-bottom: 1px solid #333; }
+			#book-tags li:after { content: ','; }
+			#book-tags li.tagInput:before { content: 'Add a Tag: '; }
+			#book-tags li.tagInput:after { content: ''; }
+			#book-tags_loader {
+				position: absolute; bottom: 3px; left: 230px;
+			    background: url('/images/taghandler/loader.gif') center center no-repeat;
+			    width: 16px; height: 18px;
+				display: none;
+			}
 
 
 	/* SEARCH PAGE LAYOUT */
@@ -208,13 +233,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 				overflow: hidden;
 				border-radius: 8px;
 				-webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
-			}
-	/* TAGS *//*
-	#book-tags { list-style-type: none; }
-	#book-tags li {float: left; margin:0 0 0 5px; padding:0;}
-	#book-tags li:after { content: ','; }
-	#book-tags li:last-child:after { content: ''; }*/
-	/* /002C */		
+			}	
 	
 	/* USER DASHBOARD */
 	.current-checkouts { overflow: hidden; }
