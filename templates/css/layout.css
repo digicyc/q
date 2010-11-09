@@ -6,7 +6,7 @@ body, html { background: rgb(253,250,247); text-align: center; }
 header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repeat-x 0 0; padding: 1px 0; margin-bottom: 20px; position: relative; }
 	#logo { margin-top: 30px; float: left; }
 	#logo a { border: none; color: inherit; }
-	
+
 	#main-account-details { float: right; margin: 0; background: rgba(0,0,0,.5); padding: 6px; }
 		#main-account-details li {
 			float: left; margin: 0; list-style: none; font: 11px/1em Helvetica, sans-serif;
@@ -65,9 +65,9 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			border-left: 1px solid rgb(216,208,198);
 			color: rgb(83,55,27);
 		}
-	
-	
-	
+
+
+
 	#sort-alphabet { width: 340px; float: left; margin: 0 10px; }
 		#sort-alphabet .title, #sort-alphabet-nav {
 			margin: 0;
@@ -100,13 +100,13 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 				border-right: none;
 				color: rgb(95,83,67);
 			}
-			
+
 #content { 	float: left; margin: 0 10px 20px 10px; width: 640px; }
 	body.page-view #content, body.search-view #content { width: 700px; }
-	
+
 #rail { margin: 0 10px; float: left; width: 280px; }
 	body.page-view #rail, body.search-view #rail { width: 220px; }
-	
+
 	/* COMMON BOOK STYLES */
 	.book-sidebar { float: left; margin-right: 20px; }
 		.book-sidebar .cover { margin-bottom: 18px; }
@@ -124,7 +124,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		height: 13px;
 		background: url(/images/icon-edit.png) no-repeat 0 50%;
 	}
-	
+
 	.book .cover { position: relative; }
 	.book .cover a { border: none; }
 	.byline { margin: 0 0 20px 0; overflow: hidden; }
@@ -158,6 +158,31 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	}
 	.page-view .formats li.pdf { background-image: url(/images/icon-pdf.png); }
 
+		/* TAGHANDLER */
+		.tagHandler { position: relative; }
+		#book-tags { overflow: hidden; }
+			#book-tags li {
+				float: left; margin: 0 5px 5px 0; list-style: none; cursor: pointer;
+				color: rgb(83,55,27); border-bottom: 1px dotted rgba(83,55,27,.2);
+			}
+			#book-tags li.tagInput, #book-tags li.tagInput:hover { border: none; }
+			#book-tags li.tagInput { clear: both; margin: 18px 0 0 0; }
+			#book-tags li.tagInput input {
+				width: 150px;
+				border: 1px solid #BBB; color: #333; padding: 3px 4px; margin-left: 10px;
+				background: transparent url(/images/icon-edit.png) no-repeat 98% 50%;
+			}
+			#book-tags li:hover { border-bottom: 1px solid #333; }
+			#book-tags li:after { content: ','; }
+			#book-tags li.tagInput:before { content: 'Add a Tag: '; }
+			#book-tags li.tagInput:after { content: ''; }
+			#book-tags_loader {
+				position: absolute; bottom: 3px; left: 230px;
+			    background: url('/images/taghandler/loader.gif') center center no-repeat;
+			    width: 16px; height: 18px;
+				display: none;
+			}
+
 
 	/* SEARCH PAGE LAYOUT */
 	.search-view .book { border-bottom: 1px solid rgb(226,214,198); overflow: hidden; }
@@ -165,7 +190,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	.search-view .book-sidebar { width: 110px; margin: 20px; }
 	.search-view .book-summary { width: 530px; float: left; margin: 20px 20px 20px 0; }
 	.search-view .book:nth-child(odd) { background-color: rgba(172,157,142,.1); }
-	
+
 	/* ADD BOOK PAGE */
 	.add-view #content { float: right;  }
 		.add-view label { font-size: 12px; line-height: 28px; }
@@ -175,9 +200,9 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 			margin: 0 4px 10px 0; padding: 3px 4px; background-color: transparent; width: 90%;
 			text-shadow: 0px 0px 1px #FFF;
 		}
-	
+
 	/* HOME PAGE LAYOUT */
-	.home .book { float: left; margin: 0 20px 20px 0; position: relative; }	
+	.home .book { float: left; margin: 0 20px 20px 0; position: relative; }
 		.home .book .cover .overlay {
 			background: transparent url(/images/book-crease.png) repeat-y 0 0;
 			height: 140px;
@@ -189,15 +214,15 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		}
 		.home .book .book-summary {
 			display: none;
-			
+
 			position: absolute;
-			top: 100px;
-			left: 20px;
+			bottom: 40px;
+			left: 80px;
 			z-index: 1;
 			width: 500px;
 			padding: 4px;
 			background: rgba(187,170,153,.75);
-			
+
 			border-radius: 10px;
 			-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.3);
 		}
@@ -210,10 +235,10 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 				-webkit-box-shadow: 0 0 3px rgba(0,0,0,.25);
 			}
 	#i-own-this {
-	    text-align: center; 
-	    padding-top: 15px; 
+	    text-align: center;
+	    padding-top: 15px;
 	    border-top: 1px dashed rgb(226,214,198);
-	}	
+	}
 	
 	/* USER DASHBOARD */
 	.current-checkouts { overflow: hidden; }
@@ -227,7 +252,7 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		.checkout-history li { float: left; margin: 0 20px 20px 0; list-style: none; }
 			.checkout-history a { border: none; }
 
-	
+
 .section-title {
 	background: url(/images/bg-diagLines.png);
 	padding: 10px 10px 0 10px;
@@ -251,7 +276,7 @@ input.submit-large {
 	font: 14px/14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: bold;
 	border: 1px solid #0DA40D;
-	
+
 	border-bottom-color: #036E03;
 	text-shadow: 0px 1px 0px #056905;
 	background-color: #0DA40D; /* fallback color */
@@ -264,7 +289,7 @@ input.submit-large {
 	-webkit-border-radius: 3px;
 		-moz-border-radius: 3px;
 		border-radius: 3px;
-	
+
 }
 	input.submit-large:hover {
 		background-color: #088508; /* fallback color */

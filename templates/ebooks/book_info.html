@@ -4,7 +4,7 @@
 
 {% block extra_javascript %}
 	<script src="/javascript/librarian.js"></script>
-	<link rel="stylesheet" type="text/css" href="/css/jquery.taghandler.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="/css/jquery.taghandler.css" /> -->
 	<script src="/javascript/jquery.taghandler.js"></script>
 	<script type="text/javascript" src="http://dev.jquery.com/view/trunk/plugins/autocomplete/jquery.autocomplete.js"></script>
 {% endblock %}
@@ -111,20 +111,20 @@
 
 
             <ul id="book-tags"></ul>
-            <script>
-           $("#book-tags").tagHandler({
-               assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
-			   autocomplete: true,
-               autoUpdate: true,
-               updateURL: '/books/api/update_tag/',
-               updateData: {book_id: "{{book.pk}}"},
-               {% ifequal user.groups.all.0.name|lower "librarian" %}
-			    allowEdit: true
-			    {% else %}
-			    allowEdit: false
-			    {% endifequal %}
-           });
-           </script>
+			<script>
+			$("#book-tags").tagHandler({
+				assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
+				autocomplete: true,
+				autoUpdate: true,
+				updateURL: '/books/api/update_tag/',
+				updateData: {book_id: "{{book.pk}}"},
+				{% ifequal user.groups.all.0.name|lower "librarian" %}
+				allowEdit: true
+				{% else %}
+				allowEdit: false
+				{% endifequal %}
+			});
+			</script>
 		</div>
 	{% endif %}
 {% endblock %}
