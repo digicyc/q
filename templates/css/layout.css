@@ -157,7 +157,35 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 		display: block;
 	}
 	.page-view .formats li.pdf { background-image: url(/images/icon-pdf.png); }
-
+	
+		/* COMMENTS */
+		#discussion-list > ul { margin: -20px 0 20px 0 !important; }
+			#discussion-list li { margin: 0; list-style: none;  }
+			#discussion-list ul { margin-left: 40px; }
+			#discussion-list .comment {
+				padding: 20px;
+				border-bottom: 1px solid rgba(83,55,27,.05);
+				position: relative;
+			}
+				#discussion-list .gravatar {
+					position: absolute; top: 20px; left: 0; line-height: 0;
+					background: rgb(255,255,255); padding: 3px; border: 1px dotted rgba(83,55,27,.2);
+				}
+				#discussion-list .comment-body { margin: 0 0 18px 40px; }
+					#discussion-list .thread-reply-btn {
+						display: block; float: right; clear: left; margin: 36px 0 10px 20px;
+						font: 10px/1em 'Helvetica Neue', Helvetica, Arial, sans-serif;
+					}
+		#form_withparent { margin: 40px 0 60px 0; }
+			#form_withparent .comment-form { border-top: none; margin-top: none; }
+		.comment-form { clear: both; border-top: 1px dotted rgba(83,55,27,.2); margin-top: 20px; padding-top: 20px; }
+			.comment-form h3 { margin: 0; }
+			.comment-form textarea {
+				border: 1px solid #BBB; color: #333; display: block;
+				font: 12px/18px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+				width: 99%; height: 100px;
+			}
+		
 		/* TAGHANDLER */
 		.tagHandler { position: relative; }
 		#book-tags { overflow: hidden; }
