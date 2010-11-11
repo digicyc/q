@@ -104,13 +104,13 @@
 
 			<h2 class="sub-title">Description:</h2>
 			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
-
-			<h2 class="sub-title">Discussion:</h2>
-		
 			
-            {% get_comment_list for book as comment_list %}
-            {% for comment in comment_list|fill_tree|annotate_tree %}
-
+			<h2 class="sub-title">Discussion:</h2>
+			
+			{% get_comment_list for book as comment_list %}
+  			<div id="discussion-list">
+          {% for comment in comment_list|fill_tree|annotate_tree %}
+			
                 {% ifchanged comment.parent_id %}{% else %}
                 </li>
                 {% endifchanged %}
@@ -120,51 +120,62 @@
                 {% endif %}
 
                 {% if comment.open %}
-                <ul>
+					<ul>
                 {% endif %}
 
                 <li{% if comment.last %} class="last"{% endif %}>
-                {% gravatar comment.user 35 %}
-                 {{ comment.comment }}
-                 <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a><br>
-                 <div id="reply-{{comment.pk}}"></div>
+				<div class="comment">
+					<div class="gravatar">{% gravatar comment.user 35 %}</div>
+					<p class="comment-body">
+		                {{ comment.comment }}
+					    <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
+		            </p>
+	
+					<div id="reply-{{comment.pk}}"></div>
+				</div><!-- /.comment -->
+                
                 {% if comment.added_path %} ADDED {% endif %}
 
                 {% for close in comment.close %}
+				
                 </li>
                 </ul>
                 {% endfor %}
-
             {% endfor %}
-            
-            	<!--- COMMENT FORM -->
-	            <div id="form_withparent" >
-                            <form method="post" action="/comments/post/">
-                                {% get_comment_form for book as form %}
-                                {% for field in form %}
-                                    {% if field.is_hidden %}
-                                        {{ field }}
-                                    {% else %}
-                                        {% ifnotequal field.name "comment" %}
-                                        <input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
-                                        {% else %}
-                                        <textarea name="{{field.html_name}}"></textarea>
-                                        {% endifnotequal %}
+			</div><!-- /!discussion-list -->
+			<!--- COMMENT FORM -->
+			<div id="form_withparent" >
+				<form method="post" action="/comments/post/" class="comment-form">
+				<h3>Leave a Comment</h3>
+				<hr />
+				{% get_comment_form for book as form %}
+				{% for field in form %}
+					{% if field.is_hidden %}
+						{{ field }}
+					{% else %}
+					{% ifnotequal field.name "comment" %}
+					
+						<input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
+					{% else %}
+					<p><textarea name="{{field.html_name}}"></textarea></p>
+						
+					{% endifnotequal %}
 
-                                    {% endif %}
-                                {% endfor %}
-                                {% csrf_token %}
-                                <input type="hidden" name="next" value="{{ request.path }}" />
-                                <input type="submit" name="post" value="Ответить!" />
-                            </form>
-                        </div>
-            	<!---#END COMMENT FORM -->
-            
+					{% endif %}
+				{% endfor %}
+					{% csrf_token %}
+					<input type="hidden" name="next" value="{{ request.path }}" />
+					<p><input type="submit" name="post" value="Ответить!" class="submit-large" /></p>
+				</form>
+			</div>
+			<!---#END COMMENT FORM -->
+
+
+           
 			<h2 class="sub-title">Tags:</h2>
             {% tags_for_object book as tags %}
 
-
-            <ul id="book-tags"></ul>
+           <ul id="book-tags"></ul>
 			<script>
 			$("#book-tags").tagHandler({
 				assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
@@ -181,10 +192,6 @@
 			</script>
 		</div>
 	{% endif %}
-	
-
-	
-
 
 {% endblock %}
 
