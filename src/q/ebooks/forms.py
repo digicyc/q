@@ -1,5 +1,5 @@
 from django import forms
-from q.ebooks.models import Book
+from q.ebooks.models import Book, Format
 
 class CheckOutForm(forms.Form):
 
@@ -25,3 +25,5 @@ class BookForm(forms.Form):
     #cover = forms.ImageField(label="Cover", required=False)
     metarating = forms.FloatField(label="metarating", widget=forms.HiddenInput, initial="0.0")
 
+class UploadFormatForm(forms.Form):
+    book = forms.FileField(label="")

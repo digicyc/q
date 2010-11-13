@@ -1,4 +1,5 @@
 import os
+import os.path
 import urllib2
 from tempfile import NamedTemporaryFile
 from base64 import b64decode
@@ -74,15 +75,58 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     ctx = {}
 
     book_slug = kwargs.get('book_slug')
+
     book = get_object_or_404(models.Book, slug=book_slug)
+
+    error = None
+    if request.FILES.has_key("book"):
+        # We are getting a book uploaded
+        filename = request.FILES["book"].name
+        ext = os.path.splitext(filename)[1].replace('.','')
+        if (ext, ext) not in models.FORMAT_CHOICES:
+            error = "invalid filetype: %s" % filename
+
+        if not error:
+            try:
+                format = models.Format.objects.get(ebook=book, format=ext)
+                error = "Format exists: %s" % format.format
+
+            except models.Format.DoesNotExist, e:
+                format = models.Format()
+                format.ebook = book
+                format.format = ext
+
+                f = NamedTemporaryFile(delete=False)
+                f.write(request.FILES["book"].read())
+                f.filename = filename
+                f.close()
+
+                format.ebook_file.save(
+                    "temp_filename.%s" % ext,
+                    File(open(f.name))
+                )
+
+                format.save()
+                os.unlink(f.name)
+
+
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
+    format_form = forms.UploadFormatForm()
 
     try:
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
     except models.Ownership.DoesNotExist, e:
         my_ownership = None
 
-    ctx.update({ 'book': book, 'checkouts':checkouts, 'my_ownership': my_ownership })
+    ctx.update(
+        {
+            'book': book,
+            'checkouts':checkouts,
+            'my_ownership': my_ownership,
+            'format_form': format_form,
+            'error': error,
+        }
+    )
 
     return render_to_response(template_name, RequestContext(request, ctx))
 

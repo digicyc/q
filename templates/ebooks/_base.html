@@ -22,7 +22,9 @@
 
 				<ul id="main-account-details">
 					<li>logged in as: <a href="{% url view_user user.username %}">{{ user }}</a></li>
+                    {% if request.user.get_profile.is_librarian %}
                     <li><a href="{% url add_book %}">add book</a></li>
+                    {% endif %}
 					<li><a href="{% url logout %}">logout</a></li>
 				</ul>
 			</div>
