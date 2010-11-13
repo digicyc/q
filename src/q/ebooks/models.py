@@ -207,6 +207,7 @@ class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
     ebook_file = models.FileField(upload_to=book_save)
+    uploaded_by = models.ForeignKey(User)
 
     class Meta:
         unique_together = (('ebook', 'format'),)

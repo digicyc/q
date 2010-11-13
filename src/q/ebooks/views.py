@@ -95,6 +95,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
                 format = models.Format()
                 format.ebook = book
                 format.format = ext
+                format.uploaded_by = request.user
 
                 f = NamedTemporaryFile(delete=False)
                 f.write(request.FILES["book"].read())
