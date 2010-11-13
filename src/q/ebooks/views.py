@@ -56,6 +56,16 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
 
+def books_by_series(request, template_name="ebooks/search.html",  *args, **kwargs):
+    ctx = {}
+
+    slug = kwargs.get('series_slug').lower()
+
+    series = models.Series.objects.filter(slug__exact=slug)
+    books = models.Book.objects.filter(series=series).order_by('series_num')
+
+    ctx.update({ 'books': books })
+    return render_to_response(template_name, RequestContext(request, ctx))
 
 def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     """
@@ -152,7 +162,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         for gauthor in request.POST['authors'].split(','):
             try:
                 author = models.Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
-            except Author.DoesNotExist, e:
+            except models.Author.DoesNotExist, e:
                 author = models.Author()
                 author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
                 author.lastname = gauthor.split(" ")[-1]
@@ -173,6 +183,18 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
             )
 
             os.unlink(f.name)
+
+        if request.POST["series"] != "":
+            series_name = request.POST["series"]
+            series_num = request.POST["series_num"]
+            try:
+                series = models.Series.objects.get(name__exact=series_name)
+            except models.Series.DoesNotExist, e:
+                series = models.Series()
+                series.name = series_name
+                series.save()
+            book.series = series
+            book.series_num = series_num
         book.save()
 
         return HttpResponseRedirect(reverse(book_info, kwargs={'book_slug': book.slug}))

@@ -99,10 +99,10 @@
 		</div>
 
 		<div class="book-main">
-			{% comment %}
-			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
+            {% if book.series %}
+			<p class="series-info"><a href="{% url books_by_series book.series.slug %}">{{ book.series.name }}</a> - Book {{ book.series_num }}</p>
 			<hr />
-			{% endcomment %}
+            {% endif %}
 	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
 			<ul class="byline">
 				<li class="title">written by:</li>

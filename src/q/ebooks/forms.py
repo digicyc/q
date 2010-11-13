@@ -17,6 +17,8 @@ class CheckOutForm(forms.Form):
 class BookForm(forms.Form):
     title = forms.CharField(required=True, label="Title", max_length=100)
     authors = forms.CharField(required=True, label="Author(s)")
+    series = forms.CharField(max_length=100, label="Series", required=False)
+    series_num = forms.IntegerField(label="Series Number", required=False)
     tags = forms.CharField(label="Tags", required=False)
     isbn10 = forms.CharField(max_length=20, label="ISBN10")
     isbn13 = forms.CharField(max_length=20, label="ISBN13")
