@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from q.ebooks.models import FORMAT_CHOICES, Book
+from django.db.models import Count
+
+from q.ebooks.models import FORMAT_CHOICES, Book, Format
 
 class UserProfile(models.Model):
     """
@@ -12,6 +14,10 @@ class UserProfile(models.Model):
     def _get_librarian(self):
         return bool(self.user.groups.filter(name='Librarian'))
     is_librarian = property(_get_librarian)
+
+    def _get_num_uploaded_books(self):
+        return Format.objects.filter(uploaded_by__exact=self.user).values('ebook').distinct().count()
+    uploaded_books_count = property(_get_num_uploaded_books)
 
     def __str__(self):
         return "<UserProfile: %s>" % self.user

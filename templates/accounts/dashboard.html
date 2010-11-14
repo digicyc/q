@@ -11,6 +11,7 @@
         {% else %}
         <h1>{{ view_user.username }}</h1>
         {% endif %}
+        books uploaded: {{ view_user.get_profile.uploaded_books_count }}
     </div>
     <div class="book-main">
 
