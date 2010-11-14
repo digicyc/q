@@ -37,7 +37,7 @@ class SeriesAdmin(admin.ModelAdmin):
         verbose_name_plural = "Series"
 
 class CheckOutAdmin(admin.ModelAdmin):
-    list_display = ['user', 'book', 'create_time']
+    list_display = ['user', 'book', 'create_time', 'notes']
 
 class OwnershipAdmin(admin.ModelAdmin):
     list_display = ['user', 'book']

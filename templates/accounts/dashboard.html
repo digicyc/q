@@ -6,7 +6,11 @@
 {% block content %}
     <div class="book-sidebar">
 		{% gravatar view_user 160 %}
+        {% if view_user.firstname %}
         <h1>{{ view_user.first_name }}</h1>
+        {% else %}
+        <h1>{{ view_user.username }}</h1>
+        {% endif %}
     </div>
     <div class="book-main">
 
@@ -29,10 +33,10 @@
 					{% endif %}
 						</a>
 					</figure>
-					
+
 					<div class="book-summary">
 						<h3>{{ checkout.book.book.title }}</h3>
-						
+
 						<ul class="byline">
 							<li class="title">written by:</li>
 			                {% for author in checkout.book.book.authors.all %}
@@ -40,7 +44,7 @@
 			                {% endfor %}
 						</ul>
 						<hr />
-						
+
 						<p>This copy belongs to <a href="{% url view_user checkout.book.user %}">{{ checkout.book.user }}</a></p>
 					</div>
 				</li>
@@ -49,7 +53,7 @@
 		{% else %}
 			<p>{{ view_user.username }} has no books currently checked out.</p>
         {% endif %}
-		
+
 		<h2 class="section-title">Checkout History</h2>
         {% if checkout_history %}
 			<ul class="checkout-history">

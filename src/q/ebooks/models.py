@@ -254,6 +254,7 @@ class CheckOut(models.Model):
     book = models.ForeignKey(Ownership, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     check_in_time = models.DateTimeField(default=None, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = (("user", "book"))
