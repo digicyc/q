@@ -48,10 +48,10 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
 
     if filter_type == "author":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(authors__lastname__istartswith=letter).distinct().order_by('authors__lastname', 'authors__firstname')
+        books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
     elif filter_type == "title":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(title__istartswith=letter).distinct().order_by('title', 'authors__lastname', 'authors__firstname')
+        books = models.Book.objects.filter(title__istartswith=letter).order_by('title')
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
