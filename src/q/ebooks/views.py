@@ -267,6 +267,7 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
                     checkout = models.CheckOut()
                     checkout.user = User.objects.get(id=recipient_id)
                     checkout.book = ownership
+                    checkout.notes = request.POST['notes']
                     checkout.save()
                     ownership.checked_out = checkout
                     ownership.save()

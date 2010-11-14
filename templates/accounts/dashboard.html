@@ -44,8 +44,8 @@
 			                {% endfor %}
 						</ul>
 						<hr />
-
 						<p>This copy belongs to <a href="{% url view_user checkout.book.user %}">{{ checkout.book.user }}</a></p>
+                        <p>Notes: {{ checkout.notes }}</p>
 					</div>
 				</li>
 				{% endfor %}
