@@ -6,19 +6,19 @@ from base64 import b64decode
 from datetime import datetime
 
 from django.core.files import File
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from django.conf import settings
 
 from tagging.models import Tag, TaggedItem
 
 from q.common import admin_keyword_search
-
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 from q.ebooks import forms
@@ -51,7 +51,9 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
         books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
     elif filter_type == "title":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(title__istartswith=letter).order_by('title')
+        books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
+            extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
+            order_by('order_title')
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
