@@ -27,7 +27,14 @@ def view_user(request, template_name="accounts/dashboard.html",  *args, **kwargs
     can_edit = False
     username = kwargs.get('username').lower()
     view_user = get_object_or_404(User,username=username)
-
+    
+    #create profile
+    try:
+        profile = view_user.get_profile()
+    except ObjectDoesNotExist:
+        profile = models.UserProfile(kindle_email='', user=user)
+        profile.save()
+        
     current_checkouts = CheckOut.objects.filter(user=view_user).filter(check_in_time=None)
     checkout_history = CheckOut.objects.filter(user=view_user).order_by('-create_time')[:10]
     books_owned = Ownership.objects.filter(user=view_user)
@@ -74,6 +81,48 @@ def login(request, template_name="accounts/login.html"):
     ctx.update({'form':form, 'messages':messages})
     return render_to_response(template_name, RequestContext(request, ctx))
 
+
+def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kwargs):
+    ctx ={}
+    
+    username = kwargs.get('username').lower()
+    user = get_object_or_404(User, username=username)
+    profile = user.get_profile()
+    
+    if request.method == 'POST':
+        form = forms.EditProfileForm(request.POST)
+        if form.is_valid():
+
+            if user.first_name != form.cleaned_data['first_name']:
+                user.first_name = form.cleaned_data['first_name']
+            
+            if user.last_name != form.cleaned_data['last_name']:    
+                user.last_name = form.cleaned_data['last_name']
+            
+            if user.email != form.cleaned_data['email']:     
+                user.email = form.cleaned_data['email']
+            
+            if user.username != form.cleaned_data['username']:    
+                user.username = form.cleaned_data['username']
+            
+            if profile.kindle_email != form.cleaned_data['kindle_email']:    
+                profile.kindle_email = form.cleaned_data['kindle_email']
+                
+            user.save()
+            profile.save()
+            
+            return HttpResponseRedirect(reverse("edit_profile", kwargs={'username': user.username}))
+
+    else:
+        form = forms.EditProfileForm(initial={'first_name': user.first_name, 
+                                              'last_name': user.last_name,
+                                              'username': user.username, 
+                                              'email':user.email,
+                                              'kindle_email':profile.kindle_email,
+                                              })
+            
+    ctx.update({'form':form})
+    return render_to_response(template_name, RequestContext(request, ctx))
 
 def logout(request):
 
