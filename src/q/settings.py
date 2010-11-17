@@ -72,6 +72,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.request',
+    'q.processors.book_count_insert',
 )
 
 DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"

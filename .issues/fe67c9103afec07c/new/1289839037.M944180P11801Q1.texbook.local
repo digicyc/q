@@ -1,0 +1,8 @@
+From: Jason <jason@zzq.org>
+Date: Mon, 15 Nov 2010 09:36:37 -0700
+State: resolved
+Subject: ignore 'The' when browsing by title
+Message-Id: <fe67c9103afec07c-0-artemis@texbook.local>
+resolution: fixed
+
+Right now if you wanted to view books that start with The you have to go to T. This doesn't make much sense in a library setting.

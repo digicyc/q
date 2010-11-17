@@ -23,6 +23,15 @@
 				<div class="overlay"></div>
 			</figure>
 
+            {% if request.user.get_profile.is_librarian %}
+                {% if error %}
+                    {{ error }}
+                {% endif %}
+                <form method="post" enctype="multipart/form-data">
+                {{ format_form.as_p }}
+                <input type="submit">
+                </form>
+            {% endif %}
 
             {% if book.formats|length > 0 %}
 			<h2 class="section-title">Formats</h2>
@@ -90,10 +99,10 @@
 		</div>
 
 		<div class="book-main">
-			{% comment %}
-			<p class="series-info"><a href="">Series Title:</a> Book 3</p>
+            {% if book.series %}
+			<p class="series-info"><a href="{% url books_by_series book.series.slug %}">{{ book.series.name }}</a> - Book {{ book.series_num }}</p>
 			<hr />
-			{% endcomment %}
+            {% endif %}
 	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
 			<ul class="byline">
 				<li class="title">written by:</li>
@@ -104,13 +113,13 @@
 
 			<h2 class="sub-title">Description:</h2>
 			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
-			
+
 			<h2 class="sub-title">Discussion:</h2>
-			
+
 			{% get_comment_list for book as comment_list %}
   			<div id="discussion-list">
           {% for comment in comment_list|fill_tree|annotate_tree %}
-			
+
                 {% ifchanged comment.parent_id %}{% else %}
                 </li>
                 {% endifchanged %}
@@ -130,14 +139,14 @@
 		                {{ comment.comment }}
 					    <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
 		            </p>
-	
+
 					<div id="reply-{{comment.pk}}"></div>
 				</div><!-- /.comment -->
-                
+
                 {% if comment.added_path %} ADDED {% endif %}
 
                 {% for close in comment.close %}
-				
+
                 </li>
                 </ul>
                 {% endfor %}
@@ -154,11 +163,11 @@
 						{{ field }}
 					{% else %}
 					{% ifnotequal field.name "comment" %}
-					
+
 						<input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
 					{% else %}
 					<p><textarea name="{{field.html_name}}"></textarea></p>
-						
+
 					{% endifnotequal %}
 
 					{% endif %}
@@ -171,7 +180,7 @@
 			<!---#END COMMENT FORM -->
 
 
-           
+
 			<h2 class="sub-title">Tags:</h2>
             {% tags_for_object book as tags %}
 

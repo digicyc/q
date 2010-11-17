@@ -13,7 +13,7 @@
 	    <form action="" method="POST">
 		<p>
 	    {% if ownership.checked_out == None %}
-	        {{ checkout_form }}
+	        {{ checkout_form.as_p }}
 	        <input type="submit" name="submit" value="Checkout" />
 	    {% endif %}
 

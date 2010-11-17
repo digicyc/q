@@ -1,6 +1,5 @@
 import os
 import os.path
-import random
 from hashlib import sha256 as sha
 
 from tagging.fields import TagField
@@ -73,6 +72,22 @@ class Ownership(models.Model):
             self.key = sha(self.user.username+self.book.title).hexdigest()[:30]
         super(Ownership, self).save()
 
+class Series(models.Model):
+    name = models.CharField(db_index=True, max_length=100)
+    slug = models.SlugField(max_length=100, blank=True, db_index=True)
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.__str__()
+
+    def save(self, *args, **kwargs):
+        if self.slug == "":
+            self.slug = slugify(self.name)
+
+        super(Series, self).save(*args, **kwargs)
+
 
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
@@ -91,8 +106,8 @@ class Book(models.Model):
     cover = models.ImageField(upload_to=cover_save, blank=True)
     thumbnail = models.ImageField(upload_to=thumb_save, blank=True)
     slug = models.SlugField(max_length=255, blank=True, db_index=True)
-    #is_physical = models.BooleanField(default=False)
-    #is_ebook = models.BooleanField(default=False)
+    series = models.ForeignKey(Series, blank=True, null=True, default=None)
+    series_num = models.IntegerField(blank=True, null=True, default=None)
 
     def _get_is_physical(self):
         if len(self.owners) > 0:
@@ -208,13 +223,14 @@ class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
     ebook_file = models.FileField(upload_to=book_save)
+    uploaded_by = models.ForeignKey(User)
 
     class Meta:
         unique_together = (('ebook', 'format'),)
 
     def __str__(self):
         return "%s" % (self.format)
-    
+
     def download_key(self):
         import base64
         return base64.b64encode('%s::%s::%s'% (self.ebook_file.url, self.ebook.pk, self.format))
@@ -238,6 +254,7 @@ class CheckOut(models.Model):
     book = models.ForeignKey(Ownership, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
     check_in_time = models.DateTimeField(default=None, null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
 
     class Meta:
         unique_together = (("user", "book"))

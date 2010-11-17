@@ -1,23 +1,24 @@
 import os
+import os.path
 import urllib2
 from tempfile import NamedTemporaryFile
 from base64 import b64decode
 from datetime import datetime
 
 from django.core.files import File
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 
 from django.conf import settings
 
 from tagging.models import Tag, TaggedItem
 
 from q.common import admin_keyword_search
-
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 from q.ebooks import forms
@@ -47,14 +48,26 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
 
     if filter_type == "author":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(authors__lastname__istartswith=letter).distinct().order_by('authors__lastname', 'authors__firstname')
+        books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
     elif filter_type == "title":
         letter = kwargs.get('letter')
-        books = models.Book.objects.filter(title__istartswith=letter).distinct().order_by('title', 'authors__lastname', 'authors__firstname')
+        books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
+            extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
+            order_by('order_title')
 
     ctx.update({ 'books': books })
     return render_to_response(template_name, RequestContext(request, ctx))
 
+def books_by_series(request, template_name="ebooks/search.html",  *args, **kwargs):
+    ctx = {}
+
+    slug = kwargs.get('series_slug').lower()
+
+    series = models.Series.objects.filter(slug__exact=slug)
+    books = models.Book.objects.filter(series=series).order_by('series_num')
+
+    ctx.update({ 'books': books })
+    return render_to_response(template_name, RequestContext(request, ctx))
 
 def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     """
@@ -74,15 +87,59 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
     ctx = {}
 
     book_slug = kwargs.get('book_slug')
+
     book = get_object_or_404(models.Book, slug=book_slug)
+
+    error = None
+    if request.FILES.has_key("book"):
+        # We are getting a book uploaded
+        filename = request.FILES["book"].name
+        ext = os.path.splitext(filename)[1].replace('.','')
+        if (ext, ext) not in models.FORMAT_CHOICES:
+            error = "invalid filetype: %s" % filename
+
+        if not error:
+            try:
+                format = models.Format.objects.get(ebook=book, format=ext)
+                error = "Format exists: %s" % format.format
+
+            except models.Format.DoesNotExist, e:
+                format = models.Format()
+                format.ebook = book
+                format.format = ext
+                format.uploaded_by = request.user
+
+                f = NamedTemporaryFile(delete=False)
+                f.write(request.FILES["book"].read())
+                f.filename = filename
+                f.close()
+
+                format.ebook_file.save(
+                    "temp_filename.%s" % ext,
+                    File(open(f.name))
+                )
+
+                format.save()
+                os.unlink(f.name)
+
+
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
+    format_form = forms.UploadFormatForm()
 
     try:
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
     except models.Ownership.DoesNotExist, e:
         my_ownership = None
 
-    ctx.update({ 'book': book, 'checkouts':checkouts, 'my_ownership': my_ownership })
+    ctx.update(
+        {
+            'book': book,
+            'checkouts':checkouts,
+            'my_ownership': my_ownership,
+            'format_form': format_form,
+            'error': error,
+        }
+    )
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
@@ -107,7 +164,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         for gauthor in request.POST['authors'].split(','):
             try:
                 author = models.Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
-            except Author.DoesNotExist, e:
+            except models.Author.DoesNotExist, e:
                 author = models.Author()
                 author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
                 author.lastname = gauthor.split(" ")[-1]
@@ -128,6 +185,18 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
             )
 
             os.unlink(f.name)
+
+        if request.POST["series"] != "":
+            series_name = request.POST["series"]
+            series_num = request.POST["series_num"]
+            try:
+                series = models.Series.objects.get(name__exact=series_name)
+            except models.Series.DoesNotExist, e:
+                series = models.Series()
+                series.name = series_name
+                series.save()
+            book.series = series
+            book.series_num = series_num
         book.save()
 
         return HttpResponseRedirect(reverse(book_info, kwargs={'book_slug': book.slug}))
@@ -200,6 +269,7 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
                     checkout = models.CheckOut()
                     checkout.user = User.objects.get(id=recipient_id)
                     checkout.book = ownership
+                    checkout.notes = request.POST['notes']
                     checkout.save()
                     ownership.checked_out = checkout
                     ownership.save()

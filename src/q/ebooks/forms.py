@@ -1,9 +1,10 @@
 from django import forms
-from q.ebooks.models import Book
+from q.ebooks.models import Book, Format
 
 class CheckOutForm(forms.Form):
 
     to_who = forms.ChoiceField(required=True, label='Checkout To')
+    notes = forms.CharField(label="Notes", widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
         if kwargs.has_key('users'):
@@ -17,6 +18,8 @@ class CheckOutForm(forms.Form):
 class BookForm(forms.Form):
     title = forms.CharField(required=True, label="Title", max_length=100)
     authors = forms.CharField(required=True, label="Author(s)")
+    series = forms.CharField(max_length=100, label="Series", required=False)
+    series_num = forms.IntegerField(label="Series Number", required=False)
     tags = forms.CharField(label="Tags", required=False)
     isbn10 = forms.CharField(max_length=20, label="ISBN10")
     isbn13 = forms.CharField(max_length=20, label="ISBN13")
@@ -25,3 +28,5 @@ class BookForm(forms.Form):
     #cover = forms.ImageField(label="Cover", required=False)
     metarating = forms.FloatField(label="metarating", widget=forms.HiddenInput, initial="0.0")
 
+class UploadFormatForm(forms.Form):
+    book = forms.FileField(label="")

@@ -32,8 +32,12 @@ class AuthorAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     pass
 
+class SeriesAdmin(admin.ModelAdmin):
+    class Meta:
+        verbose_name_plural = "Series"
+
 class CheckOutAdmin(admin.ModelAdmin):
-    list_display = ['user', 'book', 'create_time']
+    list_display = ['user', 'book', 'create_time', 'notes']
 
 class OwnershipAdmin(admin.ModelAdmin):
     list_display = ['user', 'book']
@@ -51,6 +55,7 @@ class OwnershipAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Book, BookAdmin)
+admin.site.register(models.Series, SeriesAdmin)
 admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)
 
