@@ -57,12 +57,12 @@ var QKinderHook = function(){ this.init.apply(this, arguments); }
             var send_data = {'book_id':book_id}
             $.getJSON('/books/api/i_own_this_book/', send_data, function(data){
                html_out = "";
-           
+                console.debug(data)
                if(data['ownership'])
                {
                    //qr.
                    html_out += '<h2 class="section-title">My QR Code</h2>';
-                   html_out += '<div class="qr-code"><p><a href="/books/checkout/'+data['key']+'">';
+                   html_out += '<div class="qr-code"><p><a href="/books/checkout/'+data['ownership']['key']+'">';
                    html_out += '<img src="'+data['ownership']['qr_code']+'" />';
                    html_out += '</a></p></div>';
                    html_out += '<div id="i-own-this" style="text-align: right; padding: 7px">';
