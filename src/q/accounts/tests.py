@@ -17,11 +17,8 @@ class AccountsTest(TestCase):
         user = User.objects.create_user('zholmquist', 'zholmquist@gmail.com', 'kinderhook')
         user.save()
         
-        try:
-            profile = view_user.get_profile()
-        except:
-            profile = models.UserProfile(kindle_email='', user=user)
-            profile.save()
+        user2 = User.objects.create_user('com4', 'pinkponies@gmail.com', 'kinderhook')
+        user2.save()
     
     def test_edit_profile(self):  
         #login 
@@ -31,11 +28,25 @@ class AccountsTest(TestCase):
         response = self.client.get(reverse("edit_profile", kwargs={'username': 'zholmquist'}))
         self.assertEqual(response.status_code, 200)
         
+    def test_can_only_edit_personal_account(self):
+        #login as zholmquist
+        self.client.login(username='zholmquist', password='kinderhook')  
+        
+        #get to jasons edit_profile ( should redirect )
+        response = self.client.get( reverse("edit_profile", kwargs={'username': 'com4'}) )
+        self.assertRedirects(response, reverse("view_user", kwargs={'username': 'com4'}))
+        
+        #get my own edit_profile ( should load )
+        response = self.client.get( reverse("edit_profile", kwargs={'username': 'zholmquist'}) )
+        self.assertEqual(response.status_code, 200)
+        
     def test_edit_profile(self):
+        self.client.login(username='zholmquist', password='kinderhook')  
+    
         response = self.client.post(reverse("edit_profile", kwargs={'username': 'zholmquist'}), 
                             {'first_name': 'Zachary', 'last_name': "Mehquist", 'email':'zach@bleh.com',
                                 'username':'zach', 'kindle_email':'zach@neutroninteractive.com'})
-        
+
         #get new username.                    
         user = User.objects.get(username='zach')
         profile = user.get_profile()
@@ -46,3 +57,5 @@ class AccountsTest(TestCase):
         self.assertEqual(user.email, 'zach@bleh.com')
         self.assertEqual(user.username, 'zach')
         self.assertEqual(profile.kindle_email, 'zach@neutroninteractive.com')
+        
+        

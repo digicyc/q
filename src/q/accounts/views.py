@@ -9,7 +9,7 @@ from django.contrib.auth import (authenticate,
                                 login as auth_login,
                                 logout as auth_logout)
 
-from q.accounts import forms
+from q.accounts import forms, models
 from q.ebooks.models import CheckOut, Ownership
 
 def view_user_list(request, template_name="accounts/users_list.html"):
@@ -27,13 +27,6 @@ def view_user(request, template_name="accounts/dashboard.html",  *args, **kwargs
     can_edit = False
     username = kwargs.get('username').lower()
     view_user = get_object_or_404(User,username=username)
-    
-    #create profile
-    try:
-        profile = view_user.get_profile()
-    except ObjectDoesNotExist:
-        profile = models.UserProfile(kindle_email='', user=user)
-        profile.save()
         
     current_checkouts = CheckOut.objects.filter(user=view_user).filter(check_in_time=None)
     checkout_history = CheckOut.objects.filter(user=view_user).order_by('-create_time')[:10]
@@ -91,12 +84,20 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
         return HttpResponseRedirect(reverse("view_user", kwargs={'username': username}))
         
     user = get_object_or_404(User, username=username)
+    
+    
+    #create profile if needed
+    try:
+        profile = view_user.get_profile()
+    except:
+        profile = models.UserProfile(kindle_email='', user=user)
+        profile.save()
+    
     profile = user.get_profile()
     
     if request.method == 'POST':
         form = forms.EditProfileForm(request.POST)
         if form.is_valid():
-
             if user.first_name != form.cleaned_data['first_name']:
                 user.first_name = form.cleaned_data['first_name']
             
