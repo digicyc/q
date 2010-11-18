@@ -88,7 +88,7 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
     
     #create profile if needed
     try:
-        profile = view_user.get_profile()
+        profile = user.get_profile()
     except:
         profile = models.UserProfile(kindle_email='', user=user)
         profile.save()
