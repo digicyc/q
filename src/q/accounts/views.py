@@ -86,6 +86,10 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
     ctx ={}
     
     username = kwargs.get('username').lower()
+    
+    if username != request.user.username:
+        return HttpResponseRedirect(reverse("view_user", kwargs={'username': username}))
+        
     user = get_object_or_404(User, username=username)
     profile = user.get_profile()
     
@@ -121,7 +125,7 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
                                               'kindle_email':profile.kindle_email,
                                               })
             
-    ctx.update({'form':form})
+    ctx.update({'form':form, 'view_user':user})
     return render_to_response(template_name, RequestContext(request, ctx))
 
 def logout(request):

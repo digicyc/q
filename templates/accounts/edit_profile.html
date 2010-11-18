@@ -1,6 +1,24 @@
-<form action="" method="post">
-    <ul>
-        {{ form.as_ul }}
-        <li><input type="submit" /></li>
-    </ul>
-</form>
+{% extends 'ebooks/_base.html' %}
+{% load gravatar %}
+
+
+{% block content %}
+<div class="book-sidebar">
+		{% gravatar view_user 160 %}
+        {% if view_user.firstname %}
+        <h1>{{ view_user.first_name }}</h1>
+        {% else %}
+        <h1>{{ view_user.username }}</h1>
+        {% endif %}
+    </div>
+<div class="book-main">
+
+    <h2 class="section-title">Edit Your Profile</h2>
+    <form action="" method="post">
+        <ul>
+            {{ form.as_ul }}
+            <li><input type="submit" /></li>
+        </ul>
+    </form>
+    </div>
+{% endblock %}
