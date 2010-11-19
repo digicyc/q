@@ -27,12 +27,16 @@ def view_user(request, template_name="accounts/dashboard.html",  *args, **kwargs
     can_edit = False
     username = kwargs.get('username').lower()
     view_user = get_object_or_404(User,username=username)
+    
+    if username == request.user.username:
+        can_edit = True
         
     current_checkouts = CheckOut.objects.filter(user=view_user).filter(check_in_time=None)
     checkout_history = CheckOut.objects.filter(user=view_user).order_by('-create_time')[:10]
     books_owned = Ownership.objects.filter(user=view_user)
 
     ctx.update({'view_user': view_user,
+                'can_edit':can_edit,
                 'current_checkouts':current_checkouts,
                 'checkout_history':checkout_history,
                 'books_owned': books_owned,
