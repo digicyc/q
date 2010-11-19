@@ -18,17 +18,24 @@ from django.conf import settings
 
 from tagging.models import Tag, TaggedItem
 
+from activity_stream.models import create_activity_item
+from activity_stream.models import ActivityStreamItem
+
 from q.common import admin_keyword_search
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 from q.ebooks import forms
 from q.accounts.models import UserDownload
 
+
 @login_required
 def index(request, template_name="ebooks/index.html"):
     ctx = {}
     books = None
-
+    
+    activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False,
+						created_at__lte=datetime.now()).order_by('-created_at').distinct()[:10]
+    
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
         template_name = "ebooks/search.html"
         books = admin_keyword_search(models.Book,
@@ -37,7 +44,7 @@ def index(request, template_name="ebooks/index.html"):
     else:
         books = models.Book.objects.order_by("-create_time")[:15].distinct()
 
-    ctx.update({ 'books': books })
+    ctx.update({ 'books': books, 'activity_stream':activity_stream })
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
@@ -121,6 +128,9 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
 
                 format.save()
                 os.unlink(f.name)
+                
+                #activity stream
+                create_activity_item('upload', request.user, format)
 
 
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
@@ -263,7 +273,6 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
             if request.POST['submit'] == "Checkout":
                 checkout_form = forms.CheckOutForm(request.POST, users=users)
                 if checkout_form.is_valid():
-                    print "valid"
                     recipient_id = checkout_form.cleaned_data["to_who"]
 
                     checkout = models.CheckOut()
@@ -273,6 +282,10 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
                     checkout.save()
                     ownership.checked_out = checkout
                     ownership.save()
+                    
+                    #activity stream
+                    create_activity_item('checkout', checkout.user, ownership)
+                    
             if request.POST['submit'] == "Checkin":
                 checkout = ownership.checked_out
                 checkout.check_in_time = datetime.now()
@@ -280,7 +293,10 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
 
                 ownership.checked_out = None
                 ownership.save()
-
+                
+                #activity stream
+                create_activity_item('checkin', checkout.user, ownership)
+                
                 checkout_form = forms.CheckOutForm(users=users)
                 ctx['checkout_form'] = checkout_form
     else:
@@ -317,5 +333,8 @@ def download_format(request, *args, **kwargs):
     user_download.book =book
     user_download.format = book_format
     user_download.save()
+    
+    #activity stream
+    create_activity_item('download', request.user, user_download)
 
     return HttpResponseRedirect(download_url)

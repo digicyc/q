@@ -3,6 +3,8 @@ from django.contrib.comments.models import Comment
 from django.contrib.comments.managers import CommentManager
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import get_object_or_404
+from django.contrib.contenttypes.models import ContentType
 
 PATH_SEPARATOR = getattr(settings, 'COMMENT_PATH_SEPARATOR', '/')
 PATH_DIGITS = getattr(settings, 'COMMENT_PATH_DIGITS', 10)
@@ -48,6 +50,12 @@ class ThreadedComment(Comment):
         self.tree_path = tree_path
         ThreadedComment.objects.filter(pk=self.pk).update(
             tree_path=self.tree_path)
+            
+    def get_object_commented_on(self):
+        ct = get_object_or_404(ContentType, model=self.content_type)
+        obj = ct.get_object_for_this_type(pk=self.object_pk)
+        return obj
+    
 
     class Meta(object):
         ordering = ('tree_path',)

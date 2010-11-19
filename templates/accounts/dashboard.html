@@ -1,5 +1,6 @@
 {% extends 'ebooks/_base.html' %}
 {% load gravatar %}
+{% load activity_stream_tags %}
 
 {% block body_class %} class="page-view dashboard"{% endblock %}
 
@@ -9,7 +10,7 @@
         
 		{% gravatar view_user 160 %}
 		
-        {% if view_user.firstname %}
+        {% if view_user.first_name %}
         <h1>{{ view_user.first_name }}</h1>
         {% else %}
         <h1>{{ view_user.username }}</h1>
@@ -24,7 +25,10 @@
         
     </div>
     <div class="book-main">
-
+         <h2 class="section-title">Recent Activity</h2>
+         <ul id="activity-stream">
+        {% users_activity_stream view_user 5 %}
+        </ul>
         <h2 class="section-title">Books Checked Out</h2>
         {% if current_checkouts %}
 			<ul class="current-checkouts">

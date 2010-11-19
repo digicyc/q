@@ -262,6 +262,7 @@ class CheckOut(models.Model):
     def __str__(self):
         return "%s" % (self.user.username)
 
+
 #SOUTH RULES
 from south.modelsinspector import add_introspection_rules
 rules = [
