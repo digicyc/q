@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'q.accounts',
     'south',
     'tagging',
+    'activity_stream',
     'django.contrib.comments',
     'threadedcomments',
 )
