@@ -134,6 +134,9 @@ class Book(models.Model):
     def __str__(self):
         return "%s" % (self.title)
 
+    def __unicode__(self):
+        return self.title.encode('utf8')
+
     def _get_formats(self):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
