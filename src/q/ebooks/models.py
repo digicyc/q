@@ -156,7 +156,7 @@ class Book(models.Model):
         volume_xml = urllib2.urlopen("http://www.google.com/books/feeds/volumes/%s" % gid).read()
         gbook = GBook.FromString(volume_xml)
 
-        thumbnail_link = gbook.GetThumbnailLink().href
+        #thumbnail_link = gbook.GetThumbnailLink().href
         cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
         self.temp_cover_url = cover_link
 
