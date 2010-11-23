@@ -4,7 +4,7 @@ from q.ebooks.models import Book, Format
 class CheckOutForm(forms.Form):
 
     to_who = forms.ChoiceField(required=True, label='Checkout To')
-    notes = forms.CharField(label="Notes", widget=forms.Textarea)
+    notes = forms.CharField(label="Notes", widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         if kwargs.has_key('users'):
