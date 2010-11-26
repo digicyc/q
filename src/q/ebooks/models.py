@@ -3,7 +3,7 @@ import os.path
 from hashlib import sha256 as sha
 
 from tagging.fields import TagField
-from djangoratings import RatingField
+from djangoratings.fields import RatingField
 
 from django.conf import settings
 from django.db import models
