@@ -3,6 +3,7 @@ import os.path
 from hashlib import sha256 as sha
 
 from tagging.fields import TagField
+from djangoratings import RatingField
 
 from django.conf import settings
 from django.db import models
@@ -94,7 +95,7 @@ class Book(models.Model):
     # m2m in the future
     authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField(default=0.0)
-    rating = models.FloatField(default=0.0)
+    rating = RatingField(range=5, can_change_vote=True)
     tags = TagField()
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True, unique=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True, unique=True)

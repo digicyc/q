@@ -1,4 +1,7 @@
 from django.conf.urls.defaults import *
+
+from djangoratings.views import AddRatingFromModel
+
 from q.ebooks.views import index, book_info, view_tag, latest_books_rss, books_by_type, add_book, book_checkout, download_format, books_by_series
 from q.ebooks.api import email_kindle, change_book_attribute, update_tag, get_tags, i_own_this_book
 
@@ -21,6 +24,11 @@ urlpatterns = patterns('',
     url(r'^api/update_tag/$', update_tag, name="update_tag"),
     url(r'^api/get_tags/$', get_tags, name="get_tags"),
     url(r'^api/i_own_this_book/$', i_own_this_book, name="i_own_this_book"),
+    url(r'^api/rate/(?P<object_id>\d+)/(?P<score>\d+)/', AddRatingFromModel(), {
+        'app_label': 'ebooks',
+        'model': 'book',
+        'field_name': 'rating',
+    }),
 
     url(r'^(?P<book_slug>[\w\d\-]+)/$', book_info, name="book_info"),
     url(r'^(?P<type>(author|title))/$', books_by_type, name="books_by_type"),

@@ -2,6 +2,7 @@
 {% load gravatar %}
 {% load tagging_tags %}
 {% load threadedcomments_tags  %}
+{% load ratings %}
 
 {% block extra_javascript %}
 	<script src="/javascript/librarian.js"></script>
@@ -13,6 +14,8 @@
 {% block body_class %} class="page-view"{% endblock %}
 {% block content %}
 	{% if book %}
+        {% rating_by_user request.user on book.rating as vote %}
+
 		<div class="book-sidebar">
 			<figure class="cover">
 				{% if book.cover %}
@@ -22,6 +25,11 @@
 				{% endif %}
 				<div class="overlay"></div>
 			</figure>
+
+            metarating: {{ book.metarating }}<br>
+            rating: {{ book.rating.score }} ({{book.rating.votes}} votes)<p>
+            my rating: {{ vote }}<br>
+
 
             {% if request.user.get_profile.is_librarian %}
                 {% if error %}

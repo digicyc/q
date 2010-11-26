@@ -102,6 +102,7 @@ INSTALLED_APPS = (
     'activity_stream',
     'django.contrib.comments',
     'threadedcomments',
+    'djangoratings',
 )
 
 COMMENTS_APP = 'threadedcomments'
