@@ -253,6 +253,9 @@ class Author(models.Model):
     def __str__(self):
         return "%s %s" % (self.firstname, self.lastname)
 
+    def __unicode__(self):
+        return unicode(self.__str__())
+
 class CheckOut(models.Model):
     user = models.ForeignKey(User, null=True)
     book = models.ForeignKey(Ownership, null=True)
