@@ -19,6 +19,7 @@
             {{ form.as_ul }}
             <li><input type="submit" /></li>
         </ul>
+        {% csrf_token %}
     </form>
     </div>
 {% endblock %}
