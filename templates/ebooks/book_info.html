@@ -172,7 +172,11 @@
 					{% else %}
 					{% ifnotequal field.name "comment" %}
 
-						<input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
+                            {% ifequal field.value None %}
+						        <input type="hidden" name="{{field.html_name}}" value="" />
+                            {% else %}
+                                <input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
+                            {% endifequal %}
 					{% else %}
 					<p><textarea name="{{field.html_name}}"></textarea></p>
 
