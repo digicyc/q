@@ -21,6 +21,7 @@
 	        Checkin from: {{ ownership.checked_out.user.username }}
 	        <input type="submit" name="submit" value="Checkin" />
 	    {% endif %}
+        {% csrf_token %}
 		</p>
 	    </form>
 	{% endif %}
