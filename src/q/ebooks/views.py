@@ -177,8 +177,10 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     from q.ebooks.forms import BookForm
     ctx = {}
 
+    book = models.Book()
+    book_form = BookForm()
+
     if request.POST.has_key('title'):
-        book = models.Book()
         book.title = request.POST['title']
         book.tags = request.POST['tags']
         book.isbn10 = request.POST['isbn10']
@@ -197,7 +199,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
                 author.save()
             book.authors.add(author)
 
-        if book.cover == "":
+        if book.cover == "" and request.POST.has_key('cover_url') and request.POST['cover_url'] != "":
             cover_link = request.POST['cover_url']
             headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
             f = NamedTemporaryFile(delete=False)
@@ -258,9 +260,9 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
              }
         )
 
-        ctx.update({'book': book, 'book_form': book_form})
-
-    return render_to_response(template_name, RequestContext(request, ctx))
+    ctx.update({'book': book, 'book_form': book_form})
+    return render_to_response(template_name,
+                              RequestContext(request, ctx))
 
 def temp_(isbn):
     """
