@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 
 try:
     import cPickle as pickle
-except:
+except ImportError, e:
     import pickle
 
 import base64
