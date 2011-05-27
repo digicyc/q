@@ -21,7 +21,6 @@ from tagging.models import Tag, TaggedItem
 from activity_stream.models import create_activity_item
 from activity_stream.models import ActivityStreamItem
 
-from q.common import admin_keyword_search
 from q.ebooks.admin import BookAdmin
 from q.ebooks import models
 from q.ebooks import forms
@@ -30,25 +29,35 @@ from q.accounts.models import UserDownload
 
 @login_required
 def index(request, template_name="ebooks/index.html"):
-    ctx = {}
-    books = None
+    """
+    Defines the index of the site.
+    """
+    from q.common import admin_keyword_search
 
-    activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False,
-						created_at__lte=datetime.now()).order_by('-created_at').distinct()[:10]
+    ctx = {}
 
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
+        # If we are searching for something...
         template_name = "ebooks/search.html"
         books = admin_keyword_search(models.Book,
                 BookAdmin.search_fields, request.GET['q'])
-
     else:
+        # Otherwise just display the 15 latest books.
         books = models.Book.objects.order_by("-create_time")[:15].distinct()
+        activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False,
+                    created_at__lte=datetime.now()).order_by('-created_at').distinct()[:10]
+        ctx['activity_stream'] = activity_stream
+        
+    ctx['books'] = books
 
-    ctx.update({ 'books': books, 'activity_stream':activity_stream })
-    return render_to_response(template_name, RequestContext(request, ctx))
+    return render_to_response(template_name,
+                              RequestContext(request, ctx))
 
 @login_required
 def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs):
+    """
+    Browse books by the specified type.
+    """
     ctx = {}
 
     filter_type = kwargs.get('type').lower()
@@ -56,16 +65,20 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     if filter_type == "author":
         letter = kwargs.get('letter')
         books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
-    elif filter_type == "title":
+    else: #if filter_type == "title":
         letter = kwargs.get('letter')
         books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
             extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
             order_by('order_title')
 
-    ctx.update({ 'books': books })
-    return render_to_response(template_name, RequestContext(request, ctx))
+    ctx['books'] = books
+    return render_to_response(template_name,
+                              RequestContext(request, ctx))
 
 def books_by_series(request, template_name="ebooks/search.html",  *args, **kwargs):
+    """
+    Display the books for a given series.
+    """
     ctx = {}
 
     slug = kwargs.get('series_slug').lower()
@@ -73,8 +86,9 @@ def books_by_series(request, template_name="ebooks/search.html",  *args, **kwarg
     series = models.Series.objects.filter(slug__exact=slug)
     books = models.Book.objects.filter(series=series).order_by('series_num')
 
-    ctx.update({ 'books': books })
-    return render_to_response(template_name, RequestContext(request, ctx))
+    ctx['books'] = books
+    return render_to_response(template_name,
+                              RequestContext(request, ctx))
 
 def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     """
@@ -84,7 +98,8 @@ def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     books = models.Book.objects.all().order_by("-create_time")[:10]
 
     ctx.update({ 'books': books })
-    return render_to_response(template_name, RequestContext(request, ctx))
+    return render_to_response(template_name,
+                              RequestContext(request, ctx))
 
 @login_required
 def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
@@ -151,7 +166,8 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
         }
     )
 
-    return render_to_response(template_name, RequestContext(request, ctx))
+    return render_to_response(template_name,
+                              RequestContext(request, ctx))
 
 @login_required
 def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, **kwargs):
@@ -212,10 +228,10 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         return HttpResponseRedirect(reverse(book_info, kwargs={'book_slug': book.slug}))
 
     if request.POST.has_key("isbn") and isbn is None:
-        isbn= request.POST['isbn']
+        isbn = request.POST['isbn']
 
     if isbn:
-        from gdata.books import Book, BookFeed
+        from gdata.books import BookFeed
         from urllib2 import urlopen
 
         search_xml = urlopen("http://books.google.com/books/feeds/volumes?q=ISBN%s" % isbn).read()
