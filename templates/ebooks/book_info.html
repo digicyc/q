@@ -35,7 +35,7 @@
                 {% if error %}
                     {{ error }}
                 {% endif %}
-                <form method="post" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">{% csrf_token %}
                 {{ format_form.as_p }}
                 <input type="submit">
                 </form>
@@ -162,7 +162,7 @@
 			</div><!-- /!discussion-list -->
 			<!--- COMMENT FORM -->
 			<div id="form_withparent" >
-				<form method="post" action="/comments/post/" class="comment-form">
+				<form method="post" action="/comments/post/" class="comment-form">{% csrf_token %}
 				<h3>Leave a Comment</h3>
 				<hr />
 				{% get_comment_form for book as form %}
@@ -184,7 +184,6 @@
 
 					{% endif %}
 				{% endfor %}
-					{% csrf_token %}
 					<input type="hidden" name="next" value="{{ request.path }}" />
 					<p><input type="submit" name="post" value="Ответить!" class="submit-large" /></p>
 				</form>
