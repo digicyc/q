@@ -106,7 +106,7 @@ class Book(models.Model):
     update_time = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to=cover_save, blank=True)
     thumbnail = models.ImageField(upload_to=thumb_save, blank=True)
-    slug = models.SlugField(max_length=255, blank=True, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True, db_index=True)
     series = models.ForeignKey(Series, blank=True, null=True, default=None)
     series_num = models.IntegerField(blank=True, null=True, default=None)
 
