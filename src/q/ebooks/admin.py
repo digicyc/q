@@ -8,7 +8,7 @@ class FormatInline(admin.TabularInline):
 class BookAdmin(admin.ModelAdmin):
     exclude = ['authors',]
     list_display = ['title', 'gid',]
-    search_fields = ['title', 'isbn10']#, 'authors__firstname', 'authors__lastname']
+    search_fields = ['title', 'isbn10', 'authors__firstname', 'authors__lastname']
     inlines = [
         FormatInline,
     ]
