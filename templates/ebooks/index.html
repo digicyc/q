@@ -73,9 +73,7 @@
     {% endfor %}
     </ul>
 
-    {% comment %}
     {% for tag in tags %}
-        <font size="{{ tag.font_size }}">{{ tag }}</font>
+        <a href="{% url view_tag tag %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
     {% endfor %}
-    {% endcomment %}
 {% endblock %}
