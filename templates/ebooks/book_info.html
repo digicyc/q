@@ -197,12 +197,13 @@
 
            <ul id="book-tags"></ul>
 			<script>
+            var csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
 			$("#book-tags").tagHandler({
 				assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
 				autocomplete: true,
 				autoUpdate: true,
 				updateURL: '/books/api/update_tag/',
-				updateData: {book_id: "{{book.pk}}"},
+				updateData: {'csrfmiddlewaretoken':csrfmiddlewaretoken, book_id:"{{book.pk}}"},
 				{% ifequal user.groups.all.0.name|lower "librarian" %}
 				allowEdit: true
 				{% else %}

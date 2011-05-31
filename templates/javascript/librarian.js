@@ -38,7 +38,11 @@
 			if(!cancel) {
                 var old_info = info;
                 info = $(el).parent().siblings(0).val();
-				var ajaxData = 'info=' + info + '&name=' + title;
+
+                var csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
+                var ajaxData = {'csrfmiddlewaretoken':csrfmiddlewaretoken, 'name':title, 'info':info};
+
+                console.debug(ajaxData);
 
 				$.ajax({
 					type: 'POST',
