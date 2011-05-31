@@ -72,11 +72,10 @@
         <li>{{ activity_item.render }}</li>
     {% endfor %}
     </ul>
-    
-    {% load tagging_tags %}
-    {% tag_cloud_for_model ebooks.Book as book_cloud %}
-    {% for tag in book_cloud %}
+
+    {% comment %}
+    {% for tag in tags %}
         <font size="{{ tag.font_size }}">{{ tag }}</font>
     {% endfor %}
-    
+    {% endcomment %}
 {% endblock %}

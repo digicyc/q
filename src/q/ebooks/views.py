@@ -16,7 +16,7 @@ from django.template import RequestContext
 
 from django.conf import settings
 
-from tagging.models import Tag, TaggedItem
+from tagging.models import TaggedItem, Tag
 
 from activity_stream.models import create_activity_item
 from activity_stream.models import ActivityStreamItem
@@ -47,6 +47,8 @@ def index(request, template_name="ebooks/index.html"):
         activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False,
                     created_at__lte=datetime.now()).order_by('-created_at').distinct()[:10]
         ctx['activity_stream'] = activity_stream
+
+        ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
         
     ctx['books'] = books
 
