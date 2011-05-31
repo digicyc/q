@@ -26,8 +26,7 @@ def email_kindle(request, book_id):
     email = EmailMessage()
     email.subject = book.title
     email.body = book.description
-    email.to = (request.user.get_profile().kindle_email,)
-    email.bcc = ("",) # This is a hack. I don't know why you have to set this to "" but you do otherwise it gives errors
+    email.to = [request.user.get_profile().kindle_email,]
 
     headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
     url = Format.objects.filter(ebook=book, format='mobi')[0].ebook_file.url
