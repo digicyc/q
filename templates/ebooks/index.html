@@ -74,6 +74,6 @@
     </ul>
 
     {% for tag in tags %}
-        <a href="{% url view_tag tag %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
+        <a href="{% url view_tag tag.name %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
     {% endfor %}
 {% endblock %}
