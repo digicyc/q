@@ -49,7 +49,7 @@ def index(request, template_name="ebooks/index.html"):
         ctx['activity_stream'] = activity_stream
 
         ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
-        
+
     ctx['books'] = books
 
     return render_to_response(template_name,
@@ -331,7 +331,7 @@ def view_tag(request, template_name="ebooks/view_tag.html", *args, **kwargs):
     ctx = {}
 
     tag = kwargs.get('tag')
-    books = TaggedItem.objects.get_by_model(models.Book, tag)
+    books = TaggedItem.objects.get_by_model(models.Book, [tag,])
 
     ctx.update({'tag':tag, 'books': books})
     return render_to_response(template_name, RequestContext(request, ctx))

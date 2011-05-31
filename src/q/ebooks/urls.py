@@ -12,7 +12,7 @@ urlpatterns = patterns('q.ebooks.views',
     url(r'^add/(?P<isbn>\d+)/$', 'add_book', name="isbn_search"),
 
     url(r'^checkout/(?P<book_key>[\w\d\-]+)/$', 'book_checkout', name="book_checkout"),
-    url(r'^tags/(?P<tag>[\w\d\-]+)/$', 'view_tag', name="view_tag"),
+    url(r'^tags/(?P<tag>[\ \w\d\-]+)/$', 'view_tag', name="view_tag"),
 
     url(r'^download/(?P<download_key>[\w\d\=]+)/$', 'download_format', name="download_format"),
 
