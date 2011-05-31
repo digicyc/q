@@ -44,8 +44,10 @@ def index(request, template_name="ebooks/index.html"):
     else:
         # Otherwise just display the 15 latest books.
         books = models.Book.objects.order_by("-create_time")[:15].distinct()
-        activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False,
-                    created_at__lte=datetime.now()).order_by('-created_at').distinct()[:10]
+        activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
+                            exclude(type__name='upload').\
+                            exclude(type__name='download').\
+                            order_by('-created_at').distinct()[:10]
         ctx['activity_stream'] = activity_stream
 
         ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
