@@ -1,11 +1,13 @@
 import os.path
-from tempfile import NamedTemporaryFile
 import urllib2
 
 from django.utils import simplejson
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.core.urlresolvers import reverse
+
 from tagging.models import Tag
 
 from q.common import group_required
@@ -20,8 +22,9 @@ def email_kindle(request, book_id):
 
     try:
         book = Book.objects.get(id=book_id)
-    except:
-        return HttpResponse('Fail')
+    except Book.DoesNotExist:
+        messages.error(request, "Book id: %s not found" % book_id)
+        return HttpResponseRedirect(reverse('ebooks.views.index'))
 
     email = EmailMessage()
     email.subject = book.title
@@ -36,7 +39,8 @@ def email_kindle(request, book_id):
     email.attach(filename, data, 'application/x-mobipocket-ebook')
     email.send()
 
-    return HttpResponse('Okay')
+    messages.success(request, "Successfully sent %s!" % book.title)
+    return HttpResponseRedirect(reverse('q.ebooks.views.book_info', kwargs={'book_slug': book.slug}))
 
 @login_required
 @group_required('Librarian')

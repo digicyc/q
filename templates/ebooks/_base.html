@@ -30,7 +30,15 @@
 				</ul>
 			</div>
 		</header>
-
+        <section id="messages">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </section>
 		<section id="global-search">
 			<div class="body-width wrap">
 				<form action="{% url ebooks.views.index %}" method="get" class="search">
