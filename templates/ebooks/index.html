@@ -73,7 +73,11 @@
     {% endfor %}
     </ul>
 
+    <br clear="all"/>
+    <h2 class="section-title">Tag Cloud</h2>
+    <ul id="tagcloud">
     {% for tag in tags %}
         <a href="{% url view_tag tag %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
     {% endfor %}
+    </ul>
 {% endblock %}
