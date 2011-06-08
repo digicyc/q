@@ -24,6 +24,9 @@
 					<img src="/images/book-no-cover.png" width="160" />
 				{% endif %}
 				<div class="overlay"></div>
+                {% if book.has_mobi and request.user.get_profile.kindle_email %}
+                <li><a href="{% url email_kindle book.id %}">email to my kindle</a></li>
+                {% endif %}
 			</figure>
 
             metarating: {{ book.metarating }}<br>
@@ -46,9 +49,6 @@
 			<ul class="formats">
 				{% for format in book.formats %}
 					<li class="{{ format.format }}"><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
-                    {% if format.format == 'mobi' and request.user.get_profile.kindle_email %}
-                    <li><a href="{% url email_kindle book.id %}">email to kindle</a></li>
-                    {% endif %}
 				{% endfor %}
 			</ul>
             {% endif %}

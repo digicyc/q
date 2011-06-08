@@ -142,6 +142,10 @@ class Book(models.Model):
         return Format.objects.filter(ebook=self).order_by('format')
     formats = property(_get_formats)
 
+    def _has_mobi(self):
+        return bool(Format.objects.filter(ebook=self).filter(format='mobi').count())
+    has_mobi = property(_has_mobi)
+
     def cache_book_info(self, gid=None, save_cover=True):
         import urllib2
         from tempfile import NamedTemporaryFile
@@ -228,6 +232,7 @@ class Format(models.Model):
     format = models.CharField(choices=FORMAT_CHOICES, max_length=20)
     ebook_file = models.FileField(upload_to=book_save)
     uploaded_by = models.ForeignKey(User)
+    verified = models.BooleanField(default=False)
 
     class Meta:
         unique_together = (('ebook', 'format'),)
