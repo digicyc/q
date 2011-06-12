@@ -27,7 +27,7 @@ urlpatterns += patterns('ebooks.api',
         'app_label': 'ebooks',
         'model': 'book',
         'field_name': 'rating',
-    }),
+    }, name="rate_book"),
 )
 
 urlpatterns += patterns('ebooks.views',

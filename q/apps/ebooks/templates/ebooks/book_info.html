@@ -3,6 +3,7 @@
 {% load tagging_tags %}
 {% load threadedcomments_tags  %}
 {% load ratings %}
+{% load range %}
 
 {% block extra_javascript %}
 	<script src="/javascript/librarian.js"></script>
@@ -29,9 +30,11 @@
                 {% endif %}
 			</figure>
 
-            metarating: {{ book.metarating }}<br>
+            {# metarating: {{ book.metarating }}<br> #}
             rating: {{ book.rating.score }} ({{book.rating.votes}} votes)<p>
-            my rating: {{ vote }}<br>
+            {% num_range 5 as vote_range %}
+            {% rating_by_request request on book.rating as vote %}
+            my rating: {% for x in vote_range %}<a href="{% url rate_book book.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br>
 
 
             {% if request.user.get_profile.is_librarian %}
