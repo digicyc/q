@@ -3,3 +3,4 @@
 local_settings.py
 .idea
 *.db
+.DS_Store
