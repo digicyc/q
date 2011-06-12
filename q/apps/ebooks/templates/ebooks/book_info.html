@@ -204,11 +204,7 @@
 				autoUpdate: true,
 				updateURL: '/books/api/update_tag/',
 				updateData: {'csrfmiddlewaretoken':csrfmiddlewaretoken, book_id:"{{book.pk}}"},
-				{% ifequal user.groups.all.0.name|lower "librarian" %}
 				allowEdit: true
-				{% else %}
-				allowEdit: false
-				{% endifequal %}
 			});
 			</script>
 		</div>
