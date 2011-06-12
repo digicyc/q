@@ -9,8 +9,8 @@ from django.contrib.auth import (authenticate,
                                 login as auth_login,
                                 logout as auth_logout)
 
-from q.accounts import forms, models
-from q.ebooks.models import CheckOut, Ownership
+from accounts import forms, models
+from ebooks.models import CheckOut, Ownership
 
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}

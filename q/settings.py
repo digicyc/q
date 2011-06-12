@@ -1,3 +1,10 @@
+import os
+import sys
+
+PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'lib'))
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -41,12 +48,12 @@ USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = 'static/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/'
 
 ADMIN_MEDIA_PREFIX = '/media/'
 
@@ -75,7 +82,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
-    'q.processors.book_count_insert',
+    
+    'ebooks.processors.book_count_insert',
 )
 
 DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"
@@ -89,7 +97,7 @@ S3_SETTINGS = {
 ROOT_URLCONF = 'q.urls'
 
 TEMPLATE_DIRS = (
-        '/home/jason/sites/q.zzq.org/templates/',
+        'templates/',
 )
 
 INSTALLED_APPS = (
@@ -99,12 +107,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.messages',
-    'q.ebooks',
-    'q.accounts',
+    'django.contrib.comments',
+        
+    'ebooks',
+    'accounts',
+
     'south',
     'tagging',
     'activity_stream',
-    'django.contrib.comments',
     'threadedcomments',
     'djangoratings',
 )

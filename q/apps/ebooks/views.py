@@ -21,10 +21,10 @@ from tagging.models import TaggedItem, Tag
 from activity_stream.models import create_activity_item
 from activity_stream.models import ActivityStreamItem
 
-from q.ebooks.admin import BookAdmin
-from q.ebooks import models
-from q.ebooks import forms
-from q.accounts.models import UserDownload
+from ebooks.admin import BookAdmin
+from ebooks import models
+from ebooks import forms
+from accounts.models import UserDownload
 
 
 @login_required
@@ -178,7 +178,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     """
     Begins the add book wizard process
     """
-    from q.ebooks.forms import BookForm
+    from ebooks.forms import BookForm
     ctx = {}
 
     book = models.Book()

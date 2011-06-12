@@ -1,14 +1,16 @@
 from django import forms
-from q.ebooks.models import Book, Format
+from ebooks.models import Book, Format
 
 class CheckOutForm(forms.Form):
 
-    to_who = forms.ChoiceField(required=True, label='Checkout To')
+    to_who = forms.ChoiceField(label='Checkout To')
     notes = forms.CharField(label="Notes", widget=forms.Textarea, required=False)
 
     def __init__(self, *args, **kwargs):
         if kwargs.has_key('users'):
             users = kwargs.pop('users')
+        else:
+            users =(None, None)
 
         super(CheckOutForm, self).__init__(*args, **kwargs)
 

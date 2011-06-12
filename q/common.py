@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import user_passes_test
 def admin_keyword_search(model, fields, keywords):
     """
     """
-
     if not keywords:
         return []
 

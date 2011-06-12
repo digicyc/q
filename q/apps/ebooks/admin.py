@@ -1,5 +1,5 @@
 from django.contrib import admin
-from q.ebooks import models
+from ebooks import models
 
 class FormatInline(admin.TabularInline):
     model = models.Format

@@ -7,7 +7,7 @@ from django.conf import settings
 
 from django.contrib.auth.models import User
 
-from q.accounts import models
+from accounts import models
 
 class AccountsTest(TestCase):
     def setUp(self):

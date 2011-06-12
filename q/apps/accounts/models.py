@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Count
 
-from q.ebooks.models import FORMAT_CHOICES, Book, Format
+from ebooks.models import FORMAT_CHOICES, Book, Format
 
 class UserProfile(models.Model):
     """

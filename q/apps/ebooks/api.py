@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from tagging.models import Tag
 
 from q.common import group_required
-from q.ebooks.models import Book, Format, Ownership
+from ebooks.models import Book, Format, Ownership
 
 @login_required
 def email_kindle(request, book_id):
@@ -40,7 +40,7 @@ def email_kindle(request, book_id):
     email.send()
 
     messages.success(request, "Successfully sent %s!" % book.title)
-    return HttpResponseRedirect(reverse('q.ebooks.views.book_info', kwargs={'book_slug': book.slug}))
+    return HttpResponseRedirect(reverse('ebooks.views.book_info', kwargs={'book_slug': book.slug}))
 
 @login_required
 @group_required('Librarian')
