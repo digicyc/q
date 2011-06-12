@@ -72,8 +72,8 @@
         <li>{{ activity_item.render }}</li>
     {% endfor %}
     </ul>
-
-    <br clear="all"/>
+{% endblock %}
+{% block rail %}
     <h2 class="section-title">Tag Cloud</h2>
     <ul id="tagcloud">
     {% for tag in tags %}
