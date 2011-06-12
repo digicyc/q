@@ -1,4 +1,5 @@
 import os
+import os.path
 import sys
 
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -97,7 +98,7 @@ S3_SETTINGS = {
 ROOT_URLCONF = 'q.urls'
 
 TEMPLATE_DIRS = (
-        'templates/',
+        os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
