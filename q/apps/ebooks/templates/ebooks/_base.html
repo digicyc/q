@@ -3,7 +3,7 @@
 <head>
 	<meta name="robots" content="noindex, nofollow">
 
-	<title>books</title>
+	<title>{% block title %}{% endblock %} | {{ site.name }}</title>
 
 	<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
 

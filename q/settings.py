@@ -85,6 +85,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     
     'ebooks.processors.book_count_insert',
+    'ebooks.processors.site_insert',
+
 )
 
 DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"

@@ -1,4 +1,5 @@
 {% extends 'ebooks/_base.html' %}
+{% block title %}books tagged: {{ tag }}{% endblock %}
 {% block body_class %} class="search-view"{% endblock %}
 {% block content %}
 <h2 class="section-title">Books Tagged <em>"{{ tag }}"</em></h2>

@@ -5,6 +5,8 @@
 {% load ratings %}
 {% load range %}
 
+{% block title %}{{ book.title }} by {{ book.authors.all.0 }}{% endblock %}
+
 {% block extra_javascript %}
 	<script src="/javascript/librarian.js"></script>
 	<!-- <link rel="stylesheet" type="text/css" href="/css/jquery.taghandler.css" /> -->
