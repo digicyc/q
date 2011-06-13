@@ -79,6 +79,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
+@login_required
 def books_by_series(request, template_name="ebooks/search.html",  *args, **kwargs):
     """
     Display the books for a given series.
