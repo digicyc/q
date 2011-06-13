@@ -126,9 +126,13 @@ COMMENTS_APP = 'threadedcomments'
 GRAVATAR_DEFAULT_IMAGE = '/images/blank-avatar.png'
 AUTH_PROFILE_MODULE = 'accounts.userprofile'
 
+# This is mainly for beanstalk to deploy the sites automatically
+WSGI_RELOAD_KEY = None
+WSGI_RELOAD_PATH = "/home/jason/sites/q.zzq.org/scripts/q.wsgi"
+
 LOGIN_URL = LOGIN_REDIRECT_URL="/login/"
 
 try:
     from local_settings import *
-except:
+except ImportError:
     pass
