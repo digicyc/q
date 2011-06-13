@@ -47,6 +47,7 @@ def index(request, template_name="ebooks/index.html"):
         activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
                             exclude(type__name='upload').\
                             exclude(type__name='download').\
+                            exclude(type__name='kindle').\
                             order_by('-created_at').distinct()[:10]
         ctx['activity_stream'] = activity_stream
 

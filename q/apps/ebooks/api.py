@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 
 from tagging.models import Tag
+from activity_stream.models import create_activity_item
 
 from q.common import group_required
 from ebooks.models import Book, Format, Ownership
@@ -38,6 +39,8 @@ def email_kindle(request, book_id):
 
     email.attach(filename, data, 'application/x-mobipocket-ebook')
     email.send()
+
+    create_activity_item('kindle', request.user, book)
 
     messages.success(request, "Successfully sent %s!" % book.title)
     return HttpResponseRedirect(reverse('ebooks.views.book_info', kwargs={'book_slug': book.slug}))
