@@ -40,7 +40,7 @@ def touch_wsgi(request):
     if not request.GET.has_key('key'):
         raise Http404()
     if request.GET['key'] != "None" and request.GET['key'] == settings.WSGI_RELOAD_KEY:
-        f = open(settings.WSGI_RELOAD_PATH,'w').close()
+        f = open(settings.WSGI_RELOAD_PATH,'w+').close()
         return HttpResponse('True')
     raise Http404
         
