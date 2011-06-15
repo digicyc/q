@@ -3,6 +3,7 @@ import operator
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.csrf import csrf_exempt
 
 from django.conf import settings
 
@@ -32,6 +33,7 @@ def group_required(*group_names):
         return False
     return user_passes_test(in_groups)
 
+@csrf_exempt
 def touch_wsgi(request):
     """
     This exists because beanstalkapp and pycharm both deploy files for me via SFTP. Each have web hooks of sites to call
