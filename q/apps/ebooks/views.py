@@ -66,15 +66,17 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     ctx = {}
 
     filter_type = kwargs.get('type').lower()
+    letter = kwargs.get('letter')
 
-    if filter_type == "author":
-        letter = kwargs.get('letter')
+    if filter_type == "author" and letter is not None:
         books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
-    else: #if filter_type == "title":
-        letter = kwargs.get('letter')
-        books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
-            extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
-            order_by('order_title')
+    elif filter_type == "title":
+        if letter is not None:
+            books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
+                extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
+                order_by('order_title')
+        else:
+            books = models.Book.objects.all().order_by('title')
 
     ctx['books'] = books
     return render_to_response(template_name,
