@@ -68,6 +68,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     filter_type = kwargs.get('type').lower()
     letter = kwargs.get('letter')
 
+    books = None
     if filter_type == "author" and letter is not None:
         books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
     elif filter_type == "title":
@@ -133,7 +134,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
                 format = models.Format.objects.get(ebook=book, format=ext)
                 error = "Format exists: %s" % format.format
 
-            except models.Format.DoesNotExist, e:
+            except models.Format.DoesNotExist:
                 format = models.Format()
                 format.ebook = book
                 format.format = ext
@@ -161,7 +162,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
 
     try:
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
-    except models.Ownership.DoesNotExist, e:
+    except models.Ownership.DoesNotExist:
         my_ownership = None
 
     ctx.update(
@@ -200,7 +201,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         for gauthor in request.POST['authors'].split(','):
             try:
                 author = models.Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
-            except models.Author.DoesNotExist, e:
+            except models.Author.DoesNotExist:
                 author = models.Author()
                 author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
                 author.lastname = gauthor.split(" ")[-1]
@@ -227,7 +228,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
             series_num = request.POST["series_num"]
             try:
                 series = models.Series.objects.get(name__exact=series_name)
-            except models.Series.DoesNotExist, e:
+            except models.Series.DoesNotExist:
                 series = models.Series()
                 series.name = series_name
                 series.save()
@@ -272,20 +273,6 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
-def temp_(isbn):
-    """
-    Search places for the ISBN
-    """
-    from gdata.books import Book, BookFeed
-    from urllib2 import urlopen
-
-    search_xml = urlopen("http://books.google.com/books/feeds/volumes?q=ISBN%s" % isbn).read()
-    search_feed = BookFeed.FromString(xml)
-    google_id = feed.entry[0].identifier[0].text
-
-    volume_xml = urlopen("http://www.google.com/books/feeds/volumes/%s" % google_id).read()
-    book_feed = Book.FromString(volume_xml)
-
 @login_required
 def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs):
     ctx = {}
@@ -293,6 +280,7 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
     book_key = kwargs.get('book_key')
     ownership = get_object_or_404(models.Ownership, key__exact=book_key)
     users = User.objects.all()
+    checkout_form = forms.CheckOutForm(users=users)
 
     if request.POST:
         if request.POST.has_key('submit'):
@@ -325,8 +313,6 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
                 create_activity_item('checkin', checkout.user, ownership)
 
                 checkout_form = forms.CheckOutForm(users=users)
-    else:
-        checkout_form = forms.CheckOutForm(users=users)
 
     ctx.update({'ownership': ownership, 'checkout_form': checkout_form})
 
