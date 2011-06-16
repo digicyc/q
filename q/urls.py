@@ -7,6 +7,8 @@ from accounts.views import login, logout
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^reload_wsgi/', 'q.common.touch_wsgi'),
+
     (r'^books/', include('ebooks.urls')),
     (r'^users/', include('accounts.urls')),
                        
