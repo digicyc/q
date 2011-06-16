@@ -4,3 +4,4 @@ local_settings.py
 .idea
 *.db
 .DS_Store
+q/static/books
