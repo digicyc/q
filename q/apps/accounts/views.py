@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import (authenticate,
                                 login as auth_login,
                                 logout as auth_logout)
+from django.contrib.auth.forms import PasswordChangeForm
 
 from accounts import forms, models
 from ebooks.models import CheckOut, Ownership
@@ -105,7 +106,7 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
                                       'kindle_email':profile.kindle_email,
                                       })
 
-    password_form = forms.ChangePasswordForm()
+    password_form = PasswordChangeForm(user)
 
     if request.method == 'POST':
         if "profile" in request.POST['submit'].lower():
@@ -122,9 +123,9 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
 
                 messages.success(request, "Profile saved!")
         elif "password" in request.POST['submit'].lower():
-            password_form = forms.ChangePasswordForm(request.POST)
+            password_form = PasswordChangeForm(user, request.POST)
             if password_form.is_valid():
-                if not user.check_password(request.POST['current_password']):
+                if not user.check_password(request.POST['old_password']):
                     messages.error(request, "Wrong password. Password not changed.")
                 elif request.POST['new_password1'] != request.POST['new_password2']:
                     messages.error(request, "Passwords do not match. Password not changed.")

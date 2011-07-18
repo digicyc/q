@@ -13,12 +13,3 @@ class EditProfileForm(forms.Form):
     #username = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     kindle_email = forms.EmailField(required=False)
-
-
-class ChangePasswordForm(forms.Form):
-    current_password = forms.CharField(label=_('Current Password'),
-            widget=forms.PasswordInput(), max_length=100)
-    new_password1 = forms.CharField(label=_('New Password'),
-            widget=forms.PasswordInput(), max_length=100)
-    new_password2 = forms.CharField(label=_('Verify Password'),
-            widget=forms.PasswordInput(), max_length=100)
