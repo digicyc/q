@@ -17,8 +17,16 @@
     <h2 class="section-title">Edit Your Profile</h2>
     <form action="" method="post">
         <ul>
-            {{ form.as_ul }}
-            <li><input type="submit" /></li>
+            {{ profile_form.as_ul }}
+            <li><input type="submit" name="submit" value="Update Profile"/></li>
+        </ul>
+        {% csrf_token %}
+    </form>
+    <h2 class="section-title">Change Your Password</h2>
+    <form action="" method="post">
+        <ul>
+            {{ password_form.as_ul }}
+            <li><input type="submit" name="submit" value="Change Password" /></li>
         </ul>
         {% csrf_token %}
     </form>

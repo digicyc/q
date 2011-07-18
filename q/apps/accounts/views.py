@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from django.contrib.auth.models import User
 from django.contrib.auth import (authenticate,
@@ -94,43 +95,45 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
     try:
         profile = user.get_profile()
     except:
-        profile = models.UserProfile(kindle_email='', user=user)
+        profile = models.UserProfile(user=user)
         profile.save()
-    
-    profile = user.get_profile()
-    
-    if request.method == 'POST':
-        form = forms.EditProfileForm(request.POST)
-        if form.is_valid():
-            if user.first_name != form.cleaned_data['first_name']:
-                user.first_name = form.cleaned_data['first_name']
-            
-            if user.last_name != form.cleaned_data['last_name']:    
-                user.last_name = form.cleaned_data['last_name']
-            
-            if user.email != form.cleaned_data['email']:     
-                user.email = form.cleaned_data['email']
-            
-            if user.username != form.cleaned_data['username']:    
-                user.username = form.cleaned_data['username']
-            
-            if profile.kindle_email != form.cleaned_data['kindle_email']:    
-                profile.kindle_email = form.cleaned_data['kindle_email']
-                
-            user.save()
-            profile.save()
-            
-            return HttpResponseRedirect(reverse("edit_profile", kwargs={'username': user.username}))
+        
+    profile_form = forms.EditProfileForm(initial={'first_name': user.first_name,
+                                      'last_name': user.last_name,
+                                      'username': user.username,
+                                      'email':user.email,
+                                      'kindle_email':profile.kindle_email,
+                                      })
 
-    else:
-        form = forms.EditProfileForm(initial={'first_name': user.first_name, 
-                                              'last_name': user.last_name,
-                                              'username': user.username, 
-                                              'email':user.email,
-                                              'kindle_email':profile.kindle_email,
-                                              })
-            
-    ctx.update({'form':form, 'view_user':user})
+    password_form = forms.ChangePasswordForm()
+
+    if request.method == 'POST':
+        if "profile" in request.POST['submit'].lower():
+            profile_form = forms.EditProfileForm(request.POST)
+            if profile_form.is_valid():
+                user.first_name = profile_form.cleaned_data['first_name']
+                user.last_name = profile_form.cleaned_data['last_name']
+                user.email = profile_form.cleaned_data['email']
+                #user.username = profile_form.cleaned_data['username']
+                profile.kindle_email = profile_form.cleaned_data['kindle_email']
+
+                user.save()
+                profile.save()
+
+                messages.success(request, "Profile saved!")
+        elif "password" in request.POST['submit'].lower():
+            password_form = forms.ChangePasswordForm(request.POST)
+            if password_form.is_valid():
+                if not user.check_password(request.POST['current_password']):
+                    messages.error(request, "Wrong password. Password not changed.")
+                elif request.POST['new_password1'] != request.POST['new_password2']:
+                    messages.error(request, "Passwords do not match. Password not changed.")
+                else:
+                    user.set_password(request.POST['new_password1'])
+                    user.save()
+                    messages.success(request,"Password changed!")
+
+    ctx.update({'profile_form':profile_form, 'view_user':user, 'password_form':password_form})
     return render_to_response(template_name, RequestContext(request, ctx))
 
 def logout(request):
