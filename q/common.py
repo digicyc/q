@@ -4,8 +4,13 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.functional import lazy
+from django.core.urlresolvers import reverse
+
 
 from django.conf import settings
+
+reverse_lazy = lazy(reverse, str)
 
 def admin_keyword_search(model, fields, keywords):
     """
