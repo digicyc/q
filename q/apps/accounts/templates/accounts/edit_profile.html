@@ -5,12 +5,14 @@
 
 {% block content %}
 <div class="book-sidebar">
-		{% gravatar view_user 160 %}
         {% if view_user.first_name %}
         <h1>{{ view_user.first_name }}</h1>
         {% else %}
         <h1>{{ view_user.username }}</h1>
         {% endif %}
+		{% gravatar view_user 160 %}
+        <div>change at <a href="http://www.gravatar.com">gravatar.com</a></div>
+
     </div>
 <div class="book-main">
     <div style="padding: 7px 0"><a href="{% url view_user view_user.username %}">Back To Profile</a></div>
