@@ -59,6 +59,12 @@ def index(request, template_name="ebooks/index.html"):
                               RequestContext(request, ctx))
 
 @login_required
+def activity_stream(request, template_name='ebooks/activity_stream.html'):
+    activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
+                    order_by('-created_at').distinct()[:10]
+    return render_to_response(template_name, RequestContext(request))
+
+@login_required
 def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs):
     """
     Browse books by the specified type.

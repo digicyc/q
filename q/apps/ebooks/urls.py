@@ -15,6 +15,7 @@ urlpatterns = patterns('ebooks.views',
     url(r'^download/(?P<download_key>[\w\d\=]+)/$', 'download_format', name="download_format"),
 
     url(r'^series/(?P<series_slug>[\w\d\-]+)/$', 'books_by_series', name="books_by_series"),
+    url(r'^activity_stream/', 'activity_stream', name='activity_stream'),
 )
 urlpatterns += patterns('ebooks.api',
 
