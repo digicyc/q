@@ -26,6 +26,9 @@
                     {% if request.user.get_profile.is_librarian %}
                     <li><a href="{% url add_book %}">add book</a></li>
                     {% endif %}
+                    {% if request.user.is_staff %}
+                    <li><a href="{% url activity_stream %}">activity stream</a></li>
+                    {% endif %}
 					<li><a href="{% url logout %}">logout</a></li>
 				</ul>
 			</div>
