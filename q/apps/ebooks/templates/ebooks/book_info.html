@@ -64,9 +64,12 @@
                     <h2 class="section-title">My QR Code</h2>
                     <p>
                         <div class="qr-code">
+                        	<img src="{{ my_ownership.qr_url }}" />
+                        {% comment %}
                             <a href="{% url book_checkout my_ownership.key %}">
                                 <img src="{{ my_ownership.qr_url }}" />
                             </a>
+                        {% endcomment %}
                         </div>
                         <div id="i-own-this" style="text-align: right; padding: 7px">
                             <small><a href="#" id="book_{{ book.pk }}">. . . I don't own this.</a></small>
