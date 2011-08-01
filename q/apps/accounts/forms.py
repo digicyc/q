@@ -13,3 +13,15 @@ class EditProfileForm(forms.Form):
     #username = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     kindle_email = forms.EmailField(required=False)
+    
+class InvitationKeyForm(forms.Form):
+	name = forms.CharField(required=True)
+	email = forms.EmailField(required=True)
+	
+class RegistrationForm(forms.Form):
+    name = forms.CharField(required=True)
+    username = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+    password = forms.CharField(widget=forms.PasswordInput, required=True)
+    
+    kindle_email = forms.EmailField(required=False)

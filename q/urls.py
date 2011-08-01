@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
 
-from accounts.views import login, logout
+from accounts.views import login, logout, invited, signup, view_user
 
 admin.autodiscover()
 
@@ -10,13 +10,14 @@ urlpatterns = patterns('',
     (r'^reload_wsgi/', 'q.common.touch_wsgi'),
 
     (r'^books/', include('ebooks.urls')),
-    (r'^users/', include('accounts.urls')),
-                       
+    #(r'^users/', include('accounts.urls')),
+     (r'^account', include('accounts.urls')),                  
     (r'^admin/', include(admin.site.urls)),
     (r'^$', login),
+    url(r'^signup$', signup, name="signup"), 
     url(r'^login/$',  login, name='login'),
     url(r'^logout/$',  logout, name='logout'),
-
+    url(r'^invited/(?P<invitation_key>[\w\d\-]+)$', invited, name='invitation_invited'),
     (r'^comments/', include('django.contrib.comments.urls')),
 )
 
@@ -39,3 +40,9 @@ if settings.DEBUG:
             (r'books/files/(?P<path>.*)$', 'serve',
                  {'document_root': os.path.join(settings.MEDIA_ROOT,'books','files')}),
     )
+
+
+ #view user profiles.
+urlpatterns += patterns('',
+    url(r'(?P<username>[\w\d\-]+)$', view_user, name="view_user"),
+)

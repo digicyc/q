@@ -130,6 +130,10 @@ AUTH_PROFILE_MODULE = 'accounts.userprofile'
 WSGI_RELOAD_KEY = None
 WSGI_RELOAD_PATH = "/home/jason/sites/q.zzq.org/scripts/q.wsgi"
 
+#INVITES
+INVITE_MODE = True
+ACCOUNT_INVITATION_DAYS = 30
+
 LOGIN_URL = LOGIN_REDIRECT_URL="/login/"
 
 try:

@@ -7,6 +7,8 @@ header.main { min-height: 105px; background: url(/images/bg-head-wood.jpg) repea
 	#logo { margin-top: 30px; float: left; }
 	#logo a { border: none; color: inherit; }
 
+h1 a { text-decoration: none; border: none }
+
 	#main-account-details { float: right; margin: 0; background: rgba(0,0,0,.5); padding: 6px; }
 		#main-account-details li {
 			float: left; margin: 0; list-style: none; font: 11px/1em Helvetica, sans-serif;
@@ -343,3 +345,12 @@ input.submit-large {
 		    background-image: -moz-linear-gradient(100% 100% 90deg, #088508, #3bb53b);
 		    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3bb53b), to(#088508));
 	}
+
+
+/* account navigation */
+#account-navigation	{margin: 0; padding: 0;  border-bottom: 1px solid #dedede; overflow: hidden; list-style-type: none }		
+#account-navigation li { float: left; margin: 0 25px; padding-bottom: 5px; }
+#account-navigation li a { text-decoration: none; border-bottom: none }
+#invite-history td {
+    padding: 7px 0; border-bottom: 1px dashed #dedede;
+    }

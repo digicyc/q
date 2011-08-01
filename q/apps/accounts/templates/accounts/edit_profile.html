@@ -4,31 +4,21 @@
 {% block title %}edit profile{% endblock %}
 
 {% block content %}
+
+
 <div class="book-sidebar">
-        {% if view_user.first_name %}
-        <h1>{{ view_user.first_name }}</h1>
-        {% else %}
-        <h1>{{ view_user.username }}</h1>
-        {% endif %}
 		{% gravatar view_user 160 %}
         <div>change at <a href="http://www.gravatar.com">gravatar.com</a></div>
 
     </div>
 <div class="book-main">
-    <div style="padding: 7px 0"><a href="{% url view_user view_user.username %}">Back To Profile</a></div>
+	{% include "accounts/_account_navigation.html" %}
+    
     <h2 class="section-title">Edit Your Profile</h2>
     <form action="" method="post">
         <ul>
             {{ profile_form.as_ul }}
             <li><input type="submit" name="submit" value="Update Profile"/></li>
-        </ul>
-        {% csrf_token %}
-    </form>
-    <h2 class="section-title">Change Your Password</h2>
-    <form action="" method="post">
-        <ul>
-            {{ password_form.as_ul }}
-            <li><input type="submit" name="submit" value="Change Password" /></li>
         </ul>
         {% csrf_token %}
     </form>

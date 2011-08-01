@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -6,6 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 
 from django.contrib.auth.models import User
+from django.contrib.auth.views import password_change
 from django.contrib.auth import (authenticate,
                                 login as auth_login,
                                 logout as auth_logout)
@@ -83,11 +85,37 @@ def login(request, template_name="accounts/login.html"):
     ctx.update({'form':form, 'messages':messages})
     return render_to_response(template_name, RequestContext(request, ctx))
 
+@login_required
+def edit_password(request, template_name="accounts/edit_password.html",  *args, **kwargs):
+    ctx = {}
+    
+    user = request.user
+    username = user.username
+    if request.method == 'POST':
+        form = PasswordChangeForm(user, request.POST)
+        if form.is_valid():
+            if not user.check_password(request.POST['old_password']):
+                messages.error(request, "Wrong password. Password not changed.")
+            elif request.POST['new_password1'] != request.POST['new_password2']:
+                messages.error(request, "Passwords do not match. Password not changed.")
+            else:
+                user.set_password(request.POST['new_password1'])
+                user.save()
+                messages.success(request,"Password changed!")
+    else:
+        form = PasswordChangeForm(user)
+
+    print form
+    ctx.update({'form':form})
+    return render_to_response(template_name, RequestContext(request, ctx))
 
 def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kwargs):
     ctx ={}
     
-    username = kwargs.get('username').lower()
+    
+    user = request.user
+    
+    username = user.username
     
     if username != request.user.username:
         return HttpResponseRedirect(reverse("view_user", kwargs={'username': username}))
@@ -125,6 +153,8 @@ def edit_profile(request, template_name="accounts/edit_profile.html",*args, **kw
                 profile.save()
 
                 messages.success(request, "Profile saved!")
+                
+        # SHOULD REMOVE THIS LOGIC.      
         elif "password" in request.POST['submit'].lower():
             password_form = PasswordChangeForm(user, request.POST)
             if password_form.is_valid():
@@ -145,3 +175,119 @@ def logout(request):
     auth_logout(request)
 
     return HttpResponseRedirect(reverse('login'))
+    
+#INVITATION STUFF
+@login_required
+def manage_invitations(request, template_name="accounts/manage_invites.html",  *args, **kwargs):
+	ctx = {}
+	invitation = ""
+	
+	# get the user.
+	user = request.user
+	profile = user.get_profile()
+	
+	# get remaining invites.
+	remaining_invitations = profile.available_invites
+
+	if request.method == "POST":
+		form = forms.InvitationKeyForm(request.POST)
+		if remaining_invitations > 0 and form.is_valid():
+			# create & deliver invitation.
+			invitation = models.InvitationKey.objects.create_invitation(request.user)
+			#invitation.send_to(form.cleaned_data["email"]
+			
+			#remove invite by 1
+			profile.available_invites = remaining_invitations - 1
+			profile.save()
+	else:
+		form = forms.InvitationKeyForm()
+	
+	# get sent invitations
+	invitations = models.InvitationKey.objects.filter(from_user=user)
+	
+	ctx.update({'form':form, 'invitation':invitation, 'invitations':invitations})
+	return render_to_response(template_name, RequestContext(request, ctx))
+
+
+def signup(request, template_name="accounts/signup.html",  *args, **kwargs):
+	ctx = {}
+	
+	#IS SITE IN INVITE MODE?
+	if not settings.INVITE_MODE:
+		return HttpResponseRedirect(reverse('index'))
+	
+	invitation_key = request.session.get('invitation_key')
+	invitation_key = get_object_or_404(models.InvitationKey, key=invitation_key)
+		
+		
+		
+	if not invitation_key.is_usable():
+		return HttpResponseRedirect(reverse('index'))
+	else:
+		if request.method == "POST":
+			form = forms.RegistrationForm(request.POST)
+			if form.is_valid():
+				
+				user = User()
+				profile = models.UserProfile()
+				
+				split_name = form.cleaned_data['name'].split(" ")
+			
+				if len(split_name) == 2:
+					user.first_name = split_name[0]
+					user.last_name = split_name[1]
+				else:
+					user.first_name = form.cleaned_data['name']
+					user.last_name = ""
+					
+				user.username = form.cleaned_data['username']
+				user.email = form.cleaned_data['email']
+				user.set_password(form.cleaned_data['password'])
+				 
+				user.save()
+				
+				#setup profile.
+				profile.user = user
+				profile.kindle_email = form.cleaned_data['kindle_email']
+				profile.save()
+				
+				#if in invite mode. mark invite used.
+				if getattr(settings, 'INVITE_MODE', True):				
+					# disable invite.
+					invitation_key.mark_used(user)
+					
+					from_user = invitation_key.from_user
+					from_user_profile = from_user.get_profile()
+					from_user_profile.available_invites = from_user_profile.available_invites - 1
+					from_user_profile.save()
+					
+					del request.session['invitation_key']
+				
+				#redirect
+				return HttpResponseRedirect(reverse('login'))
+		else:
+			form = forms.RegistrationForm()
+		
+		ctx.update({'form':form})
+	
+	
+	
+	#push out to page
+	return render_to_response(template_name, RequestContext(request, ctx))
+
+def invited(request, template_name="accounts/invited.html",  *args, **kwargs):
+	ctx = {}
+	if getattr(settings, 'INVITE_MODE', True):	
+		#get invite key and check if valid.
+		invitation_key =  kwargs.get('invitation_key')
+		is_key_valid = models.InvitationKey.objects.is_key_valid(invitation_key)
+	
+		#set session cookie to allow registering
+		request.session['invitation_key'] = invitation_key
+	
+		#boot if not valid.
+		if not is_key_valid:
+			return HttpResponseRedirect(reverse('index'))
+		return render_to_response(template_name, RequestContext(request, ctx))
+	return HttpResponseRedirect(reverse('index'))
+
