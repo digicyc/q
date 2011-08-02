@@ -188,24 +188,41 @@ def manage_invitations(request, template_name="accounts/manage_invites.html",  *
 	
 	# get remaining invites.
 	remaining_invitations = profile.available_invites
-
+	
+	# form setup
+	form = forms.InvitationKeyForm()
+	
+	# get all users for invite distribution
+	users = User.objects.all()
+	invite_distribution_form = forms.InvitationDistributionForm(users=users)
+	
 	if request.method == "POST":
-		form = forms.InvitationKeyForm(request.POST)
-		if remaining_invitations > 0 and form.is_valid():
-			# create & deliver invitation.
-			invitation = models.InvitationKey.objects.create_invitation(request.user)
-			#invitation.send_to(form.cleaned_data["email"]
-			
-			#remove invite by 1
-			profile.available_invites = remaining_invitations - 1
-			profile.save()
-	else:
-		form = forms.InvitationKeyForm()
+		if 'distribute' in request.POST['submit'].lower():
+			invite_distribution_form = forms.InvitationDistributionForm(request.POST, users=users)
+			if invite_distribution_form.is_valid():
+				distribute_to = User.objects.get(id=invite_distribution_form.cleaned_data["to_who"])
+				distribute_to_profile = distribute_to.get_profile()
+				
+				distribute_to_profile.available_invites += invite_distribution_form.cleaned_data["number_of_invites"]
+				distribute_to_profile.save()
+	
+		else:
+			form = forms.InvitationKeyForm(request.POST)
+			if remaining_invitations > 0 and form.is_valid():
+				# create & deliver invitation.
+				invitation = models.InvitationKey.objects.create_invitation(request.user)
+				#invitation.send_to(form.cleaned_data["email"]
+				
+				#remove invite by 1
+				profile.available_invites = remaining_invitations - 1
+				profile.save()
+
 	
 	# get sent invitations
 	invitations = models.InvitationKey.objects.filter(from_user=user)
 	
-	ctx.update({'form':form, 'invitation':invitation, 'invitations':invitations})
+	ctx.update({'form':form, 'invite_distribution_form': invite_distribution_form, 
+				'users':users, 'invitation':invitation, 'invitations':invitations})
 	return render_to_response(template_name, RequestContext(request, ctx))
 
 

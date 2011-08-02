@@ -25,3 +25,19 @@ class RegistrationForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     
     kindle_email = forms.EmailField(required=False)
+    
+class InvitationDistributionForm(forms.Form):
+	
+	number_of_invites = forms.IntegerField(label=_('Number of Invites'),)
+	to_who = forms.ChoiceField(label=_('To'))
+    
+
+	def __init__(self, *args, **kwargs):
+		if kwargs.has_key('users'):
+			users = kwargs.pop('users')
+		else:
+			users =(None, None)
+
+		super(InvitationDistributionForm, self).__init__(*args, **kwargs)
+
+		self.fields['to_who'].choices = [(u.id, u.username) for u in users]

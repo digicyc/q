@@ -12,6 +12,16 @@
 
 	{% include "accounts/_account_navigation.html" %}
 	
+	{% if user.is_staff %}
+	<h2 class="section-title">Invitation Distribution</h2>
+	<form action="" method="POST">
+		<ul>
+		{{ invite_distribution_form.as_ul }}
+		<li>{% csrf_token %}<input type="submit" name="submit" value="distribute" /></li>
+		</ul>
+	</form>
+	</p>
+	{% endif %}
 	 <h2 class="section-title">Invite Your Friends</h2>
 	{% if user.get_profile.available_invites %}
 	<p>You have {{ user.get_profile.available_invites }} invitation{{ user.get_profile.available_invites|pluralize }}</p>
@@ -19,7 +29,7 @@
 	<form action="" method="POST">
 		<ul>
 			{{ form.as_ul }}
-			<li>{% csrf_token %}<input type="submit" /></li>
+			<li>{% csrf_token %}<input name="submit" value="invite" type="submit" /></li>
 		</ul>
 	</form>
 	
