@@ -1,0 +1,22 @@
+{% load gravatar %}
+{% load url from future %}
+<div class="activity-checkin">
+    <div class="activity-ico"></div>
+    <div class="activity-avatar" style="margin: 0; float: left">{% gravatar activity_item.actor 35 %}</div>
+    <div style="float: left; padding: 13px 7px 0 7px; ">⇉</div>
+    <div class="activity-avatar" style="float: left">{% gravatar activity_item.first_subject.content_object.registrant 35 %}</div>
+    
+    <div class="activity-details">
+        {{ activity_item.created_at }}<br/>
+    	<a href="{% url "view_user" activity_item.actor.username %}">
+    		{{ activity_item.actor.username }}
+    	</a> 
+        <strong>invited</strong>
+        <a href="{% url "view_user" activity_item.first_subject.content_object.registrant  %}">
+  			{{ activity_item.first_subject.content_object.registrant }}
+  		</a> to the book club!
+  		
+  		
+  		
+    </div>
+</div>

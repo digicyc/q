@@ -18,6 +18,8 @@ from q.common import reverse_lazy
 from accounts import forms, models
 from ebooks.models import CheckOut, Ownership
 
+from activity_stream.models import create_activity_item
+
 @user_passes_test(lambda u: u.is_staff, reverse_lazy('admin_required'))
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}
@@ -279,6 +281,8 @@ def signup(request, template_name="accounts/signup.html",  *args, **kwargs):
 					from_user_profile.save()
 					
 					del request.session['invitation_key']
+					
+					create_activity_item('invited', request.user, invitation_key)
 				
 				#redirect
 				return HttpResponseRedirect(reverse('login'))
