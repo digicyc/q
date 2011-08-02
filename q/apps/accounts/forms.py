@@ -1,5 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _ 
+from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=_('Your Username'))
@@ -25,6 +26,19 @@ class RegistrationForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     
     kindle_email = forms.EmailField(required=False)
+    
+    def clean_username(self):
+        print "PRINT CLEAN"
+        username = self.cleaned_data['username']
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return username
+
+        raise forms.ValidationError(u'Username "%s" already exists.' % username )
+
+
+    
     
 class InvitationDistributionForm(forms.Form):
 	
