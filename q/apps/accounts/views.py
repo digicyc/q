@@ -213,7 +213,7 @@ def manage_invitations(request, template_name="accounts/manage_invites.html",  *
 			if remaining_invitations > 0 and form.is_valid():
 				# create & deliver invitation.
 				invitation = models.InvitationKey.objects.create_invitation(request.user)
-				#invitation.send_to(form.cleaned_data["email"]
+				invitation.send_to(form.cleaned_data["email"])
 				
 				#remove invite by 1
 				profile.available_invites = remaining_invitations - 1

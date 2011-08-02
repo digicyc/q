@@ -9,6 +9,9 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.hashcompat import sha_constructor
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.contrib.sites.models import Site
 
 from ebooks.models import FORMAT_CHOICES, Book, Format
 
@@ -97,3 +100,17 @@ class InvitationKey(models.Model):
 	def mark_used(self, registrant):
 		self.registrant = registrant
 		self.save()
+	
+	def send_to(self, email):
+		current_site = Site.objects.get_current()
+		subject = render_to_string('accounts/invitation_email_subject.txt',
+									{ 'site': current_site,
+									'invitation_key': self })
+		subject = ''.join(subject.splitlines())
+		
+		message = message = render_to_string('accounts/invitation_email.txt',
+											{ 'invitation_key': self,
+											'expiration_days': settings.ACCOUNT_INVITATION_DAYS,
+											'site': current_site })
+    
+		send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])

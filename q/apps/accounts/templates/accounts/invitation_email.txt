@@ -1,0 +1,19 @@
+Hello.
+
+You've been invited by @{{ invitation_key.from_user.username }} to join {{ site.name }}.
+
+http://{{site.domain}}{% url invitation_invited invitation_key=invitation_key.key %}
+
+This invite will expire in {{ expiration_days }} day{{ expiration_days|pluralize }}.
+
+Love,
+
+The {{ site.name }} Team
+
+=======================================
+
+"A dinner invitation, once accepted, 
+is a sacred obligation. If you die 
+before the dinner takes place, your 
+executor must attend."
+
