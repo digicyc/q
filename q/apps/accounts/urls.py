@@ -11,7 +11,7 @@ urlpatterns = patterns('accounts.views',
     url(r'^invitations/$', 'manage_invitations', name="manage_invitations"),
     url(r'^list/$', 'view_user_list', name="view_user_list"),
 
-    url(r'(?P<username>[\w\d\-]+)/$', view_user, name="view_user"),
+    url(r'(?P<username>[\w\d\-]+)/$', 'view_user', name="view_user"),
 )
 
 

@@ -2,8 +2,6 @@ from django.conf.urls.defaults import *
 from django.conf import settings
 from django.contrib import admin
 
-from accounts.views import login, logout, invited, signup, view_user
-
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -14,12 +12,13 @@ urlpatterns = patterns('',
     (r'^accounts/', include('accounts.urls')),                  
     (r'^admin/', include(admin.site.urls)),
     (r'^comments/', include('django.contrib.comments.urls')),
-
-    (r'^$', login),
-    url(r'^signup$', signup, name="signup"), 
-    url(r'^login/$',  login, name='login'),
-    url(r'^logout/$',  logout, name='logout'),
-    url(r'^invited/(?P<invitation_key>[\w\d\-]+)$', invited, name='invitation_invited'),
+)
+urlpatterns += patterns('accounts.views',
+    (r'^$', 'login'),
+    url(r'^signup/$', 'signup', name="signup"), 
+    url(r'^login/$',  'login', name='login'),
+    url(r'^logout/$',  'logout', name='logout'),
+    url(r'^invited/(?P<invitation_key>[\w\d\-]+)/$', 'invited', name='invitation_invited'),
 )
 
 if settings.DEBUG:
