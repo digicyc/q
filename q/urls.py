@@ -10,8 +10,8 @@ urlpatterns = patterns('',
     (r'^reload_wsgi/', 'q.common.touch_wsgi'),
 
     (r'^books/', include('ebooks.urls')),
-    (r'^users/', include('accounts.urls')),
-    #(r'^account', include('accounts.urls')),                  
+    #(r'^users/', include('accounts.urls')),
+    (r'^accounts/', include('accounts.urls')),                  
     (r'^admin/', include(admin.site.urls)),
     (r'^comments/', include('django.contrib.comments.urls')),
 
@@ -43,7 +43,7 @@ if settings.DEBUG:
     )
 
 
- #view user profiles.
-urlpatterns += patterns('',
-    url(r'(?P<username>[\w\d\-]+)$', view_user, name="view_user"),
-)
+#view user profiles.
+#urlpatterns += patterns('',
+#    url(r'(?P<username>[\w\d\-]+)$', view_user, name="view_user"),
+#)
