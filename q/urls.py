@@ -10,15 +10,16 @@ urlpatterns = patterns('',
     (r'^reload_wsgi/', 'q.common.touch_wsgi'),
 
     (r'^books/', include('ebooks.urls')),
-    #(r'^users/', include('accounts.urls')),
-     (r'^account', include('accounts.urls')),                  
+    (r'^users/', include('accounts.urls')),
+    #(r'^account', include('accounts.urls')),                  
     (r'^admin/', include(admin.site.urls)),
+    (r'^comments/', include('django.contrib.comments.urls')),
+
     (r'^$', login),
     url(r'^signup$', signup, name="signup"), 
     url(r'^login/$',  login, name='login'),
     url(r'^logout/$',  logout, name='logout'),
     url(r'^invited/(?P<invitation_key>[\w\d\-]+)$', invited, name='invitation_invited'),
-    (r'^comments/', include('django.contrib.comments.urls')),
 )
 
 if settings.DEBUG:
