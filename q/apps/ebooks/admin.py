@@ -52,12 +52,15 @@ class OwnershipAdmin(admin.ModelAdmin):
 
         return instance
 
+class ReadAdmin(admin.ModelAdmin):
+    pass
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Book, BookAdmin)
 admin.site.register(models.Series, SeriesAdmin)
 admin.site.register(models.Format, FormatAdmin)
 admin.site.register(models.Author, AuthorAdmin)
+admin.site.register(models.Read, ReadAdmin)
 
 admin.site.register(models.CheckOut, CheckOutAdmin)
 admin.site.register(models.Ownership, OwnershipAdmin)

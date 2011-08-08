@@ -14,6 +14,10 @@ $(document).ready(function(){
       QK.toggle_verify_on_book(this);
       return false;
     });
+    $('.ive-read-this').live('change', function(){
+      QK.toggle_read_book(this);
+      return false;
+    });
     
 });
 
@@ -61,6 +65,16 @@ var QKinderHook = function(){ this.init.apply(this, arguments); }
             'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
             'format_id': obj.id,
             'is_verified': obj.checked
+          });
+        },
+        toggle_read_book: function(obj)
+        {
+          var self = this;
+          $.post('/books/api/toggle_read/',
+          {
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            'book_id': obj.id,
+            'is_read': obj.checked
           });
         },
         manage_ownership : function(obj)

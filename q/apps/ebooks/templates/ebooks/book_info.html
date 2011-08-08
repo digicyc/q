@@ -32,7 +32,7 @@
                 {% endif %}
 			</figure>
 
-            <input type="checkbox" class="ive-read-this" id="{{ book.id }}">I've read this<br><br>
+            <input type="checkbox" class="ive-read-this" id="{{ book.id }}"{% if has_req_user_read %} checked{% endif %}>I've read this<br><br>
 
             metarating: {{ book.metarating }}<br>
             q rating: {{ book.rating }} (? votes)<p>

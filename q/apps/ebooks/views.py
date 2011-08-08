@@ -164,6 +164,13 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
                 create_activity_item('upload', request.user, format)
 
 
+    # see if the logged in user has read this book to display the check
+    try:
+        models.Read.objects.get(user=request.user, book=book)
+        has_req_user_read = True
+    except models.Read.DoesNotExist:
+        has_req_user_read = False
+
     checkouts = models.CheckOut.objects.filter(book__book=book).order_by('-create_time')
     format_form = forms.UploadFormatForm()
 
@@ -179,6 +186,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
             'my_ownership': my_ownership,
             'format_form': format_form,
             'error': error,
+            'has_req_user_read': has_req_user_read,
         }
     )
 

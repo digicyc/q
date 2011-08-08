@@ -144,9 +144,48 @@ def toggle_verify(request):
             verified = not format.verified
 
         if not response_dict['error']:
-            format.verified = bool(verified)
+            format.verified = verified
             format.save()
             response_dict['msg'] = "Success!"
+
+    else:
+        response_dict['error'] = True
+        response_dict['msg'] = "Expecting POST data"
+
+    return HttpResponse(simplejson.dumps(response_dict),
+                        mimetype='applicaiton/json')
+
+def toggle_ive_read(request):
+    response_dict = dict()
+    response_dict['error'] = False
+
+    if request.method == "POST":
+        from ebooks.models import Book, Read
+
+        if request.POST.has_key('book_id'):
+            book = None
+            try:
+                book = Book.objects.get(pk=request.POST['book_id'])
+            except Book.DoesNotExist:
+                response_dict['error'] = True
+                response_dict['msg'] = "Unable to find book with given id"
+        else:
+            response_dict['error'] = True
+            response_dict['msg'] = "Missing book_id parameter"
+
+        try:
+            has_read = Read.objects.get(user=request.user, book=book)
+        except Read.DoesNotExist:
+            has_read = None
+
+        if not response_dict['error'] and has_read is None:
+            new_read_obj = Read()
+            new_read_obj.user = request.user
+            new_read_obj.book = book
+            new_read_obj.save()
+            response_dict['msg'] = "Success!"
+        elif not response_dict['error'] and has_read is not None:
+            has_read.delete()
 
     else:
         response_dict['error'] = True

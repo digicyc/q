@@ -25,6 +25,7 @@ urlpatterns += patterns('ebooks.api',
     url(r'^api/get_tags/$', 'get_tags', name="get_tags"),
     url(r'^api/i_own_this_book/$', 'i_own_this_book', name="i_own_this_book"),
     url(r'^api/toggle_verify', 'toggle_verify', name='toggle_verify'),
+    url(r'^api/toggle_read', 'toggle_ive_read', name='toggle_read'),
     url(r'^api/rate/(?P<object_id>\d+)/(?P<score>\d+)/', AddRatingFromModel(), {
         'app_label': 'ebooks',
         'model': 'read',

@@ -277,7 +277,7 @@ class Read(models.Model):
     book = models.ForeignKey(Book)
     user = models.ForeignKey(User)
     rating = RatingField(range=5, can_change_vote=True)
-    date_read = models.DateField(blank=True)
+    date_read = models.DateField(default='1970-01-01')
     create_time = models.DateTimeField(auto_now_add=True)
     update_time = models.DateTimeField(auto_now=True)
 
