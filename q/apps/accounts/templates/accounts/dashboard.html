@@ -37,9 +37,9 @@
 	            <li>
 	                <a href="{% url book_info rbook.book.slug %}">
 	                {% if rbook.book.cover %}
-						<img src="{{ rbook.book.cover.url }}" height="100" />
+						<img src="{{ rbook.book.cover.url }}" height="100" alt="{{ rbook.book.title }}" title="{{ rbook.book.title }}" />
 					{% else %}
-						<img src="/images/book-no-cover.png" height="100" />
+						<img src="/images/book-no-cover.png" height="100" alt="{{ rbook.book.title }}" title="{{ rbook.book.title }}" />
 					{% endif %}
 					</a>
 				</li>
