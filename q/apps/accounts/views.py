@@ -16,7 +16,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from q.common import reverse_lazy
 
 from accounts import forms, models
-from ebooks.models import CheckOut, Ownership
+from ebooks.models import CheckOut, Ownership, Read
 
 from activity_stream.models import create_activity_item
 
@@ -39,15 +39,13 @@ def view_user(request, template_name="accounts/dashboard.html",  *args, **kwargs
     
     if username == request.user.username:
         can_edit = True
-        
-    current_checkouts = CheckOut.objects.filter(user=view_user).filter(check_in_time=None)
-    checkout_history = CheckOut.objects.filter(user=view_user).order_by('-create_time')[:10]
+
     books_owned = Ownership.objects.filter(user=view_user)
+    read_books = Read.objects.filter(user=view_user)
 
     ctx.update({'view_user': view_user,
                 'can_edit':can_edit,
-                'current_checkouts':current_checkouts,
-                'checkout_history':checkout_history,
+                'read_books':read_books,
                 'books_owned': books_owned,
                 })
     return render_to_response(template_name, RequestContext(request, ctx))

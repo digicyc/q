@@ -30,54 +30,14 @@
          <ul id="activity-stream">
         {% users_activity_stream view_user 5 %}
         </ul>
-        <h2 class="section-title">Books Checked Out</h2>
-        {% if current_checkouts %}
-			<ul class="current-checkouts">
-				{% for checkout in current_checkouts %}
-				<li class="book">
-					<figure class="cover">
-					{% if checkout.book.book.slug %}
-						<a href="{% url book_info checkout.book.book.slug %}">
-					{% else %}
-						<a href="/">
-					{% endif %}
 
-					{% if checkout.book.book.cover %}
-						<img src="{{ checkout.book.book.cover.url }}" width="110" />
-					{% else %}
-						<img src="/images/book-no-cover.png" width="110" />
-					{% endif %}
-						</a>
-					</figure>
-
-					<div class="book-summary">
-						<h3>{{ checkout.book.book.title }}</h3>
-
-						<ul class="byline">
-							<li class="title">written by:</li>
-			                {% for author in checkout.book.book.authors.all %}
-		                    <li>{{ author }}</li>
-			                {% endfor %}
-						</ul>
-						<hr />
-						<p>This copy belongs to <a href="{% url view_user checkout.book.user %}">{{ checkout.book.user }}</a></p>
-                        <p>Notes: {{ checkout.notes }}</p>
-					</div>
-				</li>
-				{% endfor %}
-			</ul>
-		{% else %}
-			<p>{{ view_user.username }} has no books currently checked out.</p>
-        {% endif %}
-
-		<h2 class="section-title">Checkout History</h2>
-        {% if checkout_history %}
+		<h2 class="section-title">Books I've Read</h2>
 			<ul class="checkout-history">
-	            {% for checkout in checkout_history %}
+	            {% for rbook in read_books %}
 	            <li>
-	                <a href="{% url book_info checkout.book.book.slug %}">
-	                {% if checkout.book.book.cover %}
-						<img src="{{ checkout.book.book.cover.url }}" height="100" />
+	                <a href="{% url book_info rbook.book.slug %}">
+	                {% if rbook.book.cover %}
+						<img src="{{ rbook.book.cover.url }}" height="100" />
 					{% else %}
 						<img src="/images/book-no-cover.png" height="100" />
 					{% endif %}
@@ -85,9 +45,6 @@
 				</li>
 	            {% endfor %}
 	        </ul>
-		{% else %}
-        	<p>{{ view_user.username }} has no checkout history.</p>
-        {% endif %}
 
         <h2 class="section-title">Books Owned</h2>
         {% if books_owned %}
