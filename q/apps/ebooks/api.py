@@ -113,3 +113,44 @@ def i_own_this_book(request):
         response_dict['ownership'] = {'key': ownership.key, 'qr_code':ownership.qr_url}
     
     return HttpResponse(simplejson.dumps(response_dict), mimetype='application/json')
+
+@login_required
+def toggle_verify(request):
+    response_dict = dict()
+    response_dict['error'] = False
+    
+    if request.method == "POST":
+        format = None
+
+        if request.POST.has_key('format_id'):
+            from ebooks.models import Format
+            try:
+                format = Format.objects.get(pk=request.POST['format_id'])
+            except Format.DoesNotExist:
+                response_dict['error'] = True
+                response_dict['msg'] = "Cannot find format for book."
+
+        else:
+            resonse_dict['error'] = True
+            response_dict['msg'] = "Missing format_id paramter"
+            
+        if request.POST.has_key('is_verified'):
+            verified = request.POST['is_verified']
+            if verified.lower() == "true":
+                verified = True
+            else:
+                verified = False
+        else:
+            verified = not format.verified
+
+        if not response_dict['error']:
+            format.verified = bool(verified)
+            format.save()
+            response_dict['msg'] = "Success!"
+
+    else:
+        response_dict['error'] = True
+        response_dict['msg'] = "Expecting POST data"
+
+    return HttpResponse(simplejson.dumps(response_dict),
+                        mimetype='applicaiton/json')

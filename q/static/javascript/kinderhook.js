@@ -7,9 +7,12 @@ $(document).ready(function(){
     });
     
     $('.thread-reply-btn').live('click', function(){
-        console.debug('here')
         QK.reply_to_comment(this);
         return false;
+    });
+    $('.verify-toggle').live('change', function(){
+      QK.toggle_verify_on_book(this);
+      return false;
     });
     
 });
@@ -49,6 +52,16 @@ var QKinderHook = function(){ this.init.apply(this, arguments); }
             
             self.last_comment_form = '#reply-'+comment_id;
             
+        },
+        toggle_verify_on_book: function(obj)
+        {
+          var self = this;
+          $.post('/books/api/toggle_verify/',
+          {
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+            'format_id': obj.id,
+            'is_verified': obj.checked
+          });
         },
         manage_ownership : function(obj)
         {

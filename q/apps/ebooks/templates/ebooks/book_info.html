@@ -52,8 +52,9 @@
             {% if book.formats|length > 0 %}
 			<h2 class="section-title">Formats</h2>
 			<ul class="formats">
+                {% csrf_token %}
 				{% for format in book.formats %}
-					<li class="{{ format.format }}"><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
+					<li class="{{ format.format }}"><a href="{% url download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
 				{% endfor %}
 			</ul>
             {% endif %}
