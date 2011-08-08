@@ -27,7 +27,7 @@ urlpatterns += patterns('ebooks.api',
     url(r'^api/toggle_verify', 'toggle_verify', name='toggle_verify'),
     url(r'^api/rate/(?P<object_id>\d+)/(?P<score>\d+)/', AddRatingFromModel(), {
         'app_label': 'ebooks',
-        'model': 'book',
+        'model': 'read',
         'field_name': 'rating',
     }, name="rate_book"),
 )

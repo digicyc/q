@@ -17,7 +17,7 @@
 {% block body_class %} class="page-view"{% endblock %}
 {% block content %}
 	{% if book %}
-        {% rating_by_user request.user on book.rating as vote %}
+        {% rating_by_user request.user on read.rating as vote %}
 
 		<div class="book-sidebar">
 			<figure class="cover">
@@ -32,11 +32,14 @@
                 {% endif %}
 			</figure>
 
-            {# metarating: {{ book.metarating }}<br> #}
-            rating: {{ book.rating.score }} ({{book.rating.votes}} votes)<p>
+            <input type="checkbox" class="ive-read-this" id="{{ book.id }}">I've read this<br><br>
+
+            metarating: {{ book.metarating }}<br>
+            q rating: {{ book.rating }} (? votes)<p>
             {% num_range 5 as vote_range %}
-            {% rating_by_request request on book.rating as vote %}
-            my rating: {% for x in vote_range %}<a href="{% url rate_book book.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br>
+            {% rating_by_request request on read.rating as vote %}
+            my rating:<br>
+            {# my rating: {% for x in vote_range %}<a href="{% url rate_book book.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br> #}
 
 
             {% if request.user.get_profile.is_librarian %}

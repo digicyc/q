@@ -92,10 +92,9 @@ class Series(models.Model):
 
 class Book(models.Model):
     title = models.CharField(db_index=True, max_length=100)
-    # m2m in the future
     authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField(default=0.0)
-    rating = RatingField(range=5, can_change_vote=True)
+    rating = models.FloatField(default=0.0)
     tags = TagField()
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
@@ -274,6 +273,16 @@ class CheckOut(models.Model):
     def __str__(self):
         return "%s" % (self.user.username)
 
+class Read(models.Model):
+    book = models.ForeignKey(Book)
+    user = models.ForeignKey(User)
+    rating = RatingField(range=5, can_change_vote=True)
+    date_read = models.DateField(blank=True)
+    create_time = models.DateTimeField(auto_now_add=True)
+    update_time = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "book"))
 
 #SOUTH RULES
 from south.modelsinspector import add_introspection_rules
