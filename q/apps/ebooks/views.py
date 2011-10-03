@@ -1,5 +1,5 @@
-import os
 import os.path
+import re
 import urllib2
 from tempfile import NamedTemporaryFile
 from base64 import b64decode
@@ -254,7 +254,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         return HttpResponseRedirect(reverse(book_info, kwargs={'book_slug': book.slug}))
 
     if request.POST.has_key("isbn") and isbn is None:
-        isbn = request.POST['isbn']
+        isbn = re.sub("\D", "", request.POST['isbn'])
 
     if isbn:
         from gdata.books import BookFeed
