@@ -8,7 +8,7 @@
     		{{ activity_item.actor.username }}
     	</a>
     	<strong>commented on </strong>
-    	<a href="{% url book_info activity_item.first_subject.content_object.get_object_commented_on.slug %}">{{ activity_item.first_subject.content_object.get_object_commented_on }}</a>
+    	<a href="{% url book_info activity_item.first_subject.content_object.content_object.slug %}">{{ activity_item.first_subject.content_object.content_object }}</a>
     	<blockquote>
     	    "{{ activity_item.first_subject.content_object.comment }}"
     	</blockquote>
