@@ -5,3 +5,7 @@ local_settings.py
 *.db
 .DS_Store
 *.vim
+/.settings
+/.externalToolBuilders
+/.project
+/.pydevproject
