@@ -11,7 +11,7 @@
 	<h2 class="section-title">Recent Activity</h2>
     <ul id="activity-stream">
     {% for activity_item in activity_stream %}
-        <li>{{ activity_item.render }}</li>
+        <li>{% render_activity activity_item %}</li>
     {% endfor %}
     </ul>
 {% endblock %}
