@@ -29,6 +29,8 @@
                     {% if request.user.is_staff %}
                     <li><a href="{% url activity_stream %}">activity stream</a></li>
                     {% endif %}
+                    <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
+                    <li><a href="http://git.twi.gs/q/">get the code</a></li>
 					<li><a href="{% url logout %}">logout</a></li>
 				</ul>
 			</div>
