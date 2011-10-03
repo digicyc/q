@@ -161,9 +161,13 @@ class Book(models.Model):
         gbook = GBook.FromString(volume_xml)
 
         #thumbnail_link = gbook.GetThumbnailLink().href
-        cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
-        self.temp_cover_url = cover_link
-
+        cover_link = ""
+        try:
+            cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
+            self.temp_cover_url = cover_link
+        except AttributeError, e:
+            pass
+        
         if self.title == "":
             self.title = gbook.title.text
 
@@ -203,7 +207,7 @@ class Book(models.Model):
                     self.gid = id
 
 
-        if self.cover is None or self.cover == "" and save_cover:
+        if cover_link and self.cover is None or self.cover == "" and save_cover:
             headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
             f = NamedTemporaryFile(delete=False)
             f.write(urllib2.urlopen(urllib2.Request(cover_link, headers=headers)).read())
