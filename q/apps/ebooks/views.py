@@ -333,7 +333,7 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
-
+@login_required
 def view_tag(request, template_name="ebooks/view_tag.html", *args, **kwargs):
     ctx = {}
 
