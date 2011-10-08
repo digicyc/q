@@ -16,9 +16,9 @@ class EditProfileForm(forms.Form):
     kindle_email = forms.EmailField(required=False)
     
 class InvitationKeyForm(forms.Form):
-	name = forms.CharField(required=True)
-	email = forms.EmailField(required=True)
-	
+    name = forms.CharField(required=True)
+    email = forms.EmailField(required=True)
+
 class RegistrationForm(forms.Form):
     name = forms.CharField(required=True)
     username = forms.CharField(required=True)
@@ -28,12 +28,11 @@ class RegistrationForm(forms.Form):
     kindle_email = forms.EmailField(required=False)
     
     def clean_username(self):
-        print "PRINT CLEAN"
         username = self.cleaned_data['username']
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return username
+        #try:
+        #    user = User.objects.get(username=username)
+        #except User.DoesNotExist:
+        #    return username
 
         raise forms.ValidationError(u'Username "%s" already exists.' % username )
 
