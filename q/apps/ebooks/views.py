@@ -381,3 +381,9 @@ def books_missing_tags(request):
     books = models.Book.objects.filter(id__in=book_ids)
     
     return render_to_response('ebooks/contribute/by_tags.html', RequestContext(request, {'books':books}))
+
+@login_required
+def books_missing_covers(request):
+    books = models.Book.objects.filter(cover='')
+    
+    return render_to_response('ebooks/contribute/by_tags.html', RequestContext(request, {'books': books}))
