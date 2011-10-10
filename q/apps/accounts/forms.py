@@ -29,10 +29,10 @@ class RegistrationForm(forms.Form):
     
     def clean_username(self):
         username = self.cleaned_data['username']
-        #try:
-        #    user = User.objects.get(username=username)
-        #except User.DoesNotExist:
-        #    return username
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return username
 
         raise forms.ValidationError(u'Username "%s" already exists.' % username )
 
