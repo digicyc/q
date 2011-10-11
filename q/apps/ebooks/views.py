@@ -7,6 +7,7 @@ from datetime import datetime
 
 from django.core.files import File
 from django.db.models import Q
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -205,6 +206,13 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     book_form = BookForm()
 
     if request.POST.has_key('title'):
+        book = models.Book.objects.get(isbn13=request.POST['isbn13'])
+        if book is not None:
+            messages.error(request, "You are trying to add a duplicate book.")
+        ctx.update({'book_form': BookForm(request.POST)})
+        return render_to_response(template_name,
+                              RequestContext(request, ctx))
+        
         book.title = request.POST['title']
         book.tags = request.POST['tags']
         book.isbn10 = request.POST['isbn10']
@@ -283,7 +291,11 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
              'metarating': book.metarating,
              }
         )
-
+        # Dupe check
+        book = models.Book.objects.get(isbn13=book.isbn13)
+        if book is not None:
+            messages.error(request, "You are trying to add a duplicate book.")
+            
     ctx.update({'book': book, 'book_form': book_form})
     return render_to_response(template_name,
                               RequestContext(request, ctx))
