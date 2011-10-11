@@ -367,20 +367,13 @@ def download_format(request, *args, **kwargs):
 
 @login_required
 def books_missing_tags(request):
-    from django.db.models import Count
-    from django.contrib.contenttypes.models import ContentType
-    from tagging.models import TaggedItem
+    books = models.Book.objects.all()
+    untagged_books=[]
+    for book in books:
+        if len(book.tags) < 4:
+            untagged_books.append(book)
     
-    book_ct_id = ContentType.objects.filter(app_label='ebooks').filter(model='book')[0].id    
-    books_dicts = TaggedItem.objects.values('object_id').annotate(tag_count=Count('tag')).filter(content_type=book_ct_id).filter(tag_count__lte=3).order_by()
-    
-    book_ids = []
-    for book_ti in books_dicts:
-        book_ids.append(book_ti['tag_count'])
-    
-    books = models.Book.objects.filter(id__in=book_ids)
-    
-    return render_to_response('ebooks/contribute/by_tags.html', RequestContext(request, {'books':books}))
+    return render_to_response('ebooks/contribute/by_tags.html', RequestContext(request, {'books':untagged_books}))
 
 @login_required
 def books_missing_covers(request):

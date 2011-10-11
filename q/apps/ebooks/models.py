@@ -2,6 +2,7 @@ import os
 import os.path
 from hashlib import sha256 as sha
 
+import tagging
 from tagging.fields import TagField
 from djangoratings.fields import RatingField
 
@@ -95,7 +96,7 @@ class Book(models.Model):
     authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField(default=0.0)
     rating = models.FloatField(default=0.0)
-    tags = TagField()
+    #tags = TagField()
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
@@ -229,6 +230,7 @@ class Book(models.Model):
             self.slug = slugify(self.title)
 
         super(Book, self).save()
+tagging.register(Book)
 
 class Format(models.Model):
     ebook = models.ForeignKey(Book, db_index=True)
