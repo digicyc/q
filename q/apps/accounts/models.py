@@ -24,7 +24,7 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, unique=True)
     kindle_email = models.EmailField(blank=True, default="")
     available_invites = models.IntegerField(default=0)
-	
+    
     def _get_librarian(self):
         return bool(self.user.groups.filter(name='Librarian'))
     is_librarian = property(_get_librarian)
@@ -76,41 +76,41 @@ class InvitationKeyManager(models.Manager):
 
 
 class InvitationKey(models.Model):
-	key = models.CharField(_('invitation key'), max_length=40)
-	date_invited = models.DateTimeField(_('date invited'), 
+    key = models.CharField(_('invitation key'), max_length=40)
+    date_invited = models.DateTimeField(_('date invited'), 
                                         default=datetime.datetime.now)
-	from_user = models.ForeignKey(User, 
+    from_user = models.ForeignKey(User, 
                                   related_name='invitations_sent')
-	registrant = models.ForeignKey(User, null=True, blank=True, 
+    registrant = models.ForeignKey(User, null=True, blank=True, 
                                   related_name='invitations_used')
     
-	objects = InvitationKeyManager()
+    objects = InvitationKeyManager()
     
-	def __unicode__(self):
-		return u"Invitation from %s on %s" % (self.from_user.username, self.date_invited)
+    def __unicode__(self):
+        return u"Invitation from %s on %s" % (self.from_user.username, self.date_invited)
     
-	def is_usable(self):
-		return self.registrant is None and not self.key_expired()
+    def is_usable(self):
+        return self.registrant is None and not self.key_expired()
     
-	def key_expired(self):
-		expiration_date = datetime.timedelta(days=settings.ACCOUNT_INVITATION_DAYS)
-		return self.date_invited + expiration_date <= datetime.datetime.now()
-	key_expired.boolean = True
+    def key_expired(self):
+        expiration_date = datetime.timedelta(days=settings.ACCOUNT_INVITATION_DAYS)
+        return self.date_invited + expiration_date <= datetime.datetime.now()
+    key_expired.boolean = True
     
-	def mark_used(self, registrant):
-		self.registrant = registrant
-		self.save()
-	
-	def send_to(self, email):
-		current_site = Site.objects.get_current()
-		subject = render_to_string('accounts/invitation_email_subject.txt',
-									{ 'site': current_site,
-									'invitation_key': self })
-		subject = ''.join(subject.splitlines())
-		
-		message = message = render_to_string('accounts/invitation_email.txt',
-											{ 'invitation_key': self,
-											'expiration_days': settings.ACCOUNT_INVITATION_DAYS,
-											'site': current_site })
+    def mark_used(self, registrant):
+        self.registrant = registrant
+        self.save()
     
-		send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+    def send_to(self, email):
+        current_site = Site.objects.get_current()
+        subject = render_to_string('accounts/invitation_email_subject.txt',
+                                    { 'site': current_site,
+                                    'invitation_key': self })
+        subject = ''.join(subject.splitlines())
+        
+        message = message = render_to_string('accounts/invitation_email.txt',
+                                            { 'invitation_key': self,
+                                            'expiration_days': settings.ACCOUNT_INVITATION_DAYS,
+                                            'site': current_site })
+    
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
