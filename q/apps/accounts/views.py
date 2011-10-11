@@ -233,10 +233,10 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
 
     #IS SITE IN INVITE MODE?
     if not settings.INVITE_MODE:
+        messages.error(request, "We aren't accepting new users at this time. Please try again later.")
         return HttpResponseRedirect(reverse('index'))
 
-    invitation_key = request.session.get('invitation_key')
-    invitation_key = get_object_or_404(models.InvitationKey, key=invitation_key)
+    invitation_key = get_object_or_404(models.InvitationKey, key=request.session.get('invitation_key'))
 
     if not invitation_key.is_usable():
         messages.error(request, "Invalid invitation key")
@@ -307,6 +307,7 @@ def invited(request, template_name="accounts/invited.html", *args, **kwargs):
 
         #boot if not valid.
         if not is_key_valid:
+            # TODO: Add a message explaining why you were booted to the index page.
             return HttpResponseRedirect(reverse('index'))
         return render_to_response(template_name, RequestContext(request, ctx))
     return HttpResponseRedirect(reverse('index'))
