@@ -219,13 +219,15 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         
         book = models.Book()
         book.title = request.POST['title']
-        book.tags = request.POST['tags']
         book.isbn10 = request.POST['isbn10']
         book.isbn13 = request.POST['isbn13']
         book.gid = request.POST['gid']
         book.description = request.POST['description']
 
         book.save()
+        book.tags = request.POST['tags']
+        book.save()
+
         for gauthor in request.POST['authors'].split(','):
             try:
                 author = models.Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
