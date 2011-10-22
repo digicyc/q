@@ -1,4 +1,3 @@
-import os
 import re
 
 import random
@@ -76,9 +75,8 @@ class InvitationKeyManager(models.Manager):
 
 
 class InvitationKey(models.Model):
-    key = models.CharField(_('invitation key'), max_length=40)
-    date_invited = models.DateTimeField(_('date invited'), 
-                                        default=datetime.datetime.now)
+    key = models.CharField(max_length=40)
+    date_invited = models.DateTimeField(default=datetime.datetime.now)
     from_user = models.ForeignKey(User, 
                                   related_name='invitations_sent')
     registrant = models.ForeignKey(User, null=True, blank=True, 
@@ -108,7 +106,7 @@ class InvitationKey(models.Model):
                                     'invitation_key': self })
         subject = ''.join(subject.splitlines())
         
-        message = message = render_to_string('accounts/invitation_email.txt',
+        message = render_to_string('accounts/invitation_email.txt',
                                             { 'invitation_key': self,
                                             'expiration_days': settings.ACCOUNT_INVITATION_DAYS,
                                             'site': current_site })

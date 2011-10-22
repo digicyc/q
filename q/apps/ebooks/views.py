@@ -206,9 +206,14 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     book_form = BookForm()
 
     if request.POST.has_key('title'):
-        book = models.Book.objects.get(isbn13=request.POST['isbn13'])
+        try:
+            book = models.Book.objects.get(isbn13=request.POST['isbn13'])
+        except models.Book.DoesNotExist:
+            pass
+        
         if book is not None:
             messages.error(request, "You are trying to add a duplicate book.")
+            
         ctx.update({'book_form': BookForm(request.POST)})
         return render_to_response(template_name,
                               RequestContext(request, ctx))
