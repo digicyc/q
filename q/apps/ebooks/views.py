@@ -223,9 +223,8 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         book.isbn13 = request.POST['isbn13']
         book.gid = request.POST['gid']
         book.description = request.POST['description']
-
-        book.save()
         book.tags = request.POST['tags']
+
         book.save()
 
         for gauthor in request.POST['authors'].split(','):
