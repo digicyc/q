@@ -203,6 +203,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     ctx = {}
 
     book_form = BookForm()
+    book = models.Book()
 
     if request.POST.has_key('title'):
         try:
@@ -225,8 +226,8 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         book.description = request.POST['description']
         book.tags = ''
 
-        book.save()
-        book.tags = request.POST['tags']
+        #book.save()
+        #book.tags = request.POST['tags']
         book.save()
         for gauthor in request.POST['authors'].split(','):
             try:
@@ -284,7 +285,6 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
 
         #cover_link = book_feed.GetThumbnailLink().href.replace('zoom=5','zoom=1')
 
-        book = models.Book()
         book.cache_book_info(google_id, save_cover=False)
 
         book_form = BookForm(
