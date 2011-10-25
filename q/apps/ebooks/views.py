@@ -299,8 +299,9 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
              }
         )
         # Dupe check
-        book = models.Book.objects.get(isbn13=book.isbn13)
-        if book is not None:
+        try:
+            book = models.Book.objects.get(isbn13=book.isbn13)
+        except models.Book.DoesNotExist:
             messages.error(request, "You are trying to add a duplicate book.")
             
     ctx.update({'book': book, 'book_form': book_form})
