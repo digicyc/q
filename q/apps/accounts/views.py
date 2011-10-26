@@ -280,7 +280,7 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
 
                     del request.session['invitation_key']
 
-                    create_activity_item('invited', user, invitation_key)
+                    create_activity_item('invited', from_user, invitation_key)
 
                 #redirect
                 return HttpResponseRedirect(reverse('login'))
