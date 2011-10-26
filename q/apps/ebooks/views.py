@@ -394,7 +394,7 @@ def books_missing_tags(request):
         if len(book.tags) < 4:
             untagged_books.append(book)
     
-    return render_to_response('ebooks/contribute/by_tags.html', RequestContext(request, {'books':untagged_books}))
+    return render_to_response('ebooks/contribute/by_tags.html', RequestContext(request, {'books': untagged_books}))
 
 @login_required
 def books_missing_covers(request):

@@ -7,9 +7,9 @@
 {% for book in books %}
 <div class="activity-download">
     <div class="activity-ico"></div>
-       <a href="{% url book_info book.slug %}">{{ book.title }}</a>
        {% tags_for_object book as tag_list %}
-        <strong>only has {{ tag_list|length }} tags</strong>
+       <a href="{% url book_info book.slug %}">{{ book.title }}</a>
+       <strong>only has {{ tag_list|length }} tags</strong><br/>
     </div>
 </div>
 {% endfor %}
