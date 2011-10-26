@@ -25,7 +25,7 @@ class RegistrationForm(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
     
-    kindle_email = forms.EmailField(required=False)
+    kindle_email = forms.EmailField(required=False, label="Kindle Email (optional)")
     
     def clean_username(self):
         username = self.cleaned_data['username']
