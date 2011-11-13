@@ -1,1 +1,6 @@
 book management site
+
+account types
+-------------
+regular: download,tag,comment,flag
+contributor: add,upload,replace

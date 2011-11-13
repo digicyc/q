@@ -7,8 +7,8 @@
 {% block content %}
 	<h2 class="section-title">Search Results</h2>
 	
-	{% if books %}
-		{% for book in books %}
+	{% if page %}
+		{% for book in page.object_list %}
 		<article class="book">
 			<div class="book-sidebar">
 				<figure class="cover">
@@ -60,9 +60,11 @@
 					{% endfor %}
 				</ul>
 
-			</div>			
+			</div>
 		</article>
-		{% endfor %}		
+		{% endfor %}
+        <br/>
+        {% if page.has_previous %}<a href="{% url books_by_type type page.previous_page_number %}">Previous</a> {% endif %} {{ page }} {% if page.has_next %}<a href="{% url books_by_type type page.next_page_number %}">Next</a>{% endif %}
 	{% else %}
 		<p>You Suck at Searching, Try Again</p>
 	{% endif %}

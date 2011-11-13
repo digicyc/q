@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -75,6 +76,9 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
 
     filter_type = kwargs.get('type').lower()
     letter = kwargs.get('letter')
+    page_num = 1
+    if kwargs.has_key('page_num'):
+        page_num = kwargs.get('page_num')
 
     books = None
     if filter_type == "author" and letter is not None:
@@ -87,7 +91,11 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
         else:
             books = models.Book.objects.all().order_by('title')
 
-    ctx['books'] = books
+    paginator = Paginator(books, 25)
+    page = paginator.page(page_num)
+
+    ctx['page'] = page
+    ctx['type'] = filter_type
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
