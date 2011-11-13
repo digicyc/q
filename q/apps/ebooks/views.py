@@ -91,7 +91,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
         else:
             books = models.Book.objects.all().order_by('title')
 
-    paginator = Paginator(books, 25)
+    paginator = Paginator(books, 10)
     page = paginator.page(page_num)
 
     ctx['page'] = page
