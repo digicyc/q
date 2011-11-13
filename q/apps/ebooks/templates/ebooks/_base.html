@@ -46,7 +46,7 @@
         </section>
 		<section id="global-search">
 			<div class="body-width wrap">
-				<form action="{% url ebooks.views.index %}" method="get" class="search">
+				<form action="{% url books_by_type "search" %}" method="get" class="search">
 					<label for="search">Search:</label>
 					<div class="search-outline">
 						<input type="text" name="q" value="{{ request.GET.q }}" class="input-text">

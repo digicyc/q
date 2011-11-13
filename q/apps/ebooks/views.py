@@ -23,6 +23,8 @@ from tagging.models import TaggedItem, Tag
 from activity_stream.models import create_activity_item
 from activity_stream.models import ActivityStreamItem
 
+from q.common import admin_keyword_search
+
 from ebooks.admin import BookAdmin
 from ebooks import models
 from ebooks import forms
@@ -34,26 +36,18 @@ def index(request, template_name="ebooks/index.html"):
     """
     Defines the index of the site.
     """
-    from q.common import admin_keyword_search
-
     ctx = {}
 
-    if request.GET.has_key('q') and request.GET['q'].strip() != "":
-        # If we are searching for something...
-        template_name = "ebooks/search.html"
-        books = admin_keyword_search(models.Book,
-                BookAdmin.search_fields, request.GET['q'])
-    else:
-        # Otherwise just display the 15 latest books.
-        books = models.Book.objects.order_by("-create_time")[:15].distinct()
-        activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
-                            exclude(type__name='upload').\
-                            exclude(type__name='download').\
-                            exclude(type__name='kindle').\
-                            order_by('-created_at').distinct()[:10]
-        ctx['activity_stream'] = activity_stream
+    # Otherwise just display the 15 latest books.
+    books = models.Book.objects.order_by("-create_time")[:15].distinct()
+    activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
+                        exclude(type__name='upload').\
+                        exclude(type__name='download').\
+                        exclude(type__name='kindle').\
+                        order_by('-created_at').distinct()[:10]
+    ctx['activity_stream'] = activity_stream
 
-        ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
+    ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
 
     ctx['books'] = books
 
@@ -74,28 +68,33 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     """
     ctx = {}
 
-    filter_type = kwargs.get('type').lower()
-    letter = kwargs.get('letter')
     page_num = 1
-    if kwargs.has_key('page_num'):
-        page_num = kwargs.get('page_num')
+    if request.GET.has_key('q') and request.GET['q'].strip() != "":
+        books = admin_keyword_search(models.Book,
+            BookAdmin.search_fields, request.GET['q'])
+    else:
+        filter_type = kwargs.get('type').lower()
+        letter = kwargs.get('letter')
+        if kwargs.has_key('page_num'):
+            page_num = kwargs.get('page_num')
 
-    books = None
-    if filter_type == "author" and letter is not None:
-        books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
-    elif filter_type == "title":
-        if letter is not None:
-            books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
-                extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
-                order_by('order_title')
-        else:
-            books = models.Book.objects.all().order_by('title')
+        books = None
+
+        if filter_type == "author" and letter is not None:
+            books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
+        elif filter_type == "title":
+            if letter is not None:
+                books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
+                    extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
+                    order_by('order_title')
+            else:
+                books = models.Book.objects.all().order_by('title')
+        ctx['type'] = filter_type
 
     paginator = Paginator(books, 10)
     page = paginator.page(page_num)
 
     ctx['page'] = page
-    ctx['type'] = filter_type
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 

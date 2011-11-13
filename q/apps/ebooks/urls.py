@@ -37,8 +37,8 @@ urlpatterns += patterns('ebooks.api',
 )
 
 urlpatterns += patterns('ebooks.views',
-    url(r'^(?P<type>(author|title))/$', 'books_by_type', name="books_by_type"),
-    url(r'^(?P<type>(author|title))/(?P<page_num>\d+)/$', 'books_by_type', name="books_by_type"),
+    url(r'^(?P<type>(author|title|search))/$', 'books_by_type', name="books_by_type"),
+    url(r'^(?P<type>(author|title|search))/(?P<page_num>\d+)/$', 'books_by_type', name="books_by_type"),
     url(r'^(?P<book_slug>[\d\w\-]+)/$', 'book_info', name="book_info"),
     url(r'^(?P<type>(author|title))/(?P<letter>[\w]+)/$', 'books_by_type', name="books_by_author"),
 )
