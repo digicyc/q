@@ -69,11 +69,12 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     ctx = {}
 
     page_num = 1
+    filter_type = kwargs.get('type').lower()
+
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
         books = admin_keyword_search(models.Book,
             BookAdmin.search_fields, request.GET['q'])
     else:
-        filter_type = kwargs.get('type').lower()
         letter = kwargs.get('letter')
         if kwargs.has_key('page_num'):
             page_num = kwargs.get('page_num')
@@ -89,11 +90,11 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
                     order_by('order_title')
             else:
                 books = models.Book.objects.all().order_by('title')
-        ctx['type'] = filter_type
 
     paginator = Paginator(books, 10)
     page = paginator.page(page_num)
 
+    ctx['type'] = filter_type
     ctx['page'] = page
     return render_to_response(template_name,
                               RequestContext(request, ctx))
