@@ -146,7 +146,20 @@ h1 a { text-decoration: none; border: none }
 		.book-summary .formats li { margin: 0 8px 0 0; list-style-type: none; float: left; }
 		.book-summary .formats .title { font-weight: bold; }
 
+        .book-summary .also_downloaded { margin: 0 0 20px 0; }
+        .book-summary .also_downloaded li { margin: 0 8px 0 0; list-style-type: none; float: left; }
+        .book-summary .also_downloaded .title { font-weight: bold; }
 	/* BOOK INFO PAGE LAYOUT */
+
+    .page-view .also_downloaded li {
+        background: url(/images/icon-.png) no-repeat 0 50%;
+        margin: 0 10px 8px 10px;
+        list-style: none;
+        padding: 0;
+        height: 16px;
+        display: block;
+    }
+
 	.page-view .book-sidebar { width: 160px; }
 	.page-view .book-main { width: 520px;	}
 	.book-main .series-info { margin-bottom: 0; }
@@ -158,6 +171,7 @@ h1 a { text-decoration: none; border: none }
 		height: 16px;
 		display: block;
 	}
+
 	.page-view .formats li.pdf { background-image: url(/images/icon-pdf.png); }
     .page-view .formats li.mobi { background-image: url(/images/icon-mobi.png); }
     .page-view .formats li.epub { background-image: url(/images/icon-epub.png); }

@@ -4,6 +4,7 @@
 {% load threadedcomments_tags  %}
 {% load ratings %}
 {% load range %}
+{% load truncate %}
 
 {% block title %}{{ book.title }} by {{ book.authors.all.0 }}{% endblock %}
 
@@ -61,6 +62,15 @@
 				{% endfor %}
 			</ul>
             {% endif %}
+
+        {% if book.also_downloaded|length > 0 %}
+        <h2 class="section-title" style="font-size:15px">Others also downloaded...</h2>
+        <ul class="also_downloaded">
+            {% for b in book.also_downloaded %}
+            <li><a href="{% url book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
+            {% endfor %}
+        </ul>
+        {% endif %}
 
         {% if my_ownership %}
 				<div id="i-own-this-box">

@@ -7,11 +7,13 @@ from tagging.fields import TagField
 from djangoratings.fields import RatingField
 
 from django.conf import settings
-from django.db import models
+from django.db import models, connection, transaction
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.files import File
+
+from q.common import similarity
 
 FORMAT_CHOICES = (
     ('doc', 'doc'),
@@ -145,6 +147,35 @@ class Book(models.Model):
     def _has_mobi(self):
         return bool(Format.objects.filter(ebook=self).filter(format='mobi').count())
     has_mobi = property(_has_mobi)
+
+    def also_downloaded(self):
+        """
+        Return the best matches for a book based on other downloads
+        """
+        sql = """SELECT asis.object_id, count(distinct asi.actor_id) as downloaded
+                    FROM activity_stream_activitystreamitem asi
+                        JOIN activity_stream_activitystreamitemsubject asis ON asis.activity_stream_item_id=asi.id
+                    WHERE asi.actor_id IN
+                        (SELECT DISTINCT asi.actor_id
+                            FROM activity_stream_activitystreamitem asi
+                                JOIN activity_stream_activitystreamitemsubject asis ON asis.activity_stream_item_id=asi.id
+                            WHERE (asi.type_id=5 OR asi.type_id=8)
+                                AND asis.content_type_id=11
+                                AND asis.object_id=%s)
+                        AND (asi.type_id=5 OR asi.type_id=8)
+                        AND asis.content_type_id=11
+                        AND asis.object_id <> %s
+                    GROUP BY asis.object_id
+                    ORDER BY downloaded DESC
+                    LIMIT 5""" % (self.id, self.id)
+        cursor = connection.cursor()
+
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        books = []
+        for row in rows:
+            books.append(Book.objects.get(id=row[0]))
+        return books
 
     def cache_book_info(self, gid=None, save_cover=True):
         import urllib2

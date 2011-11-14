@@ -1,5 +1,7 @@
+from math import sqrt
 import os
 import operator
+
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import user_passes_test
@@ -56,4 +58,38 @@ def touch_wsgi(request):
 
         return HttpResponse('True')
     raise Http404
-        
+
+def similarity(algo="pearson", *args, **kwargs):
+    return algo(*args, **kwargs)
+
+def pearson(prefs_dict, obj1, obj2):
+    """
+    compare preferences between obj1 and obj2
+    """
+    related_items = dict()
+
+    for item in prefs_dict[obj1]:
+        if item in prefs_dict[obj2]:
+            related_items[item] = True
+
+    n = len(related_items)
+
+    if not n: return 0
+
+    # Add all prefs
+    sum1 = sum(prefs_dict[obj1][item] for item in prefs_dict)
+    sum2 = sum(prefs_dict[obj2][item] for item in prefs_dict)
+
+    # Sum up the squares
+    sum1_sq = sum([pow(prefs_dict[obj1][item],2) for item in prefs_dict])
+    sum2_sq = sum([pow(prefs_dict[obj2][item],2) for item in prefs_dict])
+
+    # Sum up the products
+    p_sum = sum([prefs[obj1][item]*prefs[obj2][item] for item in prefs_dict])
+
+    # Calculate Pearson score
+    numerator = p_sum-(sum1*sum2/n)
+    denominator = sqrt((sum1_sq-pow(sum1,2)/n)*(sum2_sq-pow(sum2,2)/n))
+    if not denominator: return 0
+
+    return numerator/denominator
