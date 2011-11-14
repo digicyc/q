@@ -69,7 +69,7 @@ class Ownership(models.Model):
             return url
     qr_url = property(_get_qr_url)
 
-    def save(self):
+    def save(self, *args, **kwargs):
         if self.key == "":
             self.key = sha(self.user.username+self.book.title).hexdigest()[:30]
         super(Ownership, self).save()
@@ -133,7 +133,7 @@ class Book(models.Model):
     categories = property(_get_categories)
 
     def __str__(self):
-        return "%s" % (self.title)
+        return "%s" % self.title
 
     def __unicode__(self):
         return self.title.encode('utf8')
@@ -222,7 +222,10 @@ class Book(models.Model):
 
             os.unlink(f.name)
 
-    def save(self, cache_book_info=False):
+    def save(self, *args, **kwargs):
+        cache_book_info=False
+        if kwargs.has_key('cache_book_info'):
+            cache_book_info = bool(kwargs['cache_book_info'])
         if self.gid != "" and cache_book_info:
             self.cache_book_info(self.gid)
 
@@ -243,7 +246,7 @@ class Format(models.Model):
         unique_together = (('ebook', 'format'),)
 
     def __str__(self):
-        return "%s" % (self.format)
+        return "%s" % self.format
 
     def download_key(self):
         import base64
@@ -254,7 +257,7 @@ class Category(models.Model):
     books = models.ManyToManyField(Book)
 
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s" % self.name
 
 class Author(models.Model):
     firstname = models.CharField(max_length=50, db_index=True)
@@ -277,7 +280,7 @@ class CheckOut(models.Model):
         unique_together = (("user", "book"))
 
     def __str__(self):
-        return "%s" % (self.user.username)
+        return "%s" % self.user.username
 
 class Read(models.Model):
     book = models.ForeignKey(Book)
