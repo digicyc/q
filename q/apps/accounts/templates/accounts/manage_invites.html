@@ -42,11 +42,16 @@
 	<table id="invite-history" width="100%">
 		<tr>
 			<th>KEY</th>
+            <th style="text-align: center">SENT TO</th>
 			<th style="text-align: center">TAKEN BY</th>
 		</tr>
 	{% for invite in invitations %}
 		<tr>
-			<td><a href="{% url invitation_invited invite.key %}">{{invite.key }}</a></td>
+			<td>
+                {% if  invite.registrant %}
+                {{ invite.key }}
+                {% else %}<a href="{% url invitation_invited invite.key %}">{{ invite.key }}</a>{% endif %}</td>
+            <td style="text-align: center">{{ invite.sent_to }} &lt;{{ invite.emailed_to }}&gt;</td>
 			<td style="text-align: center">
 			{% if  invite.registrant %}
 			<a href="{% url view_user invite.registrant %}">@{{ invite.registrant.username }}</a>

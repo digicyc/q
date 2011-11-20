@@ -104,7 +104,7 @@ class InvitationKey(models.Model):
         self.registrant = registrant
         self.save()
     
-    def send_to(self, email):
+    def send(self):
         current_site = Site.objects.get_current()
         subject = render_to_string('accounts/invitation_email_subject.txt',
                                     { 'site': current_site,
@@ -116,4 +116,4 @@ class InvitationKey(models.Model):
                                             'expiration_days': settings.ACCOUNT_INVITATION_DAYS,
                                             'site': current_site })
     
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.emailed_to])
