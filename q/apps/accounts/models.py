@@ -75,7 +75,10 @@ class InvitationKeyManager(models.Manager):
 
 
 class InvitationKey(models.Model):
-    key = models.CharField(max_length=40)
+    # To any copy/pasters. This key filed could be the PK. I'm not sure
+    # why the original commiter of this code didn't do that. A lesson in
+    # code reviews.
+    key = models.CharField(max_length=40, unique=True)
     date_invited = models.DateTimeField(default=datetime.datetime.now)
     from_user = models.ForeignKey(User, 
                                   related_name='invitations_sent')
