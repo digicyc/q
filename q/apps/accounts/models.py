@@ -80,6 +80,8 @@ class InvitationKey(models.Model):
     # code reviews.
     key = models.CharField(max_length=40, unique=True)
     date_invited = models.DateTimeField(default=datetime.datetime.now)
+    emailed_to = models.EmailField(max_length=40, blank=True, null=False, default="")
+    sent_to = models.CharField(max_length=40, blank=True, null=False, default="")
     from_user = models.ForeignKey(User, 
                                   related_name='invitations_sent')
     registrant = models.ForeignKey(User, null=True, blank=True, 
