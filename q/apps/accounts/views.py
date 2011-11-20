@@ -279,7 +279,7 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
 
                     from_user = invitation_key.from_user
                     from_user_profile = from_user.get_profile()
-                    from_user_profile.available_invites = from_user_profile.available_invites - 1
+                    from_user_profile.available_invites -= from_user_profile.available_invites
                     from_user_profile.save()
 
                     del request.session['invitation_key']
