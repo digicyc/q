@@ -16,13 +16,13 @@ from django.core.files import File
 from q.common import similarity
 
 FORMAT_CHOICES = (
-    ('doc', 'doc'),
+    #('doc', 'doc'),
     ('epub', 'epub'),
-    ('lit', 'lit'),
+    #('lit', 'lit'),
     ('mobi', 'mobi'),
     ('pdf', 'pdf'),
-    ('rtf', 'rtf'),
-    ('txt', 'txt'),
+    #('rtf', 'rtf'),
+    #('txt', 'txt'),
 )
 
 def book_save(instance, original_filename):
