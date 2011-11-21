@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.files import File
 
+from ebooks.mixins import GoodReadsBookMixin
+
 from q.common import similarity
 
 FORMAT_CHOICES = (
@@ -93,7 +95,7 @@ class Series(models.Model):
         super(Series, self).save(*args, **kwargs)
 
 
-class Book(models.Model):
+class Book(models.Model, GoodReadsBookMixin):
     title = models.CharField(db_index=True, max_length=100)
     authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField(default=0.0)
@@ -101,6 +103,7 @@ class Book(models.Model):
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
+    goodreads_id = models.PositiveIntegerField(db_index=True)
     description = models.TextField(blank=True)
     published = models.DateField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -110,6 +113,12 @@ class Book(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True, db_index=True)
     series = models.ForeignKey(Series, blank=True, null=True, default=None)
     series_num = models.IntegerField(blank=True, null=True, default=None)
+
+    def __str__(self):
+        return "%s" % self.title
+
+    def __unicode__(self):
+        return self.title.encode('utf8')
 
     def _get_is_physical(self):
         if len(self.owners) > 0:
@@ -132,12 +141,6 @@ class Book(models.Model):
     def _get_categories(self):
         return Category.objects.filter(books=self)
     categories = property(_get_categories)
-
-    def __str__(self):
-        return "%s" % self.title
-
-    def __unicode__(self):
-        return self.title.encode('utf8')
 
     def _get_formats(self):
         return Format.objects.filter(ebook=self).order_by('format')

@@ -40,7 +40,8 @@
                 my rating: {% for x in vote_range %}<a href="{% url rate_book read.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br>
             {% endif %}
             {% endcomment %}
-            metarating: {{ book.metarating }}<br>
+            goodreads id: {{ book.get_goodreads_id }}<br/>
+            metarating: {{ book.metarating }}<br/>
             q rating: {{ book.rating }} (? votes)<p>
 
             {% if request.user.get_profile.is_librarian %}
