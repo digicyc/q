@@ -98,12 +98,13 @@ class Series(models.Model):
 class Book(models.Model, GoodReadsBookMixin):
     title = models.CharField(db_index=True, max_length=100)
     authors = models.ManyToManyField("Author", blank=True)
-    metarating = models.FloatField(default=0.0)
+    _metarating = models.FloatField(default=0.0)
     rating = models.FloatField(default=0.0)
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
-    goodreads_id = models.PositiveIntegerField(db_index=True)
+    _goodreads_id = models.PositiveIntegerField(db_index=True)
+    _goodreads_num_votes = models.PositiveIntegerField()
     description = models.TextField(blank=True)
     published = models.DateField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -119,6 +120,30 @@ class Book(models.Model, GoodReadsBookMixin):
 
     def __unicode__(self):
         return self.title.encode('utf8')
+
+    def _x_get_goodreads_id(self):
+        if self._goodreads_id < 1:
+            id = self.get_goodreads_id()
+            self._goodreads_id = id
+            self.save()
+        return self._goodreads_id
+    goodreads_id = property(_x_get_goodreads_id)
+
+    def _x_get_meta_rating(self):
+        if self._metarating == 0.0:
+            rating = self.get_goodreads_rating()
+            self._metarating = rating
+            self.save()
+        return self._metarating
+    metarating = property(_x_get_meta_rating)
+
+    def _x_get_num_goodreads_votes(self):
+        if self._goodreads_num_votes < 1:
+            num_votes = self.get_goodreads_ratings_count()
+            self._goodreads_num_votes = num_votes
+            self.save()
+        return self._goodreads_num_votes
+    goodreads_num_votes = property(_x_get_num_goodreads_votes)
 
     def _get_is_physical(self):
         if len(self.owners) > 0:
