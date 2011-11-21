@@ -98,7 +98,6 @@ class Book(models.Model):
     authors = models.ManyToManyField("Author", blank=True)
     metarating = models.FloatField(default=0.0)
     rating = models.FloatField(default=0.0)
-    #tags = TagField()
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
