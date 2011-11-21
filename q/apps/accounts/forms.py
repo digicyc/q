@@ -6,7 +6,7 @@ class LoginForm(forms.Form):
     username = forms.CharField(label=_('Your Username'))
     password = forms.CharField(label=_('Password'), 
                 widget=forms.PasswordInput(), max_length=100) 
-                
+
 
 class EditProfileForm(forms.Form):
     first_name = forms.CharField(required=False)
@@ -14,7 +14,7 @@ class EditProfileForm(forms.Form):
     #username = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     kindle_email = forms.EmailField(required=False)
-    
+
 class InvitationKeyForm(forms.Form):
     name = forms.CharField(required=True)
     email = forms.EmailField(required=True)
@@ -24,9 +24,9 @@ class RegistrationForm(forms.Form):
     username = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
-    
-    kindle_email = forms.EmailField(required=False, label="Kindle Email (optional)")
-    
+
+    #kindle_email = forms.EmailField(required=False, label="Kindle Email (optional)")
+
     def clean_username(self):
         username = self.cleaned_data['username']
         try:
@@ -37,20 +37,18 @@ class RegistrationForm(forms.Form):
         raise forms.ValidationError(u'Username "%s" already exists.' % username )
 
 
-    
-    
 class InvitationDistributionForm(forms.Form):
-	
-	number_of_invites = forms.IntegerField(label=_('Number of Invites'),)
-	to_who = forms.ChoiceField(label=_('To'))
-    
 
-	def __init__(self, *args, **kwargs):
-		if kwargs.has_key('users'):
-			users = kwargs.pop('users')
-		else:
-			users =(None, None)
+    number_of_invites = forms.IntegerField(label=_('Number of Invites'),)
+    to_who = forms.ChoiceField(label=_('To'))
 
-		super(InvitationDistributionForm, self).__init__(*args, **kwargs)
 
-		self.fields['to_who'].choices = [(u.id, u.username) for u in users]
+    def __init__(self, *args, **kwargs):
+        if kwargs.has_key('users'):
+            users = kwargs.pop('users')
+        else:
+            users =(None, None)
+
+        super(InvitationDistributionForm, self).__init__(*args, **kwargs)
+
+        self.fields['to_who'].choices = [(u.id, u.username) for u in users]
