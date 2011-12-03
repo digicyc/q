@@ -123,25 +123,20 @@ class Book(models.Model, GoodReadsBookMixin):
 
     def _x_get_goodreads_id(self):
         if self._goodreads_id < 1:
-            id = self.get_goodreads_id()
-            self._goodreads_id = id
+            self._goodreads_id = self.get_goodreads_id()
         return self._goodreads_id
     goodreads_id = property(_x_get_goodreads_id)
 
     def _x_get_meta_rating(self):
         if self._metarating == 0.0:
-            rating = self.get_goodreads_rating()
-            self._metarating = rating
+            self._metarating = self.get_goodreads_rating()
         return self._metarating
     metarating = property(_x_get_meta_rating)
 
     def _x_get_num_goodreads_votes(self):
         if self._goodreads_num_votes < 1:
-            num_votes = self.get_goodreads_ratings_count()
-            self._goodreads_num_votes = num_votes
-            return self._goodreads_num_votes
-        else:
-            return   0.0
+            self._goodreads_num_votes = self.get_goodreads_ratings_count()
+        return self._goodreads_num_votes
     goodreads_num_votes = property(_x_get_num_goodreads_votes)
 
     def _get_is_physical(self):
@@ -230,8 +225,8 @@ class Book(models.Model, GoodReadsBookMixin):
         if self.title == "":
             self.title = gbook.title.text
 
-        if gbook.rating is not None:
-            self.metarating = gbook.rating.average
+        #if gbook.rating is not None:
+        #    self.metarating = gbook.rating.average
 
         if gbook.description is not None and self.description == "":
             self.description = gbook.description.text
