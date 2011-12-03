@@ -35,18 +35,21 @@ class GoodReadsBookMixin(object):
         if self.stats.has_key("id"):
             return self.stats.get("id")
         else:
-            url = "/book/isbn_to_id/%s?key=%s" % (self.isbn13, settings.GOODREADS_KEY)
+            url = "/book/isbn_to_id/%s?key=%s" % (self.isbn13,
+                                                  settings.GOODREADS_KEY)
             self.http.request('GET', url)
             return self.http.getresponse().read()
 
     def get_goodreads_rating(self):
         if self.stats is None: self._get_goodreads_stats()
-        if self.stats.has_key("average_rating"):
+        if self.stats.has_key("average_rating") and \
+           self.stats.has_key("average_rating") is not None:
             return self.stats.get("average_rating")
         return 0.0
 
     def get_goodreads_ratings_count(self):
         if self.stats is None: self._get_goodreads_stats()
-        if self.stats.has_key("work_ratings_count"):
+        if self.stats.has_key("work_ratings_count") and\
+           self.stats.has_key("work_ratings_count") is not None:
             return self.stats.get("work_ratings_count")
         return 0.0

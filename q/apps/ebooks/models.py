@@ -98,13 +98,13 @@ class Series(models.Model):
 class Book(models.Model, GoodReadsBookMixin):
     title = models.CharField(db_index=True, max_length=100)
     authors = models.ManyToManyField("Author", blank=True)
-    _metarating = models.FloatField(default=0.0)
+    _metarating = models.FloatField(default=0.0, null=False)
     rating = models.FloatField(default=0.0)
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
     _goodreads_id = models.PositiveIntegerField(db_index=True)
-    _goodreads_num_votes = models.PositiveIntegerField()
+    _goodreads_num_votes = models.PositiveIntegerField(null=False, default=0)
     description = models.TextField(blank=True)
     published = models.DateField(blank=True, null=True)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -133,7 +133,6 @@ class Book(models.Model, GoodReadsBookMixin):
         if self._metarating == 0.0:
             rating = self.get_goodreads_rating()
             self._metarating = rating
-            self.save()
         return self._metarating
     metarating = property(_x_get_meta_rating)
 
@@ -141,8 +140,9 @@ class Book(models.Model, GoodReadsBookMixin):
         if self._goodreads_num_votes < 1:
             num_votes = self.get_goodreads_ratings_count()
             self._goodreads_num_votes = num_votes
-            self.save()
-        return self._goodreads_num_votes
+            return self._goodreads_num_votes
+        else:
+            return   0.0
     goodreads_num_votes = property(_x_get_num_goodreads_votes)
 
     def _get_is_physical(self):
@@ -199,6 +199,7 @@ class Book(models.Model, GoodReadsBookMixin):
 
         cursor.execute(sql)
         rows = cursor.fetchall()
+
         books = []
         for row in rows:
             books.append(Book.objects.get(id=row[0]))

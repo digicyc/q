@@ -301,7 +301,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
              'isbn13': book.isbn13,
              'gid': book.gid,
              'description': book.description,
-             'metarating': book.metarating,
+             'metarating': 0.0 if book.metarating is None else book.metarating,
              }
         )
         # Dupe check
