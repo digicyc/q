@@ -103,7 +103,7 @@ class Book(models.Model, GoodReadsBookMixin):
     isbn10 = models.CharField(db_index=True, max_length=20, blank=True)
     isbn13 = models.CharField(db_index=True, max_length=20, blank=True)
     gid = models.CharField(db_index=True, max_length=20, blank=True)
-    _goodreads_id = models.PositiveIntegerField(db_index=True)
+    _goodreads_id = models.PositiveIntegerField(db_index=True, default=0)
     _goodreads_num_votes = models.PositiveIntegerField(null=False, default=0)
     description = models.TextField(blank=True)
     published = models.DateField(blank=True, null=True)
@@ -125,7 +125,6 @@ class Book(models.Model, GoodReadsBookMixin):
         if self._goodreads_id < 1:
             id = self.get_goodreads_id()
             self._goodreads_id = id
-            self.save()
         return self._goodreads_id
     goodreads_id = property(_x_get_goodreads_id)
 
@@ -290,6 +289,10 @@ class Book(models.Model, GoodReadsBookMixin):
 
         if self.slug == "":
             self.slug = slugify(self.title)
+
+        self._x_get_goodreads_id()
+        self._x_get_meta_rating()
+        self._x_get_num_goodreads_votes()
 
         super(Book, self).save()
 tagging.register(Book)
