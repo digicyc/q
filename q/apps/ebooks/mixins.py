@@ -6,7 +6,8 @@ class GoodReadsBookMixin(object):
     def __init__(self):
         self.http = HTTPConnection("www.goodreads.com")
         self.stats = None
-        self._get_goodreads_stats()
+        if self.id is not None:
+            self._get_goodreads_stats()
 
     def _get_goodreads_stats(self):
         """
