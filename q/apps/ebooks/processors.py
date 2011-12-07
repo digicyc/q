@@ -17,4 +17,7 @@ def version_insert(request):
 
 def hostname_insert(request):
     import socket
-    return {'hostname': socket.gethostname()}
+    hostname = socket.gethostname()
+    if '.' in hostname:
+        hostname = hostname.split('.')[0]
+    return {'hostname': hostname}
