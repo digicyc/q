@@ -10,3 +10,7 @@ def book_count_insert(request):
 def site_insert(request):
     site = Site.objects.get(pk=settings.SITE_ID)
     return {'site': site}
+
+def version_insert(request):
+    from q import __version__
+    return {'version': __version__}
