@@ -6,7 +6,7 @@ class GoodReadsBookMixin(object):
     def __init__(self):
         self.http = HTTPConnection("www.goodreads.com")
         self.stats = None
-        if self.id is not None:
+        if self.id is not None and self._goodreads_id == 0:
             self._get_goodreads_stats()
 
     def _get_goodreads_stats(self):
@@ -27,7 +27,10 @@ class GoodReadsBookMixin(object):
         url = "/book/review_counts.json?isbns=%s&key=%s" % (self.isbn13, settings.GOODREADS_KEY)
         self.http.request('GET', url)
         json = self.http.getresponse().read()
-        data = simplejson.loads(json)
+        try:
+            data = simplejson.loads(json)
+        except ValueError, e:
+            return
         self.stats = data["books"][0]
 
     def get_goodreads_id(self):
