@@ -285,9 +285,10 @@ class Book(models.Model, GoodReadsBookMixin):
         if self.slug == "":
             self.slug = slugify(self.title)
 
-        self._x_get_goodreads_id()
-        self._x_get_meta_rating()
-        self._x_get_num_goodreads_votes()
+        if self._goodreads_id == 0:
+            self._x_get_goodreads_id()
+            self._x_get_meta_rating()
+            self._x_get_num_goodreads_votes()
 
         super(Book, self).save()
 tagging.register(Book)

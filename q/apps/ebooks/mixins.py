@@ -30,6 +30,8 @@ class GoodReadsBookMixin(object):
         try:
             data = simplejson.loads(json)
         except ValueError, e:
+            self._goodreads_id = -1
+            self.save()
             return
         self.stats = data["books"][0]
 
