@@ -14,3 +14,7 @@ def site_insert(request):
 def version_insert(request):
     from q import __version__
     return {'version': __version__}
+
+def hostname_insert(request):
+    import socket
+    return {'hostname': socket.gethostname()}

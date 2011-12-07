@@ -87,6 +87,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ebooks.processors.book_count_insert',
     'ebooks.processors.site_insert',
     'ebooks.processors.version_insert',
+    'ebooks.processors.hostname_insert',
 
 )
 
