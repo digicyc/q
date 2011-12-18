@@ -69,6 +69,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     ctx = {}
 
     page_num = 1
+    num_per_page = 10
     filter_type = kwargs.get('type').lower()
 
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
@@ -94,7 +95,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
             else:
                 books = models.Book.objects.all().order_by('title')
 
-    paginator = Paginator(books, 10)
+    paginator = Paginator(books, num_per_page)
     page = paginator.page(page_num)
 
     ctx['type'] = filter_type
