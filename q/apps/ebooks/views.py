@@ -100,6 +100,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
 
     ctx['type'] = filter_type
     ctx['page'] = page
+    ctx['letter'] = letter
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
