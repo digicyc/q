@@ -81,8 +81,11 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
 
         books = None
 
-        if filter_type == "author" and letter is not None:
-            books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
+        if filter_type == "author":
+            if letter is not None:
+                books = models.Book.objects.filter(authors__lastname__istartswith=letter).order_by('authors__lastname', 'authors__firstname')
+            else:
+                books = models.Book.objects.all().order_by('authors__lastname')
         elif filter_type == "title":
             if letter is not None:
                 books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
