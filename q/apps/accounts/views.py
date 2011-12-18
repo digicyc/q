@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 
 from django.contrib.auth.models import User
-from django.contrib.auth.views import password_change
+#from django.contrib.auth.views import password_change
 from django.contrib.auth import (authenticate,
                                  login as auth_login,
                                  logout as auth_logout)
@@ -16,7 +16,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from q.common import reverse_lazy
 
 from accounts import forms, models
-from ebooks.models import CheckOut, Ownership, Read
+from ebooks.models import Ownership, Read
 
 from activity_stream.models import create_activity_item
 
@@ -54,7 +54,6 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
 
 def login(request, template_name="accounts/login.html"):
     ctx = {}
-    messages = []
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('index'))
 
@@ -75,9 +74,9 @@ def login(request, template_name="accounts/login.html"):
                             return HttpResponseRedirect(request.GET['next'])
                         return HttpResponseRedirect(reverse('index'))
                     else:
-                        messages.append("Your account is currently deactivated.")
+                        messages.error(request, "Your account is currently deactivated.")
                 else:
-                    messages.append("Invalid account.")
+                    messages.error(request, "Invalid account credentials.")
 
             except User.DoesNotExist:
                 pass
@@ -93,7 +92,6 @@ def edit_password(request, template_name="accounts/edit_password.html", *args, *
     ctx = {}
 
     user = request.user
-    username = user.username
     if request.method == 'POST':
         form = PasswordChangeForm(user, request.POST)
         if form.is_valid():
@@ -311,7 +309,7 @@ def invited(request, template_name="accounts/invited.html", *args, **kwargs):
 
         #boot if not valid.
         if not is_key_valid:
-            # TODO: Add a message explaining why you were booted to the index page.
+            messages.error(request, "You have been invited under false pretenses.")
             return HttpResponseRedirect(reverse('index'))
         return render_to_response(template_name, RequestContext(request, ctx))
     return HttpResponseRedirect(reverse('index'))
