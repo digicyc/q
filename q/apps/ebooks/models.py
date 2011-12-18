@@ -15,7 +15,7 @@ from django.core.files import File
 
 from ebooks.mixins import GoodReadsBookMixin
 
-from q.common import similarity
+#from q.common import similarity
 
 FORMAT_CHOICES = (
     #('doc', 'doc'),
