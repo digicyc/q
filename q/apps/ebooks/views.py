@@ -77,6 +77,7 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
             BookAdmin.search_fields, request.GET['q'])
     else:
         letter = kwargs.get('letter')
+        ctx['letter'] = letter
         if kwargs.has_key('page_num'):
             page_num = kwargs.get('page_num')
 
@@ -100,7 +101,6 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
 
     ctx['type'] = filter_type
     ctx['page'] = page
-    ctx['letter'] = letter
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
