@@ -8,14 +8,24 @@
 	<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
 
 	<link href="/css/master.css" rel="stylesheet" />
+    <link href="/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/javascript/jquery-ui-1.8.16.min.js"></script>
 	<script src="/javascript/yetii-min.js"></script>
 	<script src="/javascript/kinderhook.js"></script>
+    {% if show_welcome_message %}
+    <script language="javascript">
+        $(document).ready(function () {
+            $('#dialog-welcome').dialog({title: 'Welcome!',modal: true, autoOpen: true});
+        });
+    </script>
+    {% endif %}
+    
 	{% block extra_javascript %}{% endblock %}
 </head>
 <body{% block body_class %}{% endblock %}>
-
+<div id="dialog-welcome" style="display:none"><b>Welcome to {{ site.name }}!</b><p>{{ site.name }} is an ebook repository. keep it on the downlow or be banned.</p><br/><p><b>New!</b> Add your kindle's email address to your <a href="{% url edit_profile %}">user profile</a> and q@zzq.org to your kindle's whitelist to send books directly to your kindle!</p></div>
 		<header class="main"> 
 			<div class="body-width">
 				<h1 id="logo"><a href="{% url index %}">{{ site.name }}</a></h1>
