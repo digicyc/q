@@ -6,3 +6,4 @@ class UserProfileAdmin(admin.ModelAdmin):
 
 admin.site.register(models.UserProfile, UserProfileAdmin)
 admin.site.register(models.UserDownload)
+admin.site.register(models.InvitationKey)
