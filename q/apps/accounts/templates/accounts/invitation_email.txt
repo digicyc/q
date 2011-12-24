@@ -1,6 +1,6 @@
 Hello.
 
-You've been invited by @{{ invitation_key.from_user.username }} to join {{ site.name }}.
+You've been invited to join {{ site.name }}.
 
 {{site.domain}}{% url invitation_invited invitation_key=invitation_key.key %}
 

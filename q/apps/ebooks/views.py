@@ -48,8 +48,11 @@ def index(request, template_name="ebooks/index.html"):
     ctx['activity_stream'] = activity_stream
 
     ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
-
     ctx['books'] = books
+    
+    if request.session.has_key('show_welcome_message'):
+        ctx['show_welcome_message'] = True
+        del request.session['show_welcome_message']
 
     return render_to_response(template_name,
                               RequestContext(request, ctx))

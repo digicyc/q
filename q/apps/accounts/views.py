@@ -69,6 +69,8 @@ def login(request, template_name="accounts/login.html"):
 
                 if user is not None:
                     if user.is_active:
+                        if user.last_login == user.date_joined:
+                            request.session['show_welcome_message'] = True
                         auth_login(request, user)
                         if request.GET.has_key('next'):
                             return HttpResponseRedirect(request.GET['next'])
@@ -267,7 +269,8 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
 
                 #setup profile.
                 profile.user = user
-                profile.kindle_email = form.cleaned_data['kindle_email']
+                if form.cleaned_data.has_key('kindle_email'):
+                    profile.kindle_email = form.cleaned_data['kindle_email']
                 profile.save()
 
                 #if in invite mode. mark invite used.
