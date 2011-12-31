@@ -344,7 +344,7 @@ h1 {
 #slides .next,#slides .prev {
 	position: absolute;
 	top: 160px;
-	left: 50px;
+	left: 20px;
 	width: 24px;
 	height: 43px;
 	display: block;
@@ -357,7 +357,7 @@ h1 {
 }
 
 #slides .next {
-    left:688px;
+    left:706px;
 }
 .pagination li.current a {
     background-position:0 -12px;
