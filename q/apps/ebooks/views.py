@@ -39,6 +39,7 @@ def index(request, template_name="ebooks/index.html"):
     Defines the index of the site.
     """
     ctx = {}
+    all_books = models.Book.objects.all()
 
     # Otherwise just display the 15 latest books.
     books = cache.get('index_latest_books')
@@ -59,6 +60,7 @@ def index(request, template_name="ebooks/index.html"):
 
     #ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
     ctx['books'] = books
+    ctx['all_books'] = all_books
     
     if request.session.has_key('show_welcome_message'):
         ctx['show_welcome_message'] = True
