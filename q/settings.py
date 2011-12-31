@@ -69,13 +69,18 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.load_template_source',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-)
+]
+
+
+if __import__('debug_toolbar'):
+    INTERNAL_IPS = ('127.0.0.1', 'tex.ath.cx',)
+    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -84,7 +89,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     
-    'ebooks.processors.book_count_insert',
+#    'ebooks.processors.book_count_insert',
     'ebooks.processors.site_insert',
     'ebooks.processors.version_insert',
     'ebooks.processors.hostname_insert',
@@ -101,9 +106,9 @@ S3_SETTINGS = {
 
 ROOT_URLCONF = 'q.urls'
 
-TEMPLATE_DIRS = (
+TEMPLATE_DIRS = [
         os.path.join(PROJECT_ROOT, 'templates'),
-)
+]
 
 INSTALLED_APPS = (
     'django.contrib.auth',
