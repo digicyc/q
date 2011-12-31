@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="noindex, nofollow">
+<title>{% block title %}{% endblock %} | {{ site.name }}</title>
+<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
+
+<link href="/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+<link href="/font/stylesheet.css" rel="stylesheet" type="text/css" media="all" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascript/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>
+
+        <script type="text/javascript">
+   $(document).ready(function(){
+        $('a.close').click(function(){
+            $(this).parent().fadeOut('slow');
+        });
+        $('a.close2').click(function(){
+            $(this).parent().fadeOut(100);
+            $(".toogPan").css('clear', 'left');
+            $(".toogPan").animate({width: "680px"}, {duration: 1000});
+        });
+})
+  </script>
+{% block extra_javascript %}{% endblock %}
+<link rel="stylesheet" href="/css/uniform.defaultstyle2.css" type="text/css" media="screen" />
+<script type="text/javascript" charset="utf-8" src="/javascript/DD_roundies_0.0.2a-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/javascript/slides.min.jquery.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+ DD_roundies.addRule('.content', 10, true); 
+</script>
+</head>
+
+<body id="inner">
+<div class="left">
+	
+  <h1><a href="{% url index %}"></a></h1>
+  
+  <div class="welcome">Welcome<br /><a href="{% url view_user user.username %}">{{ user.username }}</a></div>
+	  
+	  
+  <ul id="menu">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="forms.html">Browse</a></li>
+	<li><a href="{% url add_book %}">add book</a></li>
+	<li><a href="#">activity stream</a></li>
+	<li><a href="#">report a problem</a></li>
+	<li><a href="#">get the code</a></li>
+	<li><a href="{% url logout %}">logout</a></li>
+  </ul>
+  <div class="push"></div>
+</div>
+<div class="right">
+  <div class="rshadow">
+    <div class="head">
+        <p>
+			<label>Search:</input>
+			<input type="text"/>
+		</p>
+    </div>
+    <div class="qright">
+    {% block content %}{% endblock %}
+
+    </div>
+    <div class="push"></div>
+  </div>
+</div>
+</body>
+</html>
