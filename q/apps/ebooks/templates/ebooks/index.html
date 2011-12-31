@@ -31,7 +31,6 @@
 $('#slides').slides();
 </script>
 
-   {% cache 500 latest_activity_stream %}
     <div id="activity-stream">
         <h3>Activity Stream</h3>
            <ul>
@@ -40,7 +39,6 @@ $('#slides').slides();
            {% endfor %}
     	</ul>
     </div>
-    {% endcache %}
 	
 	<div id="all_books">
 		<ul>
@@ -50,9 +48,6 @@ $('#slides').slides();
 		</ul>
 	</div>
 
-
-
-<<<<<<< HEAD
                 <ul class="byline">
 					<li class="title">written by:</li>
                 {% for author in book.authors.all %}
@@ -92,6 +87,4 @@ $('#slides').slides();
         <a href="{% url view_tag tag %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
     {% endfor %}
     </ul>
-=======
->>>>>>> Added the bits of the new style.
 {% endblock %}
