@@ -9,7 +9,7 @@
     		{{ activity_item.actor.username }}
     	</a> 
         sent
-    	<a href="{% url "book_info" activity_item.first_subject.content_object.slug %}">
+    	<a href="{% url book_info activity_item.first_subject.content_object.slug %}">
     	    {{ activity_item.first_subject.content_object.title }}
     	</a>
         to their <strong>kindle</strong>.
