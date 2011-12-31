@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.contrib.auth.models import User
@@ -13,14 +13,15 @@ from django.contrib.auth import (authenticate,
                                  logout as auth_logout)
 from django.contrib.auth.forms import PasswordChangeForm
 
-from q.common import reverse_lazy
+from q.common import reverse_lazy, superuser_only
 
 from accounts import forms, models
 from ebooks.models import Ownership, Read
 
 from activity_stream.models import create_activity_item
 
-@user_passes_test(lambda u: u.is_staff, reverse_lazy('admin_required'))
+@login_required
+@superuser_only
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}
 
