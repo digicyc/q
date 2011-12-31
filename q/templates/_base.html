@@ -42,14 +42,13 @@
 
   <ul id="menu">
     {% if request.user.is_superuser %}
-    <li>ADMIN</li>
+    <li><a href="#">ADMIN</a></li>
     <li><a href="{% url activity_stream %}">activity stream</a></li>
     <li><a href="{% url accounts:list %}">list users</a></li>
     {% endif %}
     {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
-    <li>CONTRIBUTOR</li>
+    <li><a href="#">CONTRIBUTOR</a></li>
     <li><a href="{% url add_book %}">add book</a></li>
-    <li>&nbsp;</li>
     {% endif %}
     <li><a href="forms.html">browse</a></li>
 	<li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>

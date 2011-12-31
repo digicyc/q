@@ -7,7 +7,13 @@ http://www.templateworld.com, http://www.elegantweb.com
 
 /* [1] - Reset CSS */
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, four_equalsquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, sub, sup, tt, var, b, u, i, center, dl, tr, th, td, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, input, textarea {
+html, body, div, span, applet, object, iframe, 
+h1, h2, h3, h4, h5, h6, p, four_equalsquote, pre, 
+a, abbr, acronym, address, big, cite, code, del, dfn, 
+em, font, img, ins, kbd, q, s, samp, small, strike, sub, 
+sup, tt, var, b, u, i, center, dl, tr, th, td, dt, dd, 
+ol, ul, li, fieldset, form, label, legend, table, 
+caption, tbody, tfoot, thead, input, textarea {
 	margin:0;
 	padding:0;
 	border:0;
@@ -78,20 +84,29 @@ h1 {
 .welcome {
 	text-align: center;
 	width: 159px;
-	color: #DBA000;
+	color: #DDD;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7);
-	font-weight: bold;
-	font-family: 'Helvetica Neue';
-	font-weight: 300;
+	font-family: 'WisdomScriptAIRegular';
+	font-weight: normal;
+	font-size: 25px;
 }
+.welcome:first-letter {
+	font-size: 40px;
+}
+
 .welcome a {
 	color: #FFF;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7);
-	font-weight: bold;
 	text-transform: capitalize;
 	margin: 7px 0 0;
 	display: block;
+	font-family: 'WisdomScriptAIRegular';
 }
+
+.welcome a:first-letter {
+	font-size: 40px;
+}
+
 .descript {
 	width:100%;
 	float:left;
@@ -413,6 +428,13 @@ h1 {
 	box-shadow: inset 1px 1px 5px rgba(0,0,0,0.3);
 	border-radius: 12px;
 	font-size: 12px;
+	overflow: hidden;
+}
+#all_books ul {
+	overflow: auto;
+	height: 500px;
+	width: 170px;
+	padding: 0 40px 0 0;
 }
 #all_books h3 {
 	border-bottom: 1px dotted #333;
@@ -426,7 +448,24 @@ h1 {
 }
 
 #all_books li a {
-	color:#7F6707;
+	color: #7F6707;
+	margin: 5px 0;
+	display: block;
+	line-height: 15px;
+}
+#alphabet {
+	float: left;
+	margin: 62px 0 0 0;
+}
+#alphabet li {
+	margin: 0 0 3px 0;
+	font-size: 11px;
+	border-bottom: 1px solid rgb(224, 198, 108);
+	padding: 0 0 3px;
+	text-align: center;
+	color: #7F6707;
+	font-weight: bold;
+	font-family: 'HelveticaNeueLTCom37ThinConde';
 }
 
 .activity-avatar {
