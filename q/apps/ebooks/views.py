@@ -57,7 +57,7 @@ def index(request, template_name="ebooks/index.html"):
 
     ctx['activity_stream'] = activity_stream
 
-    ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
+    #ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
     ctx['books'] = books
     
     if request.session.has_key('show_welcome_message'):
