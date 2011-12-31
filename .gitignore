@@ -9,6 +9,6 @@ local_settings.py
 /.externalToolBuilders
 /.project
 /.pydevproject
-activity_stream
-threadedcomments
+/activity_stream
+/threadedcomments
 /.metadata
