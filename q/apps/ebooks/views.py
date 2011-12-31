@@ -65,13 +65,12 @@ def activity_stream(request, template_name='ebooks/activity_stream.html'):
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
-def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs):
+def books_by_type(request, template_name="ebooks/search.html", page_num=1, *args, **kwargs):
     """
     Browse books by the specified type.
     """
     ctx = {}
 
-    page_num = kwargs.get('page_num', 1)
     num_per_page = 10
     filter_type = kwargs.get('type').lower()
     books = None
