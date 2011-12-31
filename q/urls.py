@@ -9,7 +9,7 @@ urlpatterns = patterns('',
 
     (r'^books/', include('ebooks.urls')),
     #(r'^users/', include('accounts.urls')),
-    (r'^accounts/', include('accounts.urls')),                  
+    (r'^accounts/', include('accounts.urls', namespace="accounts")),
     (r'^admin/', include(admin.site.urls)),
     (r'^comments/', include('django.contrib.comments.urls')),
 )
