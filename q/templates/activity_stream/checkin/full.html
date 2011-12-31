@@ -1,0 +1,19 @@
+{% load gravatar %}
+{% load url from future %}
+<div class="activity-checkin">
+    <div class="activity-ico"></div>
+    <div class="activity-avatar" style="float: left">{% gravatar activity_item.actor 35 %}</div>
+    <div class="activity-details">
+
+    	<a href="{% url accounts:view_user activity_item.actor.username %}">
+    		{{ activity_item.actor.username }}
+    	</a> 
+    	<strong>checked in </strong> the book
+    	<a href="{% url "book_info" activity_item.first_subject.content_object.book.slug %}">
+    	    {{ activity_item.first_subject.content_object.book.title }}
+    	</a>
+		
+		<div class="the_date">{{ activity_item.created_at }}</div>
+		
+    </div>
+</div>
