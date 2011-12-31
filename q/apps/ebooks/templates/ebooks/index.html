@@ -1,5 +1,5 @@
 {% extends '_base.html' %}
-{% load activity_stream_tags %}
+{% load activity_tags %}
 {% load cache %}
 
 {% block title %}home{% endblock %}
@@ -36,7 +36,7 @@ $('#slides').slides();
         <h3>Activity Stream</h3>
            <ul>
            {% for activity_item in activity_stream %}
-               <li>{% render_activity activity_item %}</li>
+               <li>{% display_action activity_item %}</li>
            {% endfor %}
     	</ul>
     </div>
