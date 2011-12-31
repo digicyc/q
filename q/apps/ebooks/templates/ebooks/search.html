@@ -66,17 +66,17 @@
         <br/>
 {% if page.has_previous %}
 {% if letter %}
-<a href="{% url books_by_type type letter page.previous_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Previous</a>
+<a href="{% url books_by_type type letter page.previous_page_number %}">Previous</a>
 {% else %}
-<a href="{% url books_by_type type page.previous_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Previous</a>
+<a href="{% url books_by_type type page.previous_page_number %}">Previous</a>
 {% endif %}
 {% endif %}
 {{ page }}
 {% if page.has_next %}
 {% if letter %}
-<a href="{% url books_by_type type letter page.next_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Next</a>
+<a href="{% url books_by_type type letter page.next_page_number %}">Next</a>
 {% else %}
-<a href="{% url books_by_type type page.next_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Next</a>
+<a href="{% url books_by_type type page.next_page_number %}">Next</a>
 {% endif %}
 {% endif %} {% else %}
 <p>You Suck at Searching, Try Again</p>

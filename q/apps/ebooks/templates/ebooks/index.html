@@ -1,85 +1,52 @@
-{% extends 'ebooks/_base.html' %}
+{% extends '_base.html' %}
 {% load activity_stream_tags %}
 
 {% block title %}home{% endblock %}
 
+{% block extra_javascript %}
+{% endblock %}
+
 {% block body_class %} class="home"{% endblock %}
 
 {% block content %}
-	<h2 class="section-title">Recent Additions</h2>
+	<h3 id="recent_title">Recent Additions</h3>
+    <div class="content" id="slides" style="text-align: center">
+       <div class="slides_container"><div>
+       
+       {% for book in books %}
+       {% if forloop.counter0 > 1 %}
+       {% if forloop.counter0|divisibleby:6 %}
+       </div>
+       <div>
+       {% endif %}
+       {% endif %}
+         <img src="{{ book.cover.url }}" height="140">
+       {% endfor %}
+       </div></div>
+       <a href="#" class="prev"><img src="/images/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
+       <a href="#" class="next"><img src="/images/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
+       </div>
+    <script type="text/javascript">
+$('#slides').slides();
+</script>
 
-	{% if books %}
-		{% for book in books %}
-		<article class="book">
-			<figure class="cover">
+    <div id="activity-stream">
+        <h3>Activity Stream</h3>
+           <ul>
+           {% for activity_item in activity_stream %}
+               <li>{% render_activity activity_item %}</li>
+           {% endfor %}
+    	</ul>
+    </div>
+	
+	<div id="all_books">
+		<ul>
+			<li><h3>A</h3></li>
+			<li><a href="">book</a></li>
+			<li><a href="">book</a></li>
+		</ul>
+	</div>
 
-				{% if book.slug %}
-					<a href="{% url book_info book.slug %}">
-				{% else %}
-					<a href="/">
-				{% endif %}
 
-			{% if book.cover %}
-				<img src="{{ book.cover.url }}" height="140" />
-			{% else %}
-				<img src="/images/book-no-cover.png" height="140" />
-			{% endif %}
-				</a>
 
-				<div class="overlay"></div>
-			</figure>
-			<div class="book-summary">
-			<div class="summary-wrap">
-				{% comment %}
-				<p class="series"><a href="">Series Title:</a> Book 3</p>
-				{% endcomment %}
-				<h3>
-					{% if book.slug %}
-						<a href="{% url book_info book.slug %}">
-					{% else %}
-						<a href="">
-					{% endif %}
-					{{ book.title }}
-					</a>
-				</h3>
-
-                <ul class="byline">
-					<li class="title">written by:</li>
-                {% for author in book.authors.all %}
-                    <li>{{ author }}</li>
-                {% endfor %}
-				</ul>
-
-				<hr />
-				<p>{{ book.description|truncatewords:40|safe }}</p>
-				<hr />
-				<ul class="formats">
-					<li class="title">Available Formats:</li>
-					{% for format in book.formats %}
-						<li><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
-					{% endfor %}
-				</ul>
-			</div><!-- /.book-summary -->
-			</div><!-- /.summary-wrap -->
-		</article>
-		{% endfor %}
-	{% else %}
-		<p>Search for something</p>
-	{% endif %}
-
-	<br clear="all"/>
-	<h2 class="section-title">Recent Activity</h2>
-    <ul id="activity-stream">
-    {% for activity_item in activity_stream %}
-        <li>{% render_activity activity_item %}</li>
-    {% endfor %}
-    </ul>
-{% endblock %}
-{% block rail %}
-    <h2 class="section-title">Tag Cloud</h2>
-    <ul id="tagcloud">
-    {% for tag in tags %}
-        <a href="{% url view_tag tag %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
-    {% endfor %}
-    </ul>
 {% endblock %}
