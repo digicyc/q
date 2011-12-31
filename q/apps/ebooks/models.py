@@ -107,7 +107,7 @@ class Book(models.Model, GoodReadsBookMixin):
     _goodreads_num_votes = models.PositiveIntegerField(null=False, default=0)
     description = models.TextField(blank=True)
     published = models.DateField(blank=True, null=True)
-    create_time = models.DateTimeField(auto_now_add=True)
+    create_time = models.DateTimeField(auto_now_add=True, db_index=True)
     update_time = models.DateTimeField(auto_now=True)
     cover = models.ImageField(upload_to=cover_save, blank=True)
     thumbnail = models.ImageField(upload_to=thumb_save, blank=True)
