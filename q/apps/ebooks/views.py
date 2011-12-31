@@ -49,7 +49,7 @@ def index(request, template_name="ebooks/index.html"):
                         order_by('-timestamp').distinct()[:10]
     ctx['action_stream'] = action_stream
 
-    ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
+    #ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
     ctx['books'] = books
     
     if request.session.has_key('show_welcome_message'):
