@@ -38,16 +38,20 @@
 	
   <h1><a href="{% url index %}"></a></h1>
   
-  <div class="welcome">Welcome<br /><a href="{% url view_user user.username %}">{{ user.username }}</a></div>
+  <div class="welcome">Welcome<br /><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
 	  
 	  
   <ul id="menu">
-    <li><a href="dashboard.html">Dashboard</a></li>
-    <li><a href="forms.html">Browse</a></li>
-	<li><a href="{% url add_book %}">add book</a></li>
-	<li><a href="#">activity stream</a></li>
-	<li><a href="#">report a problem</a></li>
-	<li><a href="#">get the code</a></li>
+    {% if request.user.is_superuser %}
+    <li><a href="#">activity stream</a></li>
+    <li><a href="{% url accounts:list %}">list users</a></li>
+    {% endif %}
+    {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
+    <li><a href="{% url add_book %}">add book</a></li>
+    {% endif %}
+    <li><a href="forms.html">browse</a></li>
+	<li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
+	<li><a href="http://git.twi.gs/q/">get the code</a></li>
 	<li><a href="{% url logout %}">logout</a></li>
   </ul>
   <div class="push"></div>

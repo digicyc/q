@@ -9,7 +9,7 @@ urlpatterns = patterns('accounts.views',
     url(r'^password/$', 'edit_password', name="edit_password"), 
     url(r'^password/complete/$',password_change_done, name="password_change_done"), 
     url(r'^invitations/$', 'manage_invitations', name="manage_invitations"),
-    url(r'^list/$', 'view_user_list', name="view_user_list"),
+    url(r'^list/$', 'view_user_list', name="list"),
 
     url(r'(?P<username>[\w\d\-\.]+)/$', 'view_user', name="view_user"),
 )
