@@ -21,7 +21,7 @@
        <div>
        {% endif %}
        {% endif %}
-         <a href="{% url book_info book.1 %}"><img src="http://zzqtemp.s3.amazonaws.com/{{ book.2 }}" height="140" border="0"></a>
+         <a href="{% url book_info book.slug %}"><img src="{{ book.cover.url }}" height="140" border="0"></a>
        {% endfor %}
        </div></div>
        <a href="#" class="prev">&lsaquo;</a>
