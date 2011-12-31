@@ -1,11 +1,22 @@
-{% extends 'ebooks/_base.html' %}
+{% extends '_base.html' %}
 
 {% block title %}add book{% endblock %}
 
 {% block body_class %} class="page-view add-view dashboard"{% endblock %}
 
 {% block content %}
-		<h2 class="section-title">Add a Book</h2>
+        <div class="content">
+            <form method="post">{% csrf_token %}
+        <p>
+            <label for="id_isbn">ISBN:</label>
+            <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn13 }}" />
+            <p>
+                <input type="submit" value="Search" class="submit-large" />
+            </p>
+        </p>
+    </form>
+        <hr>
+		<h3>Add a Book</h3>
 		
 		<div class="book-sidebar">
 			<figure class="cover">
@@ -23,9 +34,9 @@
         {% else %}
             <form method="POST">
         {% endif %}
-
-		        {{ book_form.as_p }}
-				
+                <ul class="forms">
+		        {{ book_form.as_ul }}
+				</ul>
 				<hr />
 
                 {% if book.temp_cover_url %}
@@ -33,21 +44,14 @@
                 {% endif %}
                 {% csrf_token %}
 				<p>
-					<input type="submit" value="Add {{ book.title }}" class="submit-large" />
+					<button>Add {{ book.title }}</button>
 				</p>
 	        </form>
 		</div>
+  </div>
 {% endblock %}
 
 {% block rail %}
 	<h1>Search </h2>
-	<form method="post">{% csrf_token %}
-		<p>
-			<label for="id_isbn">ISBN:</label>
-			<input type="text" name="isbn" id="id_isbn" value="{{ book.isbn13 }}" />
-            <p>
-                <input type="submit" value="Search" class="submit-large" />
-            </p>
-		</p>
-    </form>
+
 {% endblock %}
