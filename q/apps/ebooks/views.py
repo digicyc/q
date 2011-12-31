@@ -39,8 +39,10 @@ def index(request, template_name="ebooks/index.html"):
     Defines the index of the site.
     """
     ctx = {}
-    all_books = models.Book.objects.all()
-
+    all_books = cache.get('all_books')
+    if all_books is None:
+        all_books = models.Book.objects.all()
+        cache.set('all_books', all_books, 60*60)
     # Otherwise just display the 15 latest books.
     books = cache.get('index_latest_books')
     if books is None:
