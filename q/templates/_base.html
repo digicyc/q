@@ -39,8 +39,7 @@
   <h1><a href="{% url index %}"></a></h1>
   
   <div class="welcome">Welcome<br /><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
-	  
-	  
+
   <ul id="menu">
     {% if request.user.is_superuser %}
     <li>ADMIN</li>
