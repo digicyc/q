@@ -10,8 +10,10 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
@@ -39,12 +41,20 @@ def index(request, template_name="ebooks/index.html"):
     ctx = {}
 
     # Otherwise just display the 15 latest books.
-    books = models.Book.objects.order_by("-create_time")[:15].distinct()
-    activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
-                        exclude(type__name='upload').\
-                        exclude(type__name='download').\
-                        exclude(type__name='kindle').\
-                        order_by('-created_at').distinct()[:10]
+    books = cache.get('index_latest_books')
+    if books is None:
+        books = models.Book.objects.order_by("-create_time")[:42].distinct()
+        cache.set('index_latest_books', books, 60*60) #cache for 60min
+
+    activity_stream = cache.get('index_activity_stream')
+    if activity_stream is None:
+        activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
+                            exclude(type__name='upload').\
+                            exclude(type__name='download').\
+                            exclude(type__name='kindle').\
+                            order_by('-created_at').distinct()[:10]
+        cache.set('index_activity_stream', activity_stream, 60*60)  #cache for 60min
+
     ctx['activity_stream'] = activity_stream
 
     ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
