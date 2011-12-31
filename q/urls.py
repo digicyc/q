@@ -30,6 +30,8 @@ if settings.DEBUG:
              {'document_root': os.path.join(settings.MEDIA_ROOT,'images')}),
         (r'^javascript/(?P<path>.*)$', 'serve',
              {'document_root': os.path.join(settings.MEDIA_ROOT,'javascript')}),
+        (r'^font/(?P<path>.*)$', 'serve',
+             {'document_root': os.path.join(settings.MEDIA_ROOT,'font')}),
     )
 
     if settings.DEFAULT_FILE_STORAGE == "django.core.files.storage.FileSystemStorage":
