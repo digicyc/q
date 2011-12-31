@@ -71,9 +71,10 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     """
     ctx = {}
 
-    page_num = 1
+    page_num = kwargs.get('page_num', 1)
     num_per_page = 10
     filter_type = kwargs.get('type').lower()
+    books = None
 
     if request.GET.has_key('q') and request.GET['q'].strip() != "":
         books = admin_keyword_search(models.Book,
@@ -81,10 +82,6 @@ def books_by_type(request, template_name="ebooks/search.html",  *args, **kwargs)
     else:
         letter = kwargs.get('letter')
         ctx['letter'] = letter
-        if kwargs.has_key('page_num'):
-            page_num = kwargs.get('page_num')
-
-        books = None
 
         if filter_type == "author":
             if letter is not None:
