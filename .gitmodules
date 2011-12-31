@@ -1,6 +1,0 @@
-[submodule "q/lib/activity-stream"]
-	path = q/lib/activity-stream
-	url = https://github.com/philippWassibauer/django-activity-stream.git
-[submodule "q/lib/django-threadedcomments"]
-	path = q/lib/django-threadedcomments
-	url = https://github.com/HonzaKral/django-threadedcomments.git
