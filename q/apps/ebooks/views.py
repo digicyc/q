@@ -23,7 +23,7 @@ from tagging.models import TaggedItem, Tag
 from activity_stream.models import create_activity_item
 from activity_stream.models import ActivityStreamItem
 
-from q.common import admin_keyword_search
+from q.common import admin_keyword_search, superuser_only
 
 from ebooks.admin import BookAdmin
 from ebooks import models
@@ -58,6 +58,7 @@ def index(request, template_name="ebooks/index.html"):
                               RequestContext(request, ctx))
 
 @login_required
+@superuser_only
 def activity_stream(request, template_name='ebooks/activity_stream.html'):
     ctx = {}
     ctx['activity_stream'] = ActivityStreamItem.objects.filter(subjects__isnull=False).\
