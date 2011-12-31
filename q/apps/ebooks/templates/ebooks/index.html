@@ -16,7 +16,7 @@
        
        {% for book in books %}
        {% if forloop.counter0 > 1 %}
-       {% if forloop.counter0|divisibleby:6 %}
+       {% if forloop.counter0|divisibleby:5 %}
        </div>
        <div>
        {% endif %}
@@ -44,12 +44,11 @@ $('#slides').slides();
 	
 	<div id="all_books">
 		<ul>
-			<li><h3>A</h3></li>
-			<li><a href="">book</a></li>
-			<li><a href="">book</a></li>
+			{% for books in all_books %}
+			<li><a href="">{{ books }}</a></li>
+			{% endfor %}
 		</ul>
 	</div>
-
                 <ul class="byline">
 					<li class="title">written by:</li>
                 {% for author in book.authors.all %}
