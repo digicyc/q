@@ -42,7 +42,7 @@ def index(request, template_name="ebooks/index.html"):
     ctx = {}
     all_books = cache.get('all_books')
     if all_books is None:
-        all_books = models.Book.objects.filter(Q(title__iregex=r'^(An|And|The) %s+' % letter) | Q(title__istartswith=letter)).\
+        all_books = models.Book.objects.all().\
             extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
             order_by('order_title')
         cache.set('all_books', all_books, 60*60)
