@@ -84,7 +84,7 @@ MIDDLEWARE_CLASSES = [
 
 
 try:
-    asdf = __import__('debug_toolbar'):
+    asdf = __import__('debug_toolbar')
     INTERNAL_IPS = ('127.0.0.1', 'tex.ath.cx',)
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
 except ImportError:
