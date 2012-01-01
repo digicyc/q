@@ -54,7 +54,7 @@ def index(request, template_name="ebooks/index.html"):
     #    books = models.Book.objects.order_by("-create_time")[:40].distinct()
     #    cache.set('index_latest_books', books, 60*60) #cache for 60min
         cursor = connection.cursor()
-        books = cursor.execute("""SELECT title, slug, cover FROM ebooks_book ORDER BY create_time DESC""").fetchall()
+        books = cursor.execute("""SELECT title, slug, cover FROM ebooks_book ORDER BY create_time DESC LIMIT 30""").fetchall()
         cache.set("index_latest_books", books, 60*60)
 
     activity_stream = cache.get('index_activity_stream')
