@@ -279,9 +279,9 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
                     invitation_key.mark_used(user)
 
                     from_user = invitation_key.from_user
-                    from_user_profile = from_user.get_profile()
-                    from_user_profile.available_invites -= from_user_profile.available_invites
-                    from_user_profile.save()
+                    #from_user_profile = from_user.get_profile()
+                    #from_user_profile.available_invites -= from_user_profile.available_invites
+                    #from_user_profile.save()
 
                     del request.session['invitation_key']
 
