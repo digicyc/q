@@ -21,7 +21,7 @@
        <div>
        {% endif %}
        {% endif %}
-         <a href="{% url book_info book.slug %}"><img src="{{ book.cover.url }}" height="140" border="0"></a>
+         <a href="{% url book_info book.1 %}"><img src="http://zzqtemp.s3.amazonaws.com/{{ book.2 }}" height="140" border="0"></a>
        {% endfor %}
        </div></div>
        <a href="#" class="prev"><img src="/images/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
@@ -44,8 +44,8 @@ $('#slides').slides();
 	
 	<div id="all_books">
 		<ul>
-			{% for books in all_books %}
-			<li><a href="">{{ books }}</a></li>
+			{% for book in all_books %}
+			<li><a href="{% url book_info book.2 %}">{{ book.1 }}</a></li>
 			{% endfor %}
 		</ul>
 	</div>
