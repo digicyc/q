@@ -82,9 +82,23 @@ def index(request, template_name="ebooks/index.html"):
 @login_required
 @superuser_only
 def activity_stream(request, template_name='ebooks/activity_stream.html'):
-    ctx = {}
-    ctx['activity_stream'] = ActivityStreamItem.objects.filter(subjects__isnull=False).\
-                    order_by('-created_at').distinct()[:10]
+    ctx = dict()
+
+    num_per_page = 10
+    stream = cache.get("all_activity_stream")
+
+    page_num = request.GET.get('page', 1)
+
+    if stream is None:
+        stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
+                    order_by('-created_at').distinct()
+        cache.set("all_activity_stream", stream, 60*60)
+
+    paginator = Paginator(stream, num_per_page)
+    page = paginator.page(page_num)
+
+    ctx['page'] = page
+
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
