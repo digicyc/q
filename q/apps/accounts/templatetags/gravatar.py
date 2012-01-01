@@ -3,6 +3,7 @@ from django.utils.html import escape
 from django.contrib.auth.models import User
 from django.utils.hashcompat import md5_constructor
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 
 from django.conf import settings
 
@@ -25,8 +26,11 @@ def get_user(user):
 def gravatar_for_email(email, size=80):
     default_image_url = ""
     if GRAVATAR_DEFAULT_IMAGE != "":
-        this_site = Site.objects.get(pk=settings.SITE_ID)
-        default_image_url = this_site.domain + GRAVATAR_DEFAULT_IMAGE
+        default_image_url = cache.get("default_avatar_url")
+        if default_image_url is None:
+            this_site = Site.objects.get(pk=settings.SITE_ID)
+            default_image_url = this_site.domain + GRAVATAR_DEFAULT_IMAGE
+            cache.set("default_avatar_url", default_image_url, 60*60*24)
     url = "%savatar/%s/?" % (GRAVATAR_URL_PREFIX, md5_constructor(email).hexdigest())
     url += urllib.urlencode({"s": str(size), "default": default_image_url})
     return url
