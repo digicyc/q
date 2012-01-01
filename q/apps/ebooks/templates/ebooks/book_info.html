@@ -19,7 +19,7 @@
 {% block content %}
 	{% if book %}
 
-		<div class="book-sidebar">
+		<div class="book_sidebar">
 			<figure class="cover">
 				{% if book.cover %}
 					<img src="{{ book.cover.url }}" width="160" />
@@ -28,7 +28,7 @@
 				{% endif %}
 				<div class="overlay"></div>
                 {% if book.has_mobi and request.user.get_profile.kindle_email %}
-                <li><a href="{% url email_kindle book.id %}">email to my kindle</a></li>
+                <a class="email_kindle" href="{% url email_kindle book.id %}">email to my kindle</a>
                 {% endif %}
 			</figure>
 
@@ -40,18 +40,20 @@
                 my rating: {% for x in vote_range %}<a href="{% url rate_book read.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br>
             {% endif %}
             {% endcomment %}
+			
             {% if book.goodreads_id > 0 %}
                 gr rating: {{ book.metarating }} ({{ book.goodreads_num_votes }} votes)<br/>
             {% endif %}
-            q rating: {{ book.rating }} (? votes)<p>
+			
+            q rating: {{ book.rating }} (? votes)
 
             {% if request.user.get_profile.is_librarian %}
                 {% if error %}
                     {{ error }}
                 {% endif %}
-                <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                {{ format_form.as_p }}
-                <input type="submit">
+                <form id="upload_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+                	{{ format_form.as_p }}
+                	<input type="submit">
                 </form>
             {% endif %}
 
@@ -66,12 +68,14 @@
             {% endif %}
 
         {% if book.also_downloaded|length > 0 %}
-        <h2 class="section-title" style="font-size:15px">Others also downloaded...</h2>
+		<div id="other_books">
+        <h2>Others also downloaded...</h2>
         <ul class="also_downloaded">
             {% for b in book.also_downloaded %}
             <li><a href="{% url book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
             {% endfor %}
         </ul>
+		</div>
         {% endif %}
 
         {% if my_ownership %}

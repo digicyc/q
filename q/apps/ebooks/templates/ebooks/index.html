@@ -24,8 +24,8 @@
          <a href="{% url book_info book.1 %}"><img src="http://zzqtemp.s3.amazonaws.com/{{ book.2 }}" height="140" border="0"></a>
        {% endfor %}
        </div></div>
-       <a href="#" class="prev"><img src="/images/arrow-prev.png" width="24" height="43" alt="Arrow Prev"></a>
-       <a href="#" class="next"><img src="/images/arrow-next.png" width="24" height="43" alt="Arrow Next"></a>
+       <a href="#" class="prev">&lsaquo;</a>
+       <a href="#" class="next">&rsaquo;</a>
        </div>
     <script type="text/javascript">
 $('#slides').slides();
@@ -41,7 +41,7 @@ $('#slides').slides();
     	</ul>
     </div>
     {% endcache %}
-	
+	<h2 class="all_books">All Books</h2>
 	<div id="all_books">
 		<ul>
 			{% for book in all_books %}
