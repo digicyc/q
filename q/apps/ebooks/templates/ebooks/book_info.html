@@ -114,15 +114,15 @@
                             {% for owner in owners %}
                                 <li id="owner_{{ owner.pk }}" style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
                                  <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
-                                    <a href="{% url view_user owner.user.username  %}" style="border: none">
+                                    <a href="{% url accounts:view_user owner.user.username  %}" style="border: none">
                                         {% gravatar owner.user 35 %}
                                     </a>
                                  </div>
                                  <div style=" float: left; margin-left: 10px">
                                      {% if owner.checked_out %}
-                                     <a href="{% url view_user owner.checked_out.user.username  %}">{{ owner.checked_out.user.username }}</a> has<br/>{{ owner.user.username }}'s copy.
+                                     <a href="{% url accounts:view_user owner.checked_out.user.username  %}">{{ owner.checked_out.user.username }}</a> has<br/>{{ owner.user.username }}'s copy.
                                      {% else %}
-                                     Ask <a href="{% url view_user owner.user.username  %}"> {{ owner.user.username }}</a><br /> to borrow it.
+                                     Ask <a href="{% url accounts:view_user owner.user.username  %}"> {{ owner.user.username }}</a><br /> to borrow it.
                                      {% endif %}
                                  </div>
                                 </li>
@@ -246,12 +246,12 @@
 	{% for checkout in checkouts %}
 	    <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
     	    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
-    	       <a href="{% url view_user checkout.user.username %}" style="border: none">
+    	       <a href="{% url accounts:view_user checkout.user.username %}" style="border: none">
                    {% gravatar checkout.user 35 %}
     	       </a>
     	    </div>
     	    <div style=" float: left; margin-left: 10px; width: 150px">
-    	        <a href="{% url view_user checkout.user.username  %}">
+    	        <a href="{% url accounts:view_user checkout.user.username  %}">
     	            {{ checkout.user.username }}
     	        </a>
     	        checked it out<br /> on <em>{{ checkout.create_time|date:"F j, Y" }}.</em>
