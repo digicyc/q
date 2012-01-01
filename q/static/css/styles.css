@@ -225,7 +225,7 @@ h1 {
 }
 
 #inner .right .rshadow {
-	width: 800px;
+	width: 754px;
 	float: left;
 }
 #inner .left h1 {
@@ -422,13 +422,14 @@ h1 {
 #all_books {
 	width: 168px;
 	float: left;
-	margin: 52px 16px;
+	margin: 8px 16px;
 	padding: 20px;
 	background: rgba(0, 0, 0, 0.05);
 	box-shadow: inset 1px 1px 5px rgba(0,0,0,0.3);
 	border-radius: 12px;
 	font-size: 12px;
 	overflow: hidden;
+	position: relative;
 }
 #all_books ul {
 	overflow: auto;
@@ -436,6 +437,16 @@ h1 {
 	width: 170px;
 	padding: 0 40px 0 0;
 }
+h2.all_books {
+	font-weight: normal;
+	text-shadow: 0 1px 0 white;
+	color: #555;
+	padding: 28px 0 0 22px;
+	font-family: 'WisdomScriptAIRegular';
+	font-size: 25px;
+	float: left;
+}
+
 #all_books h3 {
 	border-bottom: 1px dotted #333;
 	padding: 0 0 4px;
@@ -522,6 +533,66 @@ h1 {
 	font-weight:bold;
 	line-height:19px
 }
+#upload_form {
+	margin: 10px 0;
+}
+#upload_form input {
+	margin: 10px 0 0;
+	padding: 5px 0 0;
+	text-transform: uppercase;
+	font-size: 11px;
+	color: #666;
+}
+#upload_form input[type="submit"] {
+	margin: 10px 0;
+	padding: 6px 15px;
+	text-transform: uppercase;
+	font-size: 11px;
+	color: white;
+	background: green;
+	border-radius: 2px;
+}
+
+.book_sidebar {
+	width: 300px;
+	float: left;
+	font-size: 13px;
+	line-height: 24px;
+	color: #444;
+}
+.book_sidebar .cover {
+	margin: 0;
+}
+.email_kindle {
+	color: #A28B2D;
+	text-transform: uppercase;
+	margin: 10px 0;
+	display: block;
+	font-weight: bold;
+	font-size: 11px;
+	border: 1px dotted #A28B2D;
+	width: 133px;
+	padding: 0 10px;
+	background: white;
+}
+
+.formats li a {
+	width: 60px;
+	color: #a28b2d;
+	display: inline-block;
+}
+#other_books h2 {
+	font-weight: normal;
+	text-shadow: 0 1px 0 white;
+	color: #555;
+	padding: 28px 0 1px 0;
+	font-family: 'WisdomScriptAIRegular';
+	font-size: 20px;
+}
+
+
+
+
 #inner .right .content select {
 	width:156px;
 	float:right;
