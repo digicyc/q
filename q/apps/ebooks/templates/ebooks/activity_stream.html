@@ -14,4 +14,13 @@
         <li>{% display_action activity_item %}</li>
     {% endfor %}
     </ul>
+
+    {% if page.has_previous %}
+        <a href="{% url activity_stream %}?page={{ page.previous_page_number }}">Previous</a>
+    {% endif %}
+    {{ page }}
+    {% if page.has_next %}
+        <a href="{% url activity_stream %}?page={{ page.next_page_number }}">Next</a>
+    {% endif %}
+
 {% endblock %}

@@ -85,6 +85,7 @@ def activity_stream(request, template_name='ebooks/activity_stream.html'):
     ctx = dict()
     ctx['activity_stream'] = Action.objects.\
                              order_by('-timestamp').distinct()[:10]
+
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
