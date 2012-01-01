@@ -83,8 +83,21 @@ def index(request, template_name="ebooks/index.html"):
 @login_required
 def activity_stream(request, template_name='ebooks/activity_stream.html'):
     ctx = dict()
-    ctx['activity_stream'] = Action.objects.\
-                             order_by('-timestamp').distinct()[:10]
+
+    num_per_page = 10
+    stream = cache.get("all_activity_stream")
+
+    page_num = request.GET.get('page', 1)
+
+    if stream is None:
+        stream = Action.objects.\
+                     order_by('-timestamp').distinct()[:10]
+        cache.set("all_activity_stream", stream, 60*60)
+
+    paginator = Paginator(stream, num_per_page)
+    page = paginator.page(page_num)
+
+    ctx['page'] = page
 
     return render_to_response(template_name, RequestContext(request, ctx))
 
