@@ -109,13 +109,19 @@ def books_by_series(request, template_name="ebooks/search.html",  *args, **kwarg
     Display the books for a given series.
     """
     ctx = {}
+    num_per_page = 10
+
+    page_num = request.GET.get("page", 1)
 
     slug = kwargs.get('series_slug').lower()
 
     series = models.Series.objects.filter(slug__exact=slug)
     books = models.Book.objects.filter(series=series).order_by('series_num')
 
-    ctx['books'] = books
+    paginator = Paginator(books, num_per_page)
+    page = paginator.page(page_num)
+
+    ctx['page'] = page
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
