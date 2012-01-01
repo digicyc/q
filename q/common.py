@@ -20,6 +20,16 @@ from django.template import resolve_variable
 from django.utils.http import urlquote
 from django.core.cache import cache
 
+def dictfetchall(cursor):
+    "Returns all rows from a cursor as a dict"
+    desc = cursor.description
+    return [
+        dict(zip([col[0] for col in desc], row))
+        for row in cursor.fetchall()
+    ]
+
+
+
 def invalidate_template_cache(fragment_name, *variables):
     args = hashlib.md5(u':'.join([urlquote(resolve_variable(var, fragment_name)) for var in variables]))
     cache_key = 'template.cache.%s.%s' % (fragment_name, args.hexdigest())

@@ -43,39 +43,20 @@ $('#slides').slides();
     {% endcache %}
 	<h2 class="all_books">All Books</h2>
 	<div id="all_books">
+        {% regroup all_books by letter as letter_list %}
 		<ul>
-			{% for book in all_books %}
-			<li><a href="{% url book_info book.2 %}">{{ book.1 }}</a></li>
+        {% for letter in letter_list %}
+
+			{% for book in letter.list %}
+			    {% if forloop.counter0 == 0 %}<a name="{{ letter.grouper|upper }}">{% endif %}<li><a href="{% url book_info book.slug %}">{{ book.title }}</a></li>{% if forloop.counter0 == 0 %}</a>{% endif %}
 			{% endfor %}
+        {% endfor %}
 		</ul>
 	</div>
 	<ul id="alphabet">
-		<li>A</li>
-		<li>B</li>
-		<li>C</li>
-		<li>D</li>
-		<li>E</li>
-		<li>F</li>
-		<li>G</li>
-		<li>H</li>
-		<li>I</li>
-		<li>J</li>
-		<li>K</li>
-		<li>L</li>
-		<li>M</li>
-		<li>N</li>
-		<li>O</li>
-		<li>P</li>
-		<li>Q</li>
-		<li>R</li>
-		<li>S</li>
-		<li>T</li>
-		<li>U</li>
-		<li>V</li>
-		<li>W</li>
-		<li>X</li>
-		<li>Y</li>
-		<li>Z</li>
+        {% for letter in "#ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
+            <li><a href="#{{ letter }}">{{ letter }}</a></li>
+        {% endfor %}
 	</ul>
 
 

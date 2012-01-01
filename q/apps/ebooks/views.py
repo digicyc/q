@@ -39,22 +39,26 @@ def index(request, template_name="ebooks/index.html"):
     Defines the index of the site.
     """
     ctx = {}
-    all_books = cache.get('all_books')
-    if all_books is None:
+    #all_books = cache.get('all_books')
+    all_book_list = None
+    if all_book_list is None:
     #    all_books = models.Book.objects.all().\
     #        extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
     #        order_by('order_title')
     #    cache.set('all_books', all_books, 60*60)
         cursor = connection.cursor()
-        all_books = cursor.execute("""SELECT (REPLACE(LOWER(title), "the ", "")) AS "order_title", title, slug FROM ebooks_book ORDER BY order_title ASC""").fetchall()
-        cache.set("all_books", all_books, 60*60)
+        all_books = cursor.execute("""SELECT REPLACE(LOWER(title), "the ", "") AS "order_title", title, slug FROM ebooks_book ORDER BY order_title ASC""")
+        all_book_list = []
+        for row in all_books.fetchall():
+            all_book_list.append({"order_title": row[0], "title": row[1], "slug": row[2], "letter": row[0][:1] if row[0][:1] in "abcdefghijklmnopqrstuvwxyz" else "#"})
+        cache.set("all_books", all_book_list, 60*60)
 
     books = cache.get('index_latest_books')
     if books is None:
     #    books = models.Book.objects.order_by("-create_time")[:40].distinct()
     #    cache.set('index_latest_books', books, 60*60) #cache for 60min
         cursor = connection.cursor()
-        books = cursor.execute("""SELECT title, slug, cover FROM ebooks_book ORDER BY create_time DESC""").fetchall()
+        books = cursor.execute("""SELECT title, slug, cover FROM ebooks_book ORDER BY create_time DESC LIMIT 30""").fetchall()
         cache.set("index_latest_books", books, 60*60)
 
     activity_stream = cache.get('index_activity_stream')
@@ -70,7 +74,7 @@ def index(request, template_name="ebooks/index.html"):
 
     #ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
     ctx['books'] = books
-    ctx['all_books'] = all_books
+    ctx['all_books'] = all_book_list
     
     if request.session.has_key('show_welcome_message'):
         ctx['show_welcome_message'] = True
@@ -82,9 +86,23 @@ def index(request, template_name="ebooks/index.html"):
 @login_required
 @superuser_only
 def activity_stream(request, template_name='ebooks/activity_stream.html'):
-    ctx = {}
-    ctx['activity_stream'] = ActivityStreamItem.objects.filter(subjects__isnull=False).\
-                    order_by('-created_at').distinct()[:10]
+    ctx = dict()
+
+    num_per_page = 10
+    stream = cache.get("all_activity_stream")
+
+    page_num = request.GET.get('page', 1)
+
+    if stream is None:
+        stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
+                    order_by('-created_at').distinct()
+        cache.set("all_activity_stream", stream, 60*60)
+
+    paginator = Paginator(stream, num_per_page)
+    page = paginator.page(page_num)
+
+    ctx['page'] = page
+
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
