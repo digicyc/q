@@ -48,7 +48,7 @@ def index(request, template_name="ebooks/index.html"):
     # Otherwise just display the 15 latest books.
     books = cache.get('index_latest_books')
     if books is None:
-        books = models.Book.objects.order_by("-create_time")[:42].distinct()
+        books = models.Book.objects.order_by("-create_time")[:40].distinct()
         cache.set('index_latest_books', books, 60*60) #cache for 60min
 
     activity_stream = cache.get('index_activity_stream')
@@ -57,7 +57,7 @@ def index(request, template_name="ebooks/index.html"):
                             exclude(type__name='upload').\
                             exclude(type__name='download').\
                             exclude(type__name='kindle').\
-                            order_by('-created_at').distinct()[:10]
+                            order_by('-created_at').distinct()[:4]
         cache.set('index_activity_stream', activity_stream, 60*60)  #cache for 60min
 
     ctx['activity_stream'] = activity_stream
