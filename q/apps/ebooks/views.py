@@ -6,12 +6,12 @@ from base64 import b64decode
 from datetime import datetime
 
 from django.core.files import File
+from django.db import connection
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.cache import cache
-from django.views.decorators.cache import cache_page
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -41,15 +41,21 @@ def index(request, template_name="ebooks/index.html"):
     ctx = {}
     all_books = cache.get('all_books')
     if all_books is None:
-        all_books = models.Book.objects.all().\
-            extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
-            order_by('order_title')
-        cache.set('all_books', all_books, 60*60)
-    # Otherwise just display the 15 latest books.
+    #    all_books = models.Book.objects.all().\
+    #        extra(select={'order_title': 'REPLACE(LOWER(title), "the ", "")'}).\
+    #        order_by('order_title')
+    #    cache.set('all_books', all_books, 60*60)
+        cursor = connection.cursor()
+        all_books = cursor.execute("""SELECT (REPLACE(LOWER(title), "the ", "")) AS "order_title", title, slug FROM ebooks_book ORDER BY order_title ASC""").fetchall()
+        cache.set("all_books", all_books, 60*60)
+
     books = cache.get('index_latest_books')
     if books is None:
-        books = models.Book.objects.order_by("-create_time")[:40].distinct()
-        cache.set('index_latest_books', books, 60*60) #cache for 60min
+    #    books = models.Book.objects.order_by("-create_time")[:40].distinct()
+    #    cache.set('index_latest_books', books, 60*60) #cache for 60min
+        cursor = connection.cursor()
+        books = cursor.execute("""SELECT title, slug, cover FROM ebooks_book ORDER BY create_time DESC""").fetchall()
+        cache.set("index_latest_books", books, 60*60)
 
     activity_stream = cache.get('index_activity_stream')
     if activity_stream is None:
