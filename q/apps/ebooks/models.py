@@ -188,10 +188,10 @@ class Book(models.Model, GoodReadsBookMixin):
                         AND asis.object_id <> %s
                     GROUP BY asis.object_id
                     ORDER BY downloaded DESC
-                    LIMIT 5""" % (self.id, self.id)
+                    LIMIT 5"""
         cursor = connection.cursor()
 
-        cursor.execute(sql)
+        cursor.execute(sql, [self.id, self.id])
         rows = cursor.fetchall()
 
         books = []
