@@ -32,7 +32,7 @@
                 {% endif %}
 			</figure>
 
-            <input type="checkbox" class="ive-read-this" id="{{ book.id }}"{% if read %} checked{% endif %}>I've read this<br><br>
+            <input type="checkbox" class="ive-read-this" id="{{ book.id }}"{% if read %} checked{% endif %}> I've read this<br />
             {% comment %}
             {% if read %}
                 {% num_range 5 as vote_range %}
@@ -133,12 +133,14 @@
 			{% endif %}
 		</div>
 
-		<div class="book-main">
+		<div id="book_main">
             {% if book.series %}
 			<p class="series-info"><a href="{% url books_by_series book.series.slug %}">{{ book.series.name }}</a> - Book {{ book.series_num }}</p>
 			<hr />
             {% endif %}
+			
 	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
+			
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
@@ -146,7 +148,7 @@
             {% endfor %}
 			</ul>
 
-			<h2 class="sub-title">Description:</h2>
+			<h2 class="sub_title">Description:</h2>
 			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
 
 			<h2 class="sub-title">Discussion:</h2>

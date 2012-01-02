@@ -46,9 +46,8 @@ $('#slides').slides();
         {% regroup all_books by letter as letter_list %}
 		<ul>
         {% for letter in letter_list %}
-
 			{% for book in letter.list %}
-			    {% if forloop.counter0 == 0 %}<a name="{{ letter.grouper|upper }}">{% endif %}<li><a href="{% url book_info book.slug %}">{{ book.title }}</a></li>{% if forloop.counter0 == 0 %}</a>{% endif %}
+			    {% if forloop.counter0 == 0 %}<h3 id="{{ letter.grouper|upper }}">{{ letter.grouper|upper }}</h3> {% endif %}<li><a href="{% url book_info book.slug %}">{{ book.title }}</a></li>{% if forloop.counter0 == 0 %}</a>{% endif %}
 			{% endfor %}
         {% endfor %}
 		</ul>
