@@ -12,3 +12,12 @@ local_settings.py
 /activity_stream
 /threadedcomments
 /.metadata
+.Python
+.gitignore_global
+bin/
+include/
+lib/
+q/lib/activity-stream/
+q/lib/activity_stream
+q/lib/django-threadedcomments/
+q/lib/threadedcomments

@@ -19,7 +19,7 @@
 {% block content %}
 	{% if book %}
 
-		<div class="book-sidebar">
+		<div class="book_sidebar">
 			<figure class="cover">
 				{% if book.cover %}
 					<img src="{{ book.cover.url }}" width="160" />
@@ -28,11 +28,11 @@
 				{% endif %}
 				<div class="overlay"></div>
                 {% if book.has_mobi and request.user.get_profile.kindle_email %}
-                <li><a href="{% url email_kindle book.id %}">email to my kindle</a></li>
+                <a class="email_kindle" href="{% url email_kindle book.id %}">email to my kindle</a>
                 {% endif %}
 			</figure>
 
-            <input type="checkbox" class="ive-read-this" id="{{ book.id }}"{% if read %} checked{% endif %}>I've read this<br><br>
+            <input type="checkbox" class="ive-read-this" id="{{ book.id }}"{% if read %} checked{% endif %}> I've read this<br />
             {% comment %}
             {% if read %}
                 {% num_range 5 as vote_range %}
@@ -40,18 +40,20 @@
                 my rating: {% for x in vote_range %}<a href="{% url rate_book read.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br>
             {% endif %}
             {% endcomment %}
+			
             {% if book.goodreads_id > 0 %}
                 gr rating: {{ book.metarating }} ({{ book.goodreads_num_votes }} votes)<br/>
             {% endif %}
-            q rating: {{ book.rating }} (? votes)<p>
+			
+            q rating: {{ book.rating }} (? votes)
 
             {% if request.user.get_profile.is_librarian %}
                 {% if error %}
                     {{ error }}
                 {% endif %}
-                <form method="post" enctype="multipart/form-data">{% csrf_token %}
-                {{ format_form.as_p }}
-                <input type="submit">
+                <form id="upload_form" method="post" enctype="multipart/form-data">{% csrf_token %}
+                	{{ format_form.as_p }}
+                	<input type="submit">
                 </form>
             {% endif %}
 
@@ -66,12 +68,14 @@
             {% endif %}
 
         {% if book.also_downloaded|length > 0 %}
-        <h2 class="section-title" style="font-size:15px">Others also downloaded...</h2>
+		<div id="other_books">
+        <h2>Others also downloaded...</h2>
         <ul class="also_downloaded">
             {% for b in book.also_downloaded %}
             <li><a href="{% url book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
             {% endfor %}
         </ul>
+		</div>
         {% endif %}
 
         {% if my_ownership %}
@@ -129,12 +133,14 @@
 			{% endif %}
 		</div>
 
-		<div class="book-main">
+		<div id="book_main">
             {% if book.series %}
 			<p class="series-info"><a href="{% url books_by_series book.series.slug %}">{{ book.series.name }}</a> - Book {{ book.series_num }}</p>
 			<hr />
             {% endif %}
+			
 	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
+			
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
@@ -142,7 +148,7 @@
             {% endfor %}
 			</ul>
 
-			<h2 class="sub-title">Description:</h2>
+			<h2 class="sub_title">Description:</h2>
 			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
 
 			<h2 class="sub-title">Discussion:</h2>
