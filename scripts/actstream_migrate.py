@@ -1,11 +1,11 @@
 from activity_stream.models import ActivityStreamItem
-from actstream import action
+from actstream import actions
+from actstream.signals import action
 
 if __name__ == "__main__":
     old_stream = ActivityStreamItem.objects.all()
 
     for item in old_stream:
-        new_item = None
         if item.type.name == "invited":
             registrant = item.first_subject().content_object.registrant
             action.send(item.actor, verb="invited", target=registrant, timestamp=item.created_at)

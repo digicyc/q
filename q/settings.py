@@ -122,7 +122,17 @@ INSTALLED_APPS = (
     'activity_stream',
     'threadedcomments',
     'djangoratings',
+    'actstream',
 )
+
+ACTSTREAM_ACTION_MODELS = [
+                           'auth.user',
+                           'threadedcomments.threadedcomment',
+                           'accounts.userdownload',
+                           'ebooks.book',
+                           'ebooks.format',
+                          ]
+ACTSTREAM_MANAGER = 'actstream.managers.ActionManager'
 
 COMMENTS_APP = 'threadedcomments'
 GRAVATAR_DEFAULT_IMAGE = '/images/blank-avatar.png'
