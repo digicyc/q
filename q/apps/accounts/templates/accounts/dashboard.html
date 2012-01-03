@@ -35,13 +35,13 @@
 
 		<h2 class="section-title">Books I've Read</h2>
 			<ul class="checkout-history">
-	            {% for rbook in read_books %}
+	            {% for book in books_read %}
 	            <li>
-	                <a href="{% url book_info rbook.book.slug %}">
-	                {% if rbook.book.cover %}
-						<img src="{{ rbook.book.cover.url }}" height="100" alt="{{ rbook.book.title }}" title="{{ rbook.book.title }}" />
+	                <a href="{% url book_info book.slug %}">
+	                {% if book.cover_url %}
+						<img src="{{ book.cover_url }}" height="100" alt="{{ book.title }}" title="{{ book.title }}" />
 					{% else %}
-						<img src="/images/book-no-cover.png" height="100" alt="{{ rbook.book.title }}" title="{{ rbook.book.title }}" />
+						<img src="/images/book-no-cover.png" height="100" alt="{{ book.title }}" title="{{ book.title }}" />
 					{% endif %}
 					</a>
 				</li>
@@ -53,11 +53,11 @@
         <ul class="checkout-history">
             {% for book in books_owned %}
             <li>
-                <a href="{% url book_info book.book.slug %}">
-                {% if book.book.cover %}
-					<img src="{{ book.book.cover.url }}" height="100" />
+                <a href="{% url book_info book.slug %}">
+                {% if book.cover_url %}
+					<img src="{{ book.cover_url }}" height="100" alt="{{ book.title }}" title="{{ book.title }}" />
 				{% else %}
-					<img src="/images/book-no-cover.png" height="100" />
+					<img src="/images/book-no-cover.png" height="100" alt="{{ book.title }}" title="{{ book.title }}" />
 				{% endif %}
 				</a>
             </li>

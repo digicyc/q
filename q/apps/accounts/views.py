@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db import connection
+from django.core.cache import cache
 
 from django.contrib.auth.models import User
 #from django.contrib.auth.views import password_change
@@ -20,7 +22,7 @@ from actstream.models import Action
 from q.common import superuser_only
 
 from accounts import forms, models
-from ebooks.models import Ownership, Read
+from django.conf import settings
 
 
 @login_required
@@ -46,12 +48,27 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
         can_edit = True
 
     activity_items = Action.objects.filter(actor_object_id=view_user.id).order_by('-timestamp')[:5]
-    books_owned = Ownership.objects.filter(user=view_user)
-    read_books = Read.objects.filter(user=view_user)
+    books_owned = cache.get("books_owned", None)
+    if books_owned is None:
+        cursor = connection.cursor()
+        _books_owned = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_ownership AS O ON B.id=O.book_id WHERE O.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
+        books_owned = []
+        for row in _books_owned.fetchall():
+            cover_url = settings.S3_SETTINGS["vanity_url"] + row[3]
+            books_owned.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
+        cache.set("books_owned", books_owned, 60*60)
+
+    cursor = connection.cursor()
+    _books_read = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_read AS R ON B.id=R.book_id WHERE R.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
+    books_read = []
+    for row in _books_read.fetchall():
+        cover_url = settings.S3_SETTINGS["vanity_url"] + row[3]
+        books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
+    #read_books = Read.objects.filter(user=view_user)
 
     ctx.update({'view_user': view_user,
                 'can_edit': can_edit,
-                'read_books': read_books,
+                'books_read': books_read,
                 'books_owned': books_owned,
                 'activity_items': activity_items,
                 })
