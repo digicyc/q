@@ -64,7 +64,7 @@ def index(request, template_name="ebooks/index.html"):
         activity_stream = Action.objects.\
                         exclude(verb='downloaded').\
                         exclude(verb='sent').\
-                        order_by('-timestamp').distinct()[:10]
+                        order_by('-timestamp').distinct()[:4]
         cache.set('index_activity_stream', activity_stream, 60*60)  #cache for 60min
 
     ctx['activity_stream'] = activity_stream
