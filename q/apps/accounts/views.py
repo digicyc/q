@@ -13,7 +13,8 @@ from django.contrib.auth import (authenticate,
                                  logout as auth_logout)
 from django.contrib.auth.forms import PasswordChangeForm
 
-from q.common import reverse_lazy
+from actstream.signals import action
+from actstream import actions
 
 from accounts import forms, models
 from ebooks.models import Ownership, Read
@@ -284,7 +285,7 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
 
                     del request.session['invitation_key']
 
-                    create_activity_item('invited', from_user, invitation_key)
+                    action.send(from_user, verb='invited', target=user, action_object=invitation_key)
 
                 #redirect
                 return HttpResponseRedirect(reverse('login'))
