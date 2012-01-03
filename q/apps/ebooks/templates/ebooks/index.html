@@ -31,7 +31,6 @@
 $('#slides').slides();
 </script>
 
-   {% cache 500 latest_activity_stream %}
     <div id="activity-stream">
         <h3>Activity Stream</h3>
            <ul>
@@ -40,7 +39,6 @@ $('#slides').slides();
            {% endfor %}
     	</ul>
     </div>
-    {% endcache %}
 	<h2 class="all_books">All Books</h2>
 	<div id="all_books">
 		<ul>
@@ -65,13 +63,6 @@ $('#slides').slides();
 						<li><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
 					{% endfor %}
 				</ul>
-			</div><!-- /.book-summary -->
-			</div><!-- /.summary-wrap -->
-		</article>
-		{% endfor %}
-	{% else %}
-		<p>Search for something</p>
-	{% endif %}
 
 	<br clear="all"/>
 	<h2 class="section-title">Recent Activity</h2>
