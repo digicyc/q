@@ -13,13 +13,13 @@ from django.contrib.auth import (authenticate,
                                  logout as auth_logout)
 from django.contrib.auth.forms import PasswordChangeForm
 
-from q.common import reverse_lazy, superuser_only
+from q.common import reverse_lazy
 
 from accounts import forms, models
 from ebooks.models import Ownership, Read
 
+
 @login_required
-@superuser_only
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}
 
