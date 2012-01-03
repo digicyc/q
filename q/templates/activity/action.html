@@ -9,12 +9,12 @@
     {% endif %}
     <div class="activity-details">
         {{ action.timestamp }}<br/>
-    	<a href="{% url view_user action.actor.username %}">
+    	<a href="{% url accounts:view_user action.actor.username %}">
     		{{ action.actor.username }}
     	</a>
         <strong>{{ action.verb }}</strong>
         {% if action.verb == "invited" %}
-        <a href="{% url view_user action.actor.username %}">
+        <a href="{% url accounts:view_user action.actor.username %}">
             {{ action.target.username }}
         </a>
         {% endif %}
