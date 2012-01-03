@@ -59,11 +59,14 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
         cache.set("books_owned", books_owned, 60*60)
 
     cursor = connection.cursor()
-    _books_read = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_read AS R ON B.id=R.book_id WHERE R.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
-    books_read = []
-    for row in _books_read.fetchall():
-        cover_url = settings.S3_SETTINGS["vanity_url"] + row[3]
-        books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
+    books_read = cache.get("books_read", None)
+    if books_read is None:
+        _books_read = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_read AS R ON B.id=R.book_id WHERE R.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
+        books_read = []
+        for row in _books_read.fetchall():
+            cover_url = settings.S3_SETTINGS["vanity_url"] + row[3]
+            books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
+        cache.set("books_read", books_read, 60*60)
     #read_books = Read.objects.filter(user=view_user)
 
     ctx.update({'view_user': view_user,
