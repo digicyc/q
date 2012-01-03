@@ -91,7 +91,7 @@ def activity_stream(request, template_name='ebooks/activity_stream.html'):
 
     if stream is None:
         stream = Action.objects.\
-                     order_by('-timestamp').distinct()[:10]
+                     order_by('-timestamp').distinct()
         cache.set("all_activity_stream", stream, 60*60)
 
     paginator = Paginator(stream, num_per_page)
