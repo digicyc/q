@@ -5,14 +5,48 @@ import operator
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.functional import lazy
 from django.core.urlresolvers import reverse
-
+from django.utils.encoding import smart_str
 
 from django.conf import settings
 
 reverse_lazy = lazy(reverse, str)
+
+import hashlib
+from django.template import resolve_variable
+from django.utils.http import urlquote
+from django.core.cache import cache
+
+def dictfetchall(cursor):
+    "Returns all rows from a cursor as a dict"
+    desc = cursor.description
+    return [
+        dict(zip([col[0] for col in desc], row))
+        for row in cursor.fetchall()
+    ]
+
+
+
+def invalidate_template_cache(fragment_name, *variables):
+    args = hashlib.md5(u':'.join([urlquote(resolve_variable(var, fragment_name)) for var in variables]))
+    cache_key = 'template.cache.%s.%s' % (fragment_name, args.hexdigest())
+    cache.delete(cache_key)
+
+def make_key(key, key_prefix, version):
+    return ':'.join([key_prefix, str(version), smart_str(key)])
+
+def superuser_only(function):
+    """
+    Limit view to superusers only.
+    """
+    def _inner(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied
+        return function(request, *args, **kwargs)
+    return _inner
 
 def admin_keyword_search(model, fields, keywords):
     """

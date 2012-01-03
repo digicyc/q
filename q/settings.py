@@ -15,6 +15,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+KEY_FUNCTION = 'q.common.make_key'
+KEY_PREFIX = 'q'
+VERSION = 1
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

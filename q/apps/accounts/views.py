@@ -16,11 +16,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 from actstream.signals import action
 from actstream import actions
 
+from q.common import superuser_only
+
 from accounts import forms, models
 from ebooks.models import Ownership, Read
 
 
 @login_required
+@superuser_only
 def view_user_list(request, template_name="accounts/users_list.html"):
     ctx = {}
 
