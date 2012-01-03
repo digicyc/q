@@ -1,5 +1,5 @@
 {% extends 'ebooks/_base.html' %}
-{% load activity_stream_tags %}
+{% load activity_tags %}
 
 {% block title %}activity stream{% endblock %}
 
@@ -11,7 +11,7 @@
 	<h2 class="section-title">Recent Activity</h2>
     <ul id="activity-stream">
     {% for activity_item in activity_stream %}
-        <li>{% render_activity activity_item %}</li>
+        <li>{% display_action activity_item %}</li>
     {% endfor %}
     </ul>
 {% endblock %}
