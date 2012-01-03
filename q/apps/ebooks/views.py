@@ -21,6 +21,7 @@ from django.conf import settings
 from tagging.models import TaggedItem, Tag
 
 from actstream.models import Action
+from actstream.signals import action
 
 from q.common import admin_keyword_search
 
@@ -178,7 +179,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
                 os.unlink(f.name)
 
                 #activity stream
-                #create_activity_item('upload', request.user, format)
+                action.send(request.user, verb="uploaded", action_object=format, target=format.ebook)
 
 
     # see if the logged in user has read this book to display the check
@@ -396,7 +397,7 @@ def download_format(request, *args, **kwargs):
     user_download.save()
 
     #activity stream
-    #create_activity_item('download', request.user, user_download)
+    action.send(request.user, verb='downloaded', action_object=user_download, target=book)
 
     return HttpResponseRedirect(download_url)
 
