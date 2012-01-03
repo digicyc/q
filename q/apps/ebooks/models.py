@@ -320,6 +320,7 @@ class Category(models.Model):
 class Author(models.Model):
     firstname = models.CharField(max_length=50, db_index=True)
     lastname = models.CharField(max_length=50, db_index=True)
+    slug = models.SlugField(max_length=105, db_index=True, unique=True, null=True, default=None)
 
     def __str__(self):
         return "%s %s" % (self.firstname, self.lastname)
