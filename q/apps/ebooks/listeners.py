@@ -1,5 +1,6 @@
-from activity_stream.models import create_activity_item
+from actstream import actions
+from actstream import action
 
 def activity_stream_comment(sender, comment, request, *args, **kwargs):
-    create_activity_item('comment', request.user, comment)
+    action.send(request.user, verb='commented on', action_object=comment, target=comment.content_object)
     
