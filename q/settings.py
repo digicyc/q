@@ -1,6 +1,7 @@
 import os
 import os.path
 import sys
+from actstream import actions
 
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
