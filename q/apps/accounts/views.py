@@ -15,6 +15,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 from actstream.signals import action
 from actstream import actions
+from actstream.models import Action
 
 from q.common import superuser_only
 
@@ -44,6 +45,7 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
     if username == request.user.username:
         can_edit = True
 
+    activity_items = Action.objects.filter(actor_object_id=view_user.id).order_by('-timestamp')[:5]
     books_owned = Ownership.objects.filter(user=view_user)
     read_books = Read.objects.filter(user=view_user)
 
@@ -51,6 +53,7 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
                 'can_edit': can_edit,
                 'read_books': read_books,
                 'books_owned': books_owned,
+                'activity_items': activity_items,
                 })
     return render_to_response(template_name, RequestContext(request, ctx))
 

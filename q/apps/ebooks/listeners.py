@@ -1,8 +1,6 @@
-from django.core.cache import cache
+from actstream import actions
+from actstream import action
 
-from activity_stream.models import create_activity_item
-
-from q.common import invalidate_template_cache
 
 def activity_stream_comment(sender, comment, request, *args, **kwargs):
-    invalidate_template_cache('latest_activity_stream')
+    action.send(request.user, verb='commented on', action_object=comment, target=comment.content_object)

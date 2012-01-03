@@ -1,6 +1,6 @@
 {% extends '_base.html' %}
 {% load gravatar %}
-{% load activity_stream_tags %}
+{% load activity_tags %}
 {% block title %}{{ view_user.username }}'s profile{% endblock %}
 {% block body_class %} class="page-view dashboard"{% endblock %}
 
@@ -28,7 +28,9 @@
     <div class="book-main">
          <h2 class="section-title">Recent Activity</h2>
          <ul id="activity-stream">
-        {% users_activity_stream view_user 5 %}
+             {% for action in activity_items %}
+        <li>{% display_action action %}</li>
+             {% endfor %}
         </ul>
 
 		<h2 class="section-title">Books I've Read</h2>
