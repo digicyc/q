@@ -58,9 +58,9 @@ def index(request, template_name="ebooks/index.html"):
 
 @login_required
 def activity_stream(request, template_name='ebooks/activity_stream.html'):
-    ctx = {}
-    ctx['activity_stream'] = ActivityStreamItem.objects.filter(subjects__isnull=False).\
-                    order_by('-created_at').distinct()[:10]
+    ctx = dict()
+    ctx['activity_stream'] = Action.objects.\
+                             order_by('-timestamp').distinct()[:10]
     return render_to_response(template_name, RequestContext(request, ctx))
 
 @login_required
