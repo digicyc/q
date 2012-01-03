@@ -1,9 +1,5 @@
 {% extends '_base.html' %}
-<<<<<<< HEAD
 {% load activity_tags %}
-=======
-{% load activity_stream_tags %}
->>>>>>> 6adf9105f139dd2debd2fe514d82542d2c3e5a83
 {% load cache %}
 
 {% block title %}home{% endblock %}
@@ -44,6 +40,7 @@ $('#slides').slides();
            {% endfor %}
     	</ul>
     </div>
+    {% endcache %}
 	<h2 class="all_books">All Books</h2>
 	<div id="all_books">
         {% regroup all_books by letter as letter_list %}
