@@ -40,9 +40,8 @@ def index(request, template_name="ebooks/index.html"):
     # Otherwise just display the 15 latest books.
     books = models.Book.objects.order_by("-create_time")[:15].distinct()
     action_stream = Action.objects.\
-                        exclude(verb='upload').\
-                        exclude(verb='download').\
-                        exclude(verb='kindle').\
+                        exclude(verb='downloaded').\
+                        exclude(verb='sent').\
                         order_by('-timestamp').distinct()[:10]
     ctx['action_stream'] = action_stream
 
