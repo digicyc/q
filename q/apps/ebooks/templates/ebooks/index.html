@@ -47,30 +47,6 @@ $('#slides').slides();
 			{% endfor %}
 		</ul>
 	</div>
-                <ul class="byline">
-					<li class="title">written by:</li>
-                {% for author in book.authors.all %}
-                    <li>{{ author }}</li>
-                {% endfor %}
-				</ul>
-
-				<hr />
-				<p>{{ book.description|truncatewords:40|safe }}</p>
-				<hr />
-				<ul class="formats">
-					<li class="title">Available Formats:</li>
-					{% for format in book.formats %}
-						<li><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
-					{% endfor %}
-				</ul>
-
-	<br clear="all"/>
-	<h2 class="section-title">Recent Activity</h2>
-    <ul id="activity-stream">
-    {% for item in action_stream %}
-        <li>{% display_action item %}</li>
-    {% endfor %}
-    </ul>
 {% endblock %}
 {% block rail %}
     <h2 class="section-title">Tag Cloud</h2>
