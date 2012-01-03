@@ -119,7 +119,6 @@ INSTALLED_APPS = (
 
     'south',
     'tagging',
-    'activity_stream',
     'threadedcomments',
     'djangoratings',
     'actstream',

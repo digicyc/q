@@ -20,8 +20,7 @@ from django.conf import settings
 
 from tagging.models import TaggedItem, Tag
 
-from activity_stream.models import create_activity_item
-from activity_stream.models import ActivityStreamItem
+from actstream.models import Action
 
 from q.common import admin_keyword_search
 
@@ -40,12 +39,12 @@ def index(request, template_name="ebooks/index.html"):
 
     # Otherwise just display the 15 latest books.
     books = models.Book.objects.order_by("-create_time")[:15].distinct()
-    activity_stream = ActivityStreamItem.objects.filter(subjects__isnull=False).\
-                        exclude(type__name='upload').\
-                        exclude(type__name='download').\
-                        exclude(type__name='kindle').\
-                        order_by('-created_at').distinct()[:10]
-    ctx['activity_stream'] = activity_stream
+    action_stream = Action.objects.\
+                        exclude(verb='upload').\
+                        exclude(verb='download').\
+                        exclude(verb='kindle').\
+                        order_by('-timestamp').distinct()[:10]
+    ctx['action_stream'] = action_stream
 
     ctx['tags'] = Tag.objects.cloud_for_model(models.Book)
     ctx['books'] = books
@@ -180,7 +179,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
                 os.unlink(f.name)
 
                 #activity stream
-                create_activity_item('upload', request.user, format)
+                #create_activity_item('upload', request.user, format)
 
 
     # see if the logged in user has read this book to display the check
@@ -351,7 +350,7 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
                     ownership.save()
 
                     #activity stream
-                    create_activity_item('checkout', checkout.user, ownership)
+                    #create_activity_item('checkout', checkout.user, ownership)
 
             if request.POST['submit'] == "Checkin":
                 checkout = ownership.checked_out
@@ -362,7 +361,7 @@ def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs
                 ownership.save()
 
                 #activity stream
-                create_activity_item('checkin', checkout.user, ownership)
+                #create_activity_item('checkin', checkout.user, ownership)
 
                 checkout_form = forms.CheckOutForm(users=users)
 
@@ -398,7 +397,7 @@ def download_format(request, *args, **kwargs):
     user_download.save()
 
     #activity stream
-    create_activity_item('download', request.user, user_download)
+    #create_activity_item('download', request.user, user_download)
 
     return HttpResponseRedirect(download_url)
 

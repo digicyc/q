@@ -1,0 +1,45 @@
+{% load gravatar %}
+
+<div class="activity-checkin">
+    <div class="activity-ico"></div>
+    <div class="activity-avatar" style="margin: 0; float: left">{% gravatar action.actor 35 %}</div>
+    {% if action.verb == "invited" %}
+    <div style="float: left; padding: 13px 7px 0 7px; ">⇉</div>
+    <div class="activity-avatar" style="float: left">{% if action.verb == "invited" %}{% gravatar action.target 35 %}{% endif %}</div>
+    {% endif %}
+    <div class="activity-details">
+        {{ action.timestamp }}<br/>
+    	<a href="{% url view_user action.actor.username %}">
+    		{{ action.actor.username }}
+    	</a>
+        <strong>{{ action.verb }}</strong>
+        {% if action.verb == "invited" %}
+        <a href="{% url view_user action.actor.username %}">
+            {{ action.target.username }}
+        </a>
+        {% endif %}
+        {% if action.verb == "commented on" %}
+            <a href="{% url book_info action.target.slug %}">{{ action.target }}</a>
+            <blockquote>
+                "{{ action.action_object.comment }}"
+            </blockquote>
+        {% endif %}
+        {% if action.verb == "downloaded" %}
+            <a href="{% url book_info action.target.slug %}">{{ action.target.title }}</a>
+            in <strong>{{ action.action_object.format }}</strong> format
+        {% endif %}
+        {% if action.verb == "sent" %}
+            <a href="{% url book_info action.target.slug %}">
+               {{ action.target.title }}
+            </a>
+            to their <strong>kindle</strong>.
+        {% endif %}
+        {% if action.verb == "uploaded" %}
+            <a href="{% url book_info action.target.slug %}">{{ action.target.title }}</a>
+            in <strong>{{ action.action_object.format }}</strong> format
+        {% endif %}
+
+
+
+    </div>
+</div>
