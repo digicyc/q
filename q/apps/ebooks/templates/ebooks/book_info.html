@@ -53,7 +53,7 @@
                 {% endif %}
                 <form id="upload_form" method="post" enctype="multipart/form-data">{% csrf_token %}
                 	{{ format_form.as_p }}
-                	<input type="submit">
+                	<input type="submit" value="upload">
                 </form>
             {% endif %}
 
