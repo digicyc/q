@@ -19,6 +19,9 @@ urlpatterns = patterns('ebooks.views',
     
     url(r'^contribute/tag/$', 'books_missing_tags', name='books_missing_tags'),
     url(r'^contribute/cover/$', 'books_missing_covers', name='books_missing_covers'),
+
+    url(r'^author/(?P<author_slug>[\w\d\-]+)/$', 'books_by_author', name="books_by_author"),
+
 )
 urlpatterns += patterns('ebooks.api',
 

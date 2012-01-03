@@ -169,6 +169,27 @@ def books_by_series(request, template_name="ebooks/search.html",  *args, **kwarg
     return render_to_response(template_name,
                               RequestContext(request, ctx))
 
+def books_by_author(request, template_name="ebooks/search.html", *args, **kwargs):
+    """
+    Display all the books by the provided author
+    """
+    ctx = {}
+    num_per_page = 10
+    page_num = request.GET.get("page", 1)
+
+    slug = kwargs.get("author_slug").lower()
+
+    author = models.Author.objects.filter(slug=slug)[0]
+    books = models.Book.objects.filter(authors=author)
+
+    paginator = Paginator(books, num_per_page)
+    page = paginator.page(page_num)
+
+    ctx['page'] = page
+    ctx['author'] = author
+
+    return render_to_response(template_name, RequestContext(request, ctx))
+
 def latest_books_rss(request, template_name="ebooks/latest_books.rss"):
     """
     Return an RSS feed with the latest 10 books uploaded

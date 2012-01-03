@@ -1,4 +1,4 @@
-{% extends 'ebooks/_base.html' %}
+{% extends '_base.html' %}
 
 {% block title %}search results{% endblock %}
 
@@ -64,22 +64,35 @@
 		</article>
 		{% endfor %}
         <br/>
-{% if page.has_previous %}
-{% if letter %}
-<a href="{% url books_by_type type letter page.previous_page_number %}">Previous</a>
+
+        {% if page.has_previous %}
+            {% if type %}
+                {% if letter %}
+                    <a href="{% url books_by_type type letter page.previous_page_number %}">Previous</a>
+                {% else %}
+                    <a href="{% url books_by_type type page.previous_page_number %}">Previous</a>
+                {% endif %}
+            {% endif %}
+            {% if author %}
+                <a href="{% url books_by_author author.slug %}?page={{ page.previous_page_number }}">Previous</a>
+            {% endif %}
+        {% endif %}
+        {{ page }}
+            {% if page.has_next %}
+                {% if type %}
+                {% if letter %}
+                    <a href="{% url books_by_type type letter page.next_page_number %}">Next</a>
+                {% else %}
+                    <a href="{% url books_by_type type page.next_page_number %}">Next</a>
+                {% endif %}
+            {% endif %}
+            {% if author %}
+                <a href="{% url books_by_author author.slug %}?page={{ page.next_page_number }}">Next</a>
+            {% endif %}
+        {% endif %}
+
 {% else %}
-<a href="{% url books_by_type type page.previous_page_number %}">Previous</a>
-{% endif %}
-{% endif %}
-{{ page }}
-{% if page.has_next %}
-{% if letter %}
-<a href="{% url books_by_type type letter page.next_page_number %}">Next</a>
-{% else %}
-<a href="{% url books_by_type type page.next_page_number %}">Next</a>
-{% endif %}
-{% endif %} {% else %}
-<p>You Suck at Searching, Try Again</p>
+    <p>You Suck at Searching, Try Again</p>
 {% endif %}
 
 {% endblock %}

@@ -144,7 +144,7 @@
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
-                <li>{{ author }}</li>
+                <li><a href="{% url books_by_author author.slug %}">{{ author }}</a></li>
             {% endfor %}
 			</ul>
 
