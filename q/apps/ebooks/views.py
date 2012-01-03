@@ -22,6 +22,7 @@ from tagging.models import TaggedItem, Tag
 
 from actstream.models import Action
 from actstream.signals import action
+from actstream import actions
 
 from q.common import admin_keyword_search
 
