@@ -60,7 +60,11 @@ class S3Storage(Storage):
             server += '.s3.amazonaws.com'
         else:
             server = self.options['vanity_url']
-        return 'http://' + server + '/' + filename
+
+        if "http" in server:
+            return server + '/' + filename
+        else:
+            return 'http://' + server + '/' + filename
 
 
     def _save(self, filename, content):
