@@ -173,20 +173,18 @@ class Book(models.Model, GoodReadsBookMixin):
         """
         Return the best matches for a book based on other downloads
         """
-        sql = """SELECT asis.object_id, count(distinct asi.actor_id) as downloaded
-                    FROM activity_stream_activitystreamitem asi
-                        JOIN activity_stream_activitystreamitemsubject asis ON asis.activity_stream_item_id=asi.id
-                    WHERE asi.actor_id IN
-                        (SELECT DISTINCT asi.actor_id
-                            FROM activity_stream_activitystreamitem asi
-                                JOIN activity_stream_activitystreamitemsubject asis ON asis.activity_stream_item_id=asi.id
-                            WHERE (asi.type_id=5 OR asi.type_id=8)
-                                AND asis.content_type_id=11
-                                AND asis.object_id=%s)
-                        AND (asi.type_id=5 OR asi.type_id=8)
-                        AND asis.content_type_id=11
-                        AND asis.object_id <> %s
-                    GROUP BY asis.object_id
+
+        sql = """SELECT A.target_object_id, count(distinct A.actor_object_id) AS downloaded
+                    FROM actstream_action A
+                    WHERE A.actor_object_id IN
+                        (SELECT DISTINCT A.actor_object_id
+                            FROM actstream_action A
+                            WHERE (A.verb="sent" OR A.verb="downloaded")
+                            AND A.target_object_id=%s
+                        )
+                    AND (A.verb="sent" OR A.verb="downloaded")
+                    AND A.target_object_id<>%s
+                    GROUP BY A.target_object_id
                     ORDER BY downloaded DESC
                     LIMIT 5"""
         cursor = connection.cursor()
