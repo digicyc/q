@@ -40,7 +40,7 @@ def email_kindle(request, book_id):
     email.attach(filename, data, 'application/x-mobipocket-ebook')
     email.send()
 
-    action.send(reqeust.user, verb='sent', target=book)
+    action.send(request.user, verb='sent', target=book)
 
     messages.success(request, "Successfully sent %s!" % book.title)
     return HttpResponseRedirect(reverse('ebooks.views.book_info', kwargs={'book_slug': book.slug}))
