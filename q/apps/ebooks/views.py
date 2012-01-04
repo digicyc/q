@@ -195,7 +195,6 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
         my_ownership = models.Ownership.objects.get(book=book, user=request.user)
     except models.Ownership.DoesNotExist:
         my_ownership = None
-
     ctx.update(
         {
             'book': book,
