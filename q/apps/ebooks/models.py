@@ -96,6 +96,8 @@ class Series(models.Model):
 
 
 class Book(models.Model, GoodReadsBookMixin):
+    """
+    """
     title = models.CharField(db_index=True, max_length=100)
     authors = models.ManyToManyField("Author", blank=True)
     _metarating = models.FloatField(default=0.0, null=False)
