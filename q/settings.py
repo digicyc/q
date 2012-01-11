@@ -109,7 +109,7 @@ DEFAULT_FILE_STORAGE="amazons3.django.S3Storage"
 S3_SETTINGS = {
     'bucket': 'zzq',
     'default_perm': 'public-read',
-    'vanity_url': False
+    'vanity_url': 'http://zzq.s3.amazonaws.com'
 }
 
 ROOT_URLCONF = 'q.urls'
