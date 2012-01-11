@@ -26,7 +26,6 @@ class BookForm(forms.Form):
     tags = forms.CharField(label="Tags", required=False)
     isbn10 = forms.CharField(max_length=20, label="ISBN10", required=False)
     isbn13 = forms.CharField(max_length=20, label="ISBN13", required=False)
-    gid = forms.CharField(max_length=20, label="Google Id", required=False)
     description = forms.CharField(label="Description*", widget=forms.Textarea, required=True)
     metarating = forms.FloatField(label="metarating", widget=forms.HiddenInput, initial="0.0")
 

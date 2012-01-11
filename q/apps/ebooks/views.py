@@ -18,7 +18,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 
+from django.utils.decorators import method_decorator
+from django.views.generic import View
+
 from django.conf import settings
+
+import goodreads
 
 from tagging.models import TaggedItem, Tag
 
@@ -297,7 +302,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
             ctx.update({'book_form': BookForm(request.POST)})
             return render_to_response(template_name,
                               RequestContext(request, ctx))
-        
+
         book = models.Book()
         book.title = request.POST['title']
         book.isbn10 = request.POST['isbn10']
@@ -388,6 +393,44 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     ctx.update({'book': book, 'book_form': book_form})
     return render_to_response(template_name,
                               RequestContext(request, ctx))
+
+class ISBNSearchView(View):
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ISBNSearchView, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        self.template = "ebooks/add/isbn_search.html"
+        return render_to_response(self.template, RequestContext(request, {}))
+
+    def post(self, request, *args, **kwargs):
+        self.template = "ebooks/add/isbn_search.html"
+
+        isbn = request.POST["isbn"]
+        gr = goodreads.GoodReads()
+        info = gr.get_book_info(isbn)
+
+        form_data = dict()
+        form_data["title"] = info["title"].strip()
+
+        authors = []
+        for key, value in info["authors"].iteritems():
+            if key == "name":
+                authors.append(value.strip())
+        form_data["authors"] = ",".join(authors)
+
+        form_data["isbn10"] = info["isbn"].strip()
+        form_data["isbn13"] = info["isbn13"].strip()
+        form_data["description"] = info["description"].strip()
+
+        book_form = forms.BookForm(form_data)
+
+        return render_to_response(self.template, RequestContext(request, {
+                                                "book_form": book_form,
+                                            }))
+
+
 
 @login_required
 def book_checkout(request, template_name="ebooks/checkout.html", *args, **kwargs):
