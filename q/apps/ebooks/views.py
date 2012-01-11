@@ -61,10 +61,11 @@ def index(request, template_name="ebooks/index.html"):
         _books = cursor.execute("""SELECT title, slug, cover FROM ebooks_book ORDER BY create_time DESC LIMIT 30""")
         books = []
         for row in _books.fetchall():
-            try:
-                books.append({"title": row[0], "slug": row[1], "cover_url": settings.S3_SETTINGS["vanity_url"] + '/' + row[2],})
-            except TypeError:
-                pass
+            print row[0]
+            print row[1]
+            print settings.S3_SETTINGS["vanity_url"]
+            print row[2]
+            books.append({"title": row[0], "slug": row[1], "cover_url": settings.S3_SETTINGS["vanity_url"] + '/' + row[2],})
         cache.set("index_latest_books", books, 60*60)
 
     activity_stream = cache.get('index_activity_stream')
