@@ -38,8 +38,6 @@ def view_user_list(request, template_name="accounts/users_list.html"):
 
 @login_required
 def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs):
-    ctx = {}
-
     can_edit = False
     username = kwargs.get('username').lower()
     view_user = get_object_or_404(User, username=username)
@@ -67,15 +65,15 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
             cover_url = settings.S3_SETTINGS["vanity_url"] + '/' + row[3]
             books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
         cache.set("books_read", books_read, 60*60)
-    #read_books = Read.objects.filter(user=view_user)
 
-    ctx.update({'view_user': view_user,
-                'can_edit': can_edit,
-                'books_read': books_read,
-                'books_owned': books_owned,
-                'activity_items': activity_items,
-                })
-    return render_to_response(template_name, RequestContext(request, ctx))
+    ctx.update()
+    return render_to_response(template_name, RequestContext(request,
+                                                {'view_user': view_user,
+                                                  'can_edit': can_edit,
+                                                  'books_read': books_read,
+                                                  'books_owned': books_owned,
+                                                  'activity_items': activity_items,
+                                                }))
 
 
 def login(request, template_name="accounts/login.html"):
