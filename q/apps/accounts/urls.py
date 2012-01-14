@@ -31,9 +31,9 @@ urlpatterns = patterns('accounts.views',
 #)
 
 #handling comments
-from ebooks.listeners import activity_stream_comment,delete_cache
+from ebooks.listeners import activity_stream_comment, clear_all_activity_steam_cache
 from django.contrib.comments.models import Comment
 from django.contrib.comments.signals import comment_was_posted
 
 comment_was_posted.connect(activity_stream_comment)
-comment_was_posted.connect(delete_cache, key="all_activity_stream")
+comment_was_posted.connect(clear_all_activity_steam_cache)
