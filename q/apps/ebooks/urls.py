@@ -1,12 +1,13 @@
 from django.conf.urls.defaults import *
 
 from djangoratings.views import AddRatingFromModel
+from ebooks.views import ISBNSearchView
 
 urlpatterns = patterns('ebooks.views',
     url(r'^$', 'index', name="index"),
     url(r'^latest_books.rss$', 'latest_books_rss', name="latest_books_rss"),
 
-    url(r'^add/$', 'add_book', name="add_book"),
+    url(r'^add/$', ISBNSearchView.as_view(), name="add_book"),
     url(r'^add/(?P<isbn>\d+)/$', 'add_book', name="isbn_search"),
 
     url(r'^checkout/(?P<book_key>[\w\d\-]+)/$', 'book_checkout', name="book_checkout"),

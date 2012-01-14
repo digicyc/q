@@ -1,0 +1,46 @@
+{% extends '_base.html' %}
+
+{% block title %}add book{% endblock %}
+
+{% block body_class %} class="page-view add-view dashboard"{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <form method="post">{% csrf_token %}
+            <p>
+                <label for="id_isbn">ISBN:</label>
+                <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn13 }}" />
+            <p>
+                <input type="submit" value="Search" class="submit-large" />
+            </p>
+            </p>
+        </form>
+
+    {% if book_form %}
+
+        <div class="book-main">
+            {% if book_form.is_multipart %}
+                <form enctype="multipart/form-data" method="POST">
+            {% else %}
+                <form method="POST">
+            {% endif %}
+            <ul class="forms">
+                {{ book_form.as_ul }}
+            </ul>
+            <hr />
+
+            {% if book.temp_cover_url %}
+                <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}" />
+            {% endif %}
+            {% csrf_token %}
+            <p>
+                <button>Add {{ book.title }}</button>
+            </p>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block rail %}
+    <h1>Search </h2>
+{% endblock %}

@@ -10,6 +10,7 @@ urlpatterns = patterns('accounts.views',
     url(r'^password/complete/$',password_change_done, name="password_change_done"), 
     url(r'^invitations/$', 'manage_invitations', name="manage_invitations"),
     url(r'^list/$', 'view_user_list', name="list"),
+    url(r'login/$', 'login', name='login'),
 
     url(r'(?P<username>[\w\d\-\.]+)/$', 'view_user', name="view_user"),
 )
@@ -30,8 +31,9 @@ urlpatterns = patterns('accounts.views',
 #)
 
 #handling comments
-from ebooks.listeners import activity_stream_comment
+from ebooks.listeners import activity_stream_comment, clear_all_activity_steam_cache
 from django.contrib.comments.models import Comment
 from django.contrib.comments.signals import comment_was_posted
 
 comment_was_posted.connect(activity_stream_comment)
+comment_was_posted.connect(clear_all_activity_steam_cache)
