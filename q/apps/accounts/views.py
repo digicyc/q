@@ -66,7 +66,6 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
             books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
         cache.set("books_read", books_read, 60*60)
 
-    ctx.update()
     return render_to_response(template_name, RequestContext(request,
                                                 {'view_user': view_user,
                                                   'can_edit': can_edit,
