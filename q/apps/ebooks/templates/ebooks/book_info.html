@@ -166,23 +166,26 @@
                 {% endif %}
 
                 {% if comment.open %}
-					<ul>
+				<ul>
                 {% endif %}
 
                 <li{% if comment.last %} class="last"{% endif %}>
-				<div class="comment">
-					<div class="gravatar">{% gravatar comment.user 35 %}</div>
-					<p class="comment-body">
-		                {{ comment.comment }}
-					    <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
-		            </p>
+    				<div class="comment">
+    					
+                        <div class="activity-avatar">
+                            {% gravatar comment.user 35 %}
+                        </div>
+    					
+                        <p class="comment-body">
+    		                {{ comment.comment }}
+    					    <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
+    		            </p>
 
-					<div id="reply-{{comment.pk}}"></div>
-				</div><!-- /.comment -->
+    					<div id="reply-{{comment.pk}}"></div>
+    				</div><!-- /.comment -->
 
-                {% if comment.added_path %} ADDED {% endif %}
-
-                {% for close in comment.close %}
+                    {% if comment.added_path %} ADDED {% endif %}
+                    {% for close in comment.close %}
 
                 </li>
                 </ul>

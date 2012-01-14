@@ -8,20 +8,20 @@
     <div class="activity-avatar" style="float: left">{% if action.verb == "invited" %}{% gravatar action.target 35 %}{% endif %}</div>
     {% endif %}
     <div class="activity-details">
-        {{ action.timestamp }}<br/>
-    	<a href="{% url accounts:view_user action.actor.username %}">
+    	<a class="username" href="{% url accounts:view_user action.actor.username %}">
     		{{ action.actor.username }}
     	</a>
-        <strong>{{ action.verb }}</strong>
+        <em class="verb">{{ action.verb }}</em>
         {% if action.verb == "invited" %}
-        <a href="{% url accounts:view_user action.actor.username %}">
+        <a class="username" href="{% url accounts:view_user action.actor.username %}">
             {{ action.target.username }}
         </a>
         {% endif %}
         {% if action.verb == "commented on" %}
-            <a href="{% url book_info action.target.slug %}">{{ action.target }}</a>
+            <a class="book" href="{% url book_info action.target.slug %}">{{ action.target }}</a><br/>
+            
             <blockquote>
-                "{{ action.action_object.comment }}"
+                {{ action.action_object.comment }}
             </blockquote>
         {% endif %}
         {% if action.verb == "downloaded" %}
@@ -39,6 +39,7 @@
             in <strong>{{ action.action_object.format }}</strong> format
         {% endif %}
 
+            <div class="time_stamp">{{ action.timestamp }}</div>
 
 
     </div>

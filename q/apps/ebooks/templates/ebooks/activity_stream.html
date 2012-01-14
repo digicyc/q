@@ -6,10 +6,10 @@
 {% block body_class %} class="home"{% endblock %}
 
 {% block content %}
-
+<div id="activity-stream">
 	<br clear="all"/>
-	<h2 class="section-title">Recent Activity</h2>
-    <ul id="activity-stream">
+	<h3 class="section-title">Recent Activity</h3>
+    <ul>
     {% for activity_item in page.object_list %}
         <li>{% display_action activity_item %}</li>
     {% endfor %}
@@ -22,5 +22,5 @@
     {% if page.has_next %}
         <a href="{% url activity_stream %}?page={{ page.next_page_number }}">Next</a>
     {% endif %}
-
+</div>
 {% endblock %}

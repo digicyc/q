@@ -6,12 +6,13 @@
 <title>{% block title %}{% endblock %} | {{ site.name }}</title>
 <link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
 
+<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 <link href="/css/styles.css" rel="stylesheet" type="text/css" media="all" />
 <link href="/font/stylesheet.css" rel="stylesheet" type="text/css" media="all" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-<script src="/javascript/jquery.uniform.js" type="text/javascript" charset="utf-8"></script>
+
 
         <script type="text/javascript">
    $(document).ready(function(){
@@ -26,12 +27,9 @@
 })
   </script>
 {% block extra_javascript %}{% endblock %}
-<script type="text/javascript" charset="utf-8" src="/javascript/DD_roundies_0.0.2a-min.js"></script>
+
 <script type="text/javascript" charset="utf-8" src="/javascript/slides.min.jquery.js"></script>
 
-<script type="text/javascript" charset="utf-8">
- DD_roundies.addRule('.content', 10, true); 
-</script>
 </head>
 
 <body id="inner">
