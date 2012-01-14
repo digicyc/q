@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -9,21 +8,18 @@ from django.db import connection
 from django.core.cache import cache
 
 from django.contrib.auth.models import User
-#from django.contrib.auth.views import password_change
 from django.contrib.auth import (authenticate,
                                  login as auth_login,
                                  logout as auth_logout)
 from django.contrib.auth.forms import PasswordChangeForm
 
 from actstream.signals import action
-from actstream import actions
 from actstream.models import Action
 
 from q.common import superuser_only
 
 from accounts import forms, models
 from django.conf import settings
-
 
 @login_required
 @superuser_only
@@ -37,9 +33,13 @@ def view_user_list(request, template_name="accounts/users_list.html"):
 
 
 @login_required
-def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs):
+def view_user(request, template_name="accounts/dashboard.html", username=None,
+              **kwargs):
+    """
+
+    """
     can_edit = False
-    username = kwargs.get('username').lower()
+    username = username.lower()
     view_user = get_object_or_404(User, username=username)
 
     if username == request.user.username:
@@ -66,7 +66,6 @@ def view_user(request, template_name="accounts/dashboard.html", *args, **kwargs)
             books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
         cache.set("books_read", books_read, 60*60)
 
-    ctx.update()
     return render_to_response(template_name, RequestContext(request,
                                                 {'view_user': view_user,
                                                   'can_edit': can_edit,
@@ -114,7 +113,10 @@ def login(request, template_name="accounts/login.html"):
 
 
 @login_required
-def edit_password(request, template_name="accounts/edit_password.html", *args, **kwargs):
+def edit_password(request, template_name="accounts/edit_password.html"):
+    """
+
+    """
     ctx = {}
 
     user = request.user
@@ -136,7 +138,7 @@ def edit_password(request, template_name="accounts/edit_password.html", *args, *
     return render_to_response(template_name, RequestContext(request, ctx))
 
 
-def edit_profile(request, template_name="accounts/edit_profile.html", *args, **kwargs):
+def edit_profile(request, template_name="accounts/edit_profile.html"):
     ctx = {}
 
     user = request.user
@@ -152,7 +154,7 @@ def edit_profile(request, template_name="accounts/edit_profile.html", *args, **k
     #create profile if needed
     try:
         profile = user.get_profile()
-    except:
+    except models.UserProfile.DoesNotExist:
         profile = models.UserProfile(user=user)
         profile.save()
 
@@ -204,7 +206,7 @@ def logout(request):
 
 #INVITATION STUFF
 @login_required
-def manage_invitations(request, template_name="accounts/manage_invites.html", *args, **kwargs):
+def manage_invitations(request, template_name="accounts/manage_invites.html"):
     ctx = {}
     invitation = ""
 
@@ -256,7 +258,7 @@ def manage_invitations(request, template_name="accounts/manage_invites.html", *a
     return render_to_response(template_name, RequestContext(request, ctx))
 
 
-def signup(request, template_name="accounts/signup.html", *args, **kwargs):
+def signup(request, template_name="accounts/signup.html"):
     ctx = {}
 
     #IS SITE IN INVITE MODE?
@@ -324,11 +326,13 @@ def signup(request, template_name="accounts/signup.html", *args, **kwargs):
     return render_to_response(template_name, RequestContext(request, ctx))
 
 
-def invited(request, template_name="accounts/invited.html", *args, **kwargs):
+def invited(request, template_name="accounts/invited.html", invitation_key=None):
+    """
+
+    """
     ctx = {}
     if getattr(settings, 'INVITE_MODE', True):
         #get invite key and check if valid.
-        invitation_key = kwargs.get('invitation_key')
         is_key_valid = models.InvitationKey.objects.is_key_valid(invitation_key)
 
         #set session cookie to allow registering
