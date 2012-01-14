@@ -16,7 +16,7 @@ local_settings.py
 .gitignore_global
 bin/
 include/
-lib/
+lib/amazons3
 q/lib/activity-stream/
 q/lib/activity_stream
 q/lib/django-threadedcomments/
