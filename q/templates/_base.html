@@ -6,6 +6,7 @@
 <title>{% block title %}{% endblock %} | {{ site.name }}</title>
 <link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
 
+<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
@@ -33,12 +34,18 @@
 </head>
 
 <body id="inner">
+<div id="top_nav">
+<ul>
+  <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
+  <li><a href="http://git.twi.gs/q/">get the code</a></li>
+  <li><a href="{% url logout %}">logout</a></li>
+  <li><label>Search:</label><input type="text"/></li>
+</ul>
+</div>
 <div class="left">
 	
   <h1><a href="{% url index %}"></a></h1>
-  
-  <div class="welcome">Welcome<br /><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
-
+  <div class="welcome">Welcome<br/><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
   <ul id="menu">
     {% if request.user.is_superuser %}
     <li><a href="{% url activity_stream %}">global activity stream</a></li>
