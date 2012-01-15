@@ -86,17 +86,18 @@ h1 {
 	width: 159px;
 	color: #DDD;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7);
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 	font-weight: normal;
 	font-size: 20px;
+	float: left;
+	margin: 13px 0;
 }
 .welcome a {
 	color: #FFF;
 	text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.7);
 	text-transform: capitalize;
 	margin: 7px 0 0;
-	display: block;
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 }
 
 .welcome a:first-letter {
@@ -188,8 +189,7 @@ h1 {
 	display:none
 }
 #inner {
-	background:url(../images/repeater.png) repeat;
-	border-top: 3px solid #98732F;
+	background:url(../images/repeater.png) repeat;;
 }
 
 #inner .left {
@@ -200,6 +200,7 @@ h1 {
 	position:fixed;
 	z-index:10;
 	background: url(../images/side.png) repeat-y;
+	top: 40px;
 }
 #inner .topleftbg {
     height: 26px;
@@ -241,7 +242,56 @@ h1 {
 	height:100%;
 	float:left;
 }
-
+#top_nav {
+	height: 44px;
+	background: #333;
+	border-bottom: 1px solid white;
+	box-shadow: 2px 0 8px #000;
+	z-index: 100;
+	position: fixed;
+	width: 100%;
+}
+#top_nav ul {	
+	float: right;
+}
+#top_nav ul li {	
+	float: left;
+	color: #DDD;
+	font-family: 'Oswald', sans-serif;
+	color: beige;
+}
+#top_nav ul li a {
+	float: left;
+	color: beige;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	padding: 11px;
+	margin: 0;
+	display: block;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.7);
+	font-size: 11px;
+	font-family: 'Oswald', sans-serif;
+	border-right: 1px dotted rgba(255, 255, 255, 0.3);
+}
+#top_nav label {
+	float: left;
+	color: beige;
+	line-height: 20px;
+	text-align: center;
+	text-transform: uppercase;
+	padding: 11px;
+	margin: 0;
+	display: block;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.7);
+	font-size: 11px;
+	font-family: 'Oswald', sans-serif;
+}
+#top_nav input {
+	margin: 11px 20px 0 0;
+	height: 22px;
+	border-radius: 2px;
+}
 #menu {
 	width: 162px;
 	float: left;
@@ -385,7 +435,7 @@ h1 {
 	font-weight: normal;
 	text-shadow: 0 1px 0 white;
 	color: #7F6707;
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 	font-size: 36px;
 	text-align: center;
 	width: 680px;
@@ -404,7 +454,7 @@ h1 {
 	color: #555;
 	border-bottom: 1px dotted #7F6707;
 	padding: 0 0 10px;
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 	font-size: 25px;
 }
 #activity-stream li {
@@ -466,7 +516,7 @@ h2.all_books {
 	text-shadow: 0 1px 0 white;
 	color: #555;
 	padding: 28px 0 0 22px;
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 	font-size: 25px;
 	float: left;
 }
@@ -649,7 +699,7 @@ h2.all_books {
 	text-shadow: 0 1px 0 white;
 	color: #555;
 	padding: 28px 0 1px 0;
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 	font-size: 20px;
 }
 .saveButton, .cancelButton {
@@ -771,7 +821,7 @@ h2.all_books {
 	text-shadow: 0 1px 0 white;
 	color: #555;
 	padding: 28px 0 1px 0;
-	font-family: 'WisdomScriptAIRegular';
+	font-family: 'Lobster';
 	font-size: 20px;
 }
 .also_downloaded a {
