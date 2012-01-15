@@ -54,7 +54,7 @@
             <td style="text-align: center">{{ invite.sent_to }} &lt;{{ invite.emailed_to }}&gt;</td>
 			<td style="text-align: center">
 			{% if  invite.registrant %}
-			<a href="{% url view_user invite.registrant %}">@{{ invite.registrant.username }}</a>
+			<a href="{% url accounts:view_user invite.registrant %}">@{{ invite.registrant.username }}</a>
 			{% else %} - {% endif %}
 			</td>
 		</tr>

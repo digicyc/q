@@ -33,42 +33,36 @@ def view_user_list(request, template_name="accounts/users_list.html"):
 
 
 @login_required
-def view_user(request, template_name="accounts/dashboard.html", username=None,
-              **kwargs):
+def view_user(request, template_name="accounts/dashboard.html", username=None,):
     """
 
     """
-    can_edit = False
     username = username.lower()
     view_user = get_object_or_404(User, username=username)
 
-    if username == request.user.username:
-        can_edit = True
-
     activity_items = Action.objects.filter(actor_object_id=view_user.id).order_by('-timestamp')[:5]
-    books_owned = cache.get("books_owned", None)
-    if books_owned is None:
-        cursor = connection.cursor()
-        _books_owned = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_ownership AS O ON B.id=O.book_id WHERE O.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
-        books_owned = []
-        for row in _books_owned.fetchall():
-            cover_url = settings.S3_SETTINGS["vanity_url"] + '/' + row[3]
-            books_owned.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
-        cache.set("books_owned", books_owned, 60*60)
+    #books_owned = cache.get("books_owned", None)
+    #if books_owned is None:
+    cursor = connection.cursor()
+    _books_owned = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_ownership AS O ON B.id=O.book_id WHERE O.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
+    books_owned = []
+    for row in _books_owned.fetchall():
+        cover_url = settings.S3_SETTINGS["vanity_url"] + '/' + row[3]
+        books_owned.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
+    #    cache.set("books_owned", books_owned, 60*60)
 
     cursor = connection.cursor()
     books_read = cache.get("books_read", None)
-    if books_read is None:
-        _books_read = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_read AS R ON B.id=R.book_id WHERE R.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
-        books_read = []
-        for row in _books_read.fetchall():
-            cover_url = settings.S3_SETTINGS["vanity_url"] + '/' + row[3]
-            books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
-        cache.set("books_read", books_read, 60*60)
+    #if books_read is None:
+    _books_read = cursor.execute("""SELECT REPLACE(LOWER(B.title), "the ", "") AS "order_title", B.title, B.slug, B.cover FROM ebooks_book AS B INNER JOIN ebooks_read AS R ON B.id=R.book_id WHERE R.user_id=%s ORDER BY order_title ASC""", [view_user.id,])
+    books_read = []
+    for row in _books_read.fetchall():
+        cover_url = settings.S3_SETTINGS["vanity_url"] + '/' + row[3]
+        books_read.append({"title": row[1], "slug": row[2], "cover_url": cover_url})
+    #    cache.set("books_read", books_read, 60*60)
 
     return render_to_response(template_name, RequestContext(request,
                                                 {'view_user': view_user,
-                                                  'can_edit': can_edit,
                                                   'books_read': books_read,
                                                   'books_owned': books_owned,
                                                   'activity_items': activity_items,
@@ -113,7 +107,7 @@ def login(request, template_name="accounts/login.html"):
 
 
 @login_required
-def edit_password(request, template_name="accounts/edit_password.html"):
+def edit_password(request, username, template_name='accounts/edit_password.html'):
     """
 
     """
@@ -138,7 +132,7 @@ def edit_password(request, template_name="accounts/edit_password.html"):
     return render_to_response(template_name, RequestContext(request, ctx))
 
 
-def edit_profile(request, template_name="accounts/edit_profile.html"):
+def edit_profile(request, *args, **kwargs):
     ctx = {}
 
     user = request.user
@@ -196,7 +190,7 @@ def edit_profile(request, template_name="accounts/edit_profile.html"):
                     messages.success(request, "Password changed!")
 
     ctx.update({'profile_form': profile_form, 'view_user': user, 'password_form': password_form})
-    return render_to_response(template_name, RequestContext(request, ctx))
+    return render_to_response("accounts/edit_profile.html", RequestContext(request, ctx))
 
 
 def logout(request):
@@ -206,7 +200,7 @@ def logout(request):
 
 #INVITATION STUFF
 @login_required
-def manage_invitations(request, template_name="accounts/manage_invites.html"):
+def manage_invitations(request, username, template_name="accounts/manage_invites.html"):
     ctx = {}
     invitation = ""
 

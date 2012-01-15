@@ -14,16 +14,13 @@
         {% endif %}
     
 		{% gravatar view_user 160 %}
-		
 
-        {% if can_edit %}
-            <div><a href="{% url accounts:edit_profile %}">EDIT PROFILE</a></div>
+        {% if request.user.username == view_user.username %}
+            <div><a href="{% url accounts:edit_profile request.user.username%}">EDIT PROFILE</a></div>
         {% endif %}
-        
-        
+
         books uploaded: {{ view_user.get_profile.uploaded_books_count }}
-        
-        
+
     </div>
     <div class="book-main">
          <h2 class="section-title">Recent Activity</h2>
