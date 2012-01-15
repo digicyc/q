@@ -5,16 +5,17 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^reload_wsgi/', 'q.common.touch_wsgi'),
+    url(r'^reload_wsgi/', 'q.common.touch_wsgi'),
 
-    (r'^books/', include('ebooks.urls')),
-    #(r'^users/', include('accounts.urls')),
-    (r'^accounts/', include('accounts.urls', namespace="accounts")),
-    (r'^admin/', include(admin.site.urls)),
-    (r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^books/', include('ebooks.urls')),
+    #url(r'^users/', include('accounts.urls')),
+    url(r'^accounts/', include('accounts.urls', namespace="accounts")),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^comments/', include('django.contrib.comments.urls')),
+    url(r'^api/', include('api.urls', namespace='api')),
 )
 urlpatterns += patterns('accounts.views',
-    (r'^$', 'login'),
+    url(r'^$', 'login'),
     url(r'^signup/$', 'signup', name="signup"), 
     url(r'^login/$',  'login', name='login'),
     url(r'^logout/$',  'logout', name='logout'),
