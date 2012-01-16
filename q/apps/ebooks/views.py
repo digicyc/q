@@ -413,25 +413,24 @@ class ISBNSearchView(View):
         self.template = "ebooks/add/isbn_search.html"
 
         isbn = request.POST["isbn"]
-        gr = goodreads.GoodReads()
-        info = gr.get_book_info(isbn)
+        gr_book_data = goodreads.GoodReads(isbn)
 
         form_data = dict()
-        form_data["title"] = info["title"].strip()
+        form_data["title"] = gr_book_data.title
 
         authors = []
-        for key, value in info["authors"].iteritems():
-            if key == "name":
-                authors.append(value.strip())
+        for key, value in gr_book_data.authors.iteritems():
+            if value.get("name", False):
+                authors.append(value["name"].strip())
         form_data["authors"] = ",".join(authors)
 
-        form_data["isbn10"] = info["isbn"].strip()
-        form_data["isbn13"] = info["isbn13"].strip()
+        form_data["isbn10"] = gr_book_data.isbn.strip()
+        form_data["isbn13"] = gr_book_data.isbn13.strip()
         try:
-            form_data["description"] = info["description"].strip()
+            form_data["description"] = gr_book_data.description.strip()
         except AttributeError:
             form_data["description"] = ""
-        form_data["cover_url"] = info["image_url"].strip()
+        form_data["cover_url"] = gr_book_data.image_url.strip()
 
         book_form = forms.BookForm(form_data)
 

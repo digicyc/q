@@ -17,6 +17,9 @@
     {% if book_form %}
 
         <div class="book-main">
+            {% if book_form.cover_url.value %}
+                <img src="{{ book_form.cover_url.value }}">
+            {% endif %}
             <form method="PUT">
             <ul class="forms">
                 {{ book_form.as_ul }}

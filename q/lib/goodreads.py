@@ -7,40 +7,54 @@ import xml.etree.cElementTree as ElementTree
 
 
 class GoodReads(object):
+    authors = dict()
+    title = ""
+
     def __init__(self, isbn=None):
         self.http = HTTPConnection("www.goodreads.com")
-        self.stats = None
 
         if isbn is not None:
             self._populate(isbn)
+
+    def _build_dict(self, passed_elem, parent=None):
+
+        passed_elem_children = passed_elem.getchildren()
+        if len(passed_elem_children) > 0:
+            if parent is not None:
+                parent[passed_elem.tag] = dict()
+                p = parent[passed_elem.tag]
+            else:
+                self.__dict__[passed_elem.tag] = dict()
+                p = self.__dict__[passed_elem.tag]
+            for child in passed_elem_children:
+                self._build_dict(child, p)
+
+        else:
+            text = None
+            if passed_elem.text is not None:
+                text = passed_elem.text.strip()
+
+            if parent is not None:
+                parent[passed_elem.tag] = text
+            else:
+                self.__dict__[passed_elem.tag] = text
+
+
 
     def _populate(self, isbn):
         url = "/book/isbn?isbn=%s&key=%s" %(isbn, settings.GOODREADS_KEY)
         self.http.request('GET', url)
         response = self.http.getresponse()
-        for event, elem in ElementTree.iterparse(response):
-            if event == "end" and elem.tag == "book":
-                for elem in elem.iter():
-                    if elem.tag == "book_link" or elem.tag == "shelf" or elem.tag == "reviews_widget": continue
-                    if len(elem.getchildren()) > 0:
-                        parent_elem = elem.tag
-                        self.__dict__[elem.tag] = dict()
-                        for elem2 in elem.iter():
-                            if len(elem2.getchildren()) > 0:
-                                parent_elem2 = elem.tag
-                                self.__dict__[elem2.tag] = dict()
-                                for elem3 in elem2.getchildren():
 
-                                    self.__dict__[parent_elem2][elem3.tag] = elem3.text
-                            else:
-                                self.__dict__[parent_elem][elem2.tag] = elem2.text
-                    else:
-                        self.__dict__[elem.tag] = elem.text
+        et = ElementTree.parse(response)
+        etbook = et.find("book")
+        for child in etbook.getchildren():
+            self._build_dict(child)
+        del self.http
 
 class InvalidJSONResponseError(Exception): pass
 class ISBNNotFoundError(Exception): pass
+class ServerThrewError(Exception): pass
 
 if __name__ == "__main__":
-    gr = GoodReads()
-
-    print gr.get_book_info("0441172717")
+    gr = GoodReads("9780141185125")
