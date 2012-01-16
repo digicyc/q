@@ -404,6 +404,11 @@ class ISBNSearchView(View):
         self.template = "ebooks/add/isbn_search.html"
         return render_to_response(self.template, RequestContext(request, {}))
 
+    def put(self, request, *args, **kwargs):
+        book = models.Book()
+        book.title = request["title"]
+        raise Exception(book)
+
     def post(self, request, *args, **kwargs):
         self.template = "ebooks/add/isbn_search.html"
 
@@ -422,7 +427,11 @@ class ISBNSearchView(View):
 
         form_data["isbn10"] = info["isbn"].strip()
         form_data["isbn13"] = info["isbn13"].strip()
-        form_data["description"] = info["description"].strip()
+        try:
+            form_data["description"] = info["description"].strip()
+        except AttributeError:
+            form_data["description"] = ""
+        form_data["cover_url"] = info["image_url"].strip()
 
         book_form = forms.BookForm(form_data)
 

@@ -23,17 +23,13 @@
 	        {% if book.cover %}
 	            <img src="{{ book.cover.url }}" width="160" />
 	        {% else %}
-	            <img src="{{ book.temp_cover_url }}" width="160" />
+	            <img src="{{ form_data.cover_url }}" width="160" />
 	        {% endif %}
 			</figure>
 		</div>
 
 		<div class="book-main">
-        {% if book_form.is_multipart %}
-            <form enctype="multipart/form-data" method="POST">
-        {% else %}
-            <form method="POST">
-        {% endif %}
+        <form method="PUT">
                 <ul class="forms">
 		        {{ book_form.as_ul }}
 				</ul>
