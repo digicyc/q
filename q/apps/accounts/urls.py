@@ -12,7 +12,11 @@ urlpatterns = patterns('accounts.views',
     url(r'^list/$', 'view_user_list', name="list"),
     url(r'login/$', 'login', name='login'),
 
+    url(r'(?P<username>[\w\d\-\.]+)/invites/$', 'manage_invitations', name="manage_invitations"),
+    url(r'(?P<username>[\w\d\-\.]+)/edit/password/$', 'edit_password', name="edit_password"),
+    url(r'(?P<username>[\w\d\-\.]+)/edit/$', 'edit_profile', name="edit_profile"),
     url(r'(?P<username>[\w\d\-\.]+)/$', 'view_user', name="view_user"),
+
 )
 
 

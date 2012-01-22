@@ -1,6 +1,6 @@
 <ul id="account-navigation">
-	<li><a href="{% url edit_profile %}">Profile</a></li>
-	<li><a href="{% url edit_password %}">Password</a></li>
+	<li><a href="{% url accounts:edit_profile request.user.username %}">Profile</a></li>
+	<li><a href="{% url accounts:edit_password request.user.username %}">Password</a></li>
 	<li>Notifications</li>
-	<li><a href="{% url manage_invitations %}">Invitations</a></li>
+	<li><a href="{% url accounts:manage_invitations request.user.username %}">Invitations</a></li>
 </ul>

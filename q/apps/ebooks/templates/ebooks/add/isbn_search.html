@@ -10,20 +10,17 @@
             <p>
                 <label for="id_isbn">ISBN:</label>
                 <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn13 }}" />
-            <p>
-                <input type="submit" value="Search" class="submit-large" />
-            </p>
+                <input type="submit" value="Search" class="submit-large" /><img src="/images/loading.gif">
             </p>
         </form>
 
     {% if book_form %}
 
         <div class="book-main">
-            {% if book_form.is_multipart %}
-                <form enctype="multipart/form-data" method="POST">
-            {% else %}
-                <form method="POST">
+            {% if book_form.cover_url.value %}
+                <img src="{{ book_form.cover_url.value }}">
             {% endif %}
+            <form method="PUT">
             <ul class="forms">
                 {{ book_form.as_ul }}
             </ul>
