@@ -48,7 +48,7 @@
   <div class="welcome">Welcome<br/><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
   <ul id="menu">
     {% if request.user.is_superuser %}
-    <li><a href="{% url activity_stream %}">global activity stream</a></li>
+    <li><a href="{% url activity_stream %}">All activity</a></li>
     <li><a href="{% url accounts:list %}">list users</a></li>
     {% endif %}
     {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
