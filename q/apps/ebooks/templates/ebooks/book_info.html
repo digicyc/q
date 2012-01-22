@@ -151,11 +151,10 @@
 			<h2 class="sub_title">Description:</h2>
 			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
 
-			<h2 class="sub-title">Discussion:</h2>
-
 			{% get_comment_list for book as comment_list %}
-  			<div id="discussion-list">
-          {% for comment in comment_list|fill_tree|annotate_tree %}
+  			<div id="discussion_list">
+            <h2 class="sub_title">Discussion:</h2>
+            {% for comment in comment_list|fill_tree|annotate_tree %}
 
                 {% ifchanged comment.parent_id %}{% else %}
                 </li>
@@ -178,8 +177,8 @@
     					
                         <p class="comment-body">
     		                {{ comment.comment }}
-    					    <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
     		            </p>
+                        <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
 
     					<div id="reply-{{comment.pk}}"></div>
     				</div><!-- /.comment -->
