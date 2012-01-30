@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from tastypie.resources import ALL, Bundle
 from goodreads import GoodReads
 
@@ -15,15 +16,18 @@ class BookResource(base.NSResource):
 
 class GoodReadsResource(base.Resource):
     class Meta(base.Resource.Meta):
-        resource_name = "goodreads"
+        resource_name = "books/goodreads"
         object_class = GoodReads
 
     def get_resource_uri(self, bundle_or_obj):
         kwargs = {
             'resource_name': self._meta.resource_name,
             }
-        uri = self._build_reverse_url("api_dispatch_detail", kwargs=kwargs)
+        uri = "http://google.com/" #reverse("api_dispatch_detail", kwargs={'resource_name': self.resource_name})
+        print "!"*20
         print uri
+        print "!"*20
+
         return uri
 
     def obj_get(self, request=None, **kwargs):

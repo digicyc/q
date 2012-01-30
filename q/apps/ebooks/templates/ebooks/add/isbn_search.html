@@ -4,12 +4,25 @@
 
 {% block body_class %} class="page-view add-view dashboard"{% endblock %}
 
+{% block extra_javascript %}
+    <script type="text/javascript" charset="utf-8" src="/javascript/librarian.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#form_add_book").submit(function() {
+            alert("evented");
+            var book = new Book("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", "978-0451524935");
+            return false;
+        });
+    });
+    </script>
+{% endblock %}
+
 {% block content %}
     <div class="content">
-        <form method="post">{% csrf_token %}
+        <form method="POST" id="form_add_book">{% csrf_token %}
             <p>
                 <label for="id_isbn">ISBN:</label>
-                <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn13 }}" />
+                <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn }}" />
                 <input type="submit" value="Search" class="submit-large" /><img src="/images/loading.gif">
             </p>
         </form>
@@ -31,7 +44,7 @@
             {% endif %}
             {% csrf_token %}
             <p>
-                <button>Add {{ book.title }}</button>
+                <button id="btn_add_book">Add {{ book.title }}</button>
             </p>
             </form>
         </div>
@@ -39,5 +52,5 @@
 {% endblock %}
 
 {% block rail %}
-    <h1>Search </h2>
+    <h1>Search </h1>
 {% endblock %}
