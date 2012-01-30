@@ -6,27 +6,15 @@
 <title>{% block title %}{% endblock %} | {{ site.name }}</title>
 <link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
 
-<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
 <link href="/css/styles.css" rel="stylesheet" type="text/css" media="all" />
 <link href="/font/stylesheet.css" rel="stylesheet" type="text/css" media="all" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 
-        <script type="text/javascript">
-   $(document).ready(function(){
-        $('a.close').click(function(){
-            $(this).parent().fadeOut('slow');
-        });
-        $('a.close2').click(function(){
-            $(this).parent().fadeOut(100);
-            $(".toogPan").css('clear', 'left');
-            $(".toogPan").animate({width: "680px"}, {duration: 1000});
-        });
-})
-  </script>
 {% block extra_javascript %}{% endblock %}
 
 <script type="text/javascript" charset="utf-8" src="/javascript/slides.min.jquery.js"></script>

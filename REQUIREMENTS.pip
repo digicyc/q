@@ -6,4 +6,4 @@ django-tastypie>=0.9,<1.0
 django-tagging
 django-ratings
 django-activity-stream
-https://github.com/HonzaKral/django-threadedcomments/tarball/master
+https://github.com/HonzaKral/django-threadedcommen  ts/tarball/master
