@@ -9,7 +9,7 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $("#form_add_book").submit(function() {
-            var book = new Book("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", "978-0553801477");
+            var book = new Book("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", document.getElementById("id_isbn").value);
             return false;
         });
     });
@@ -46,6 +46,7 @@
             </p>
             </form>
         </div>
+   </div>
 {% endblock %}
 
 {% block rail %}
