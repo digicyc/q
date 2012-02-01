@@ -269,7 +269,7 @@ def book_info(request, template_name="ebooks/book_info.html", *args, **kwargs):
         {
             'book': book,
             'checkouts':checkouts,
-            'my_ownership': my_ownership,
+            'my_ownership': my_ownership, 
             'format_form': format_form,
             'error': error,
             'read': read,
@@ -311,7 +311,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
         book.tags = ''
 
         #book.save()
-        #book.tags = request.POST['tags']
+        book.tags = request.POST['tags']
         book.save()
         for gauthor in request.POST['authors'].split(','):
             try:
@@ -392,7 +392,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     ctx.update({'book': book, 'book_form': book_form})
     return render_to_response(template_name,
                               RequestContext(request, ctx))
-
+from django.views.decorators.csrf import csrf_exempt
 class ISBNSearchView(View):
 
     @method_decorator(login_required)
@@ -406,10 +406,40 @@ class ISBNSearchView(View):
                 {'book_form': book_form}
         ))
 
+    @method_decorator(csrf_exempt)
     def put(self, request, *args, **kwargs):
         book = models.Book()
-        book.title = request["title"]
-        raise Exception(book)
+
+        book.title = request.PUT.get("title", "")
+        book.isbn10 = request.PUT.get("isbn10", "")
+        book.isbn13 = request.PUT.get("isbn13", "")
+        book.description = request.PUT.get("description", "")
+        print book
+        book.save()
+
+        for gauthor in request.PUT['authors'].split(','):
+            try:
+                author = models.Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
+            except models.Author.DoesNotExist:
+                author = models.Author()
+                author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
+                author.lastname = gauthor.split(" ")[-1]
+                author.save()
+            book.authors.add(author)
+
+        series_name = request.PUT["series"]
+        series_num = request.PUT["series_num"]
+        try:
+            series = models.Series.objects.get(name__exact=series_name)
+        except models.Series.DoesNotExist:
+            series = models.Series()
+            series.name = series_name
+            series.save()
+        book.series = series
+        book.series_num = series_num
+
+        return book.save()
+
 
     def post(self, request, *args, **kwargs):
         self.template = "ebooks/add/isbn_search.html"

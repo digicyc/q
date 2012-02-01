@@ -21,7 +21,7 @@
        <div>
        {% endif %}
        {% endif %}
-         <a href="{% url book_info book.slug %}"><img src="{{ book.cover_url }}" height="140" border="0"></a>
+         <a href="{% url books:book_info book.slug %}"><img src="{{ book.cover_url }}" height="140" border="0"></a>
        {% endfor %}
        </div></div>
        <a href="#" class="prev">&lsaquo;</a>
@@ -48,7 +48,7 @@ $('#slides').slides();
         {% for letter in letter_list %}
 
 			{% for book in letter.list %}
-			    {% if forloop.counter0 == 0 %}<h3 id="{{ letter.grouper|upper }}">{{ letter.grouper|upper }}</h3> {% endif %}<li><a href="{% url book_info book.slug %}">{{ book.title }}</a></li>
+			    {% if forloop.counter0 == 0 %}<h3 id="{{ letter.grouper|upper }}">{{ letter.grouper|upper }}</h3> {% endif %}<li><a href="{% url books:book_info book.slug %}">{{ book.title }}</a></li>
 			{% endfor %}
         {% endfor %}
 		</ul>

@@ -18,24 +18,24 @@
         </a>
         {% endif %}
         {% if action.verb == "commented on" %}
-            <a class="book" href="{% url book_info action.target.slug %}">{{ action.target }}</a><br/>
+            <a class="book" href="{% url books:book_info action.target.slug %}">{{ action.target }}</a><br/>
             
             <blockquote>
                 {{ action.action_object.comment }}
             </blockquote>
         {% endif %}
         {% if action.verb == "downloaded" %}
-            <a href="{% url book_info action.target.slug %}">{{ action.target.title }}</a>
+            <a href="{% url books:book_info action.target.slug %}">{{ action.target.title }}</a>
             in <strong>{{ action.action_object.format }}</strong> format
         {% endif %}
         {% if action.verb == "sent" %}
-            <a href="{% url book_info action.target.slug %}">
+            <a href="{% url books:book_info action.target.slug %}">
                {{ action.target.title }}
             </a>
             to their <strong>kindle</strong>.
         {% endif %}
         {% if action.verb == "uploaded" %}
-            <a href="{% url book_info action.target.slug %}">{{ action.target.title }}</a>
+            <a href="{% url books:book_info action.target.slug %}">{{ action.target.title }}</a>
             in <strong>{{ action.action_object.format }}</strong> format
         {% endif %}
 

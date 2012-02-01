@@ -7,12 +7,12 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^reload_wsgi/', 'q.common.touch_wsgi'),
 
-    url(r'^books/', include('ebooks.urls')),
+    url(r'^books/', include('ebooks.urls', namespace="books")),
     #url(r'^users/', include('accounts.urls')),
     url(r'^accounts/', include('accounts.urls', namespace="accounts")),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^comments/', include('django.contrib.comments.urls')),
-    url(r'^api/', include('api.urls', namespace='api')),
+    url(r'^api/', include('api.urls', namespace="api")),
 )
 urlpatterns += patterns('accounts.views',
     url(r'^$', 'login'),

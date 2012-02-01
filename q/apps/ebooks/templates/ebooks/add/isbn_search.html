@@ -6,10 +6,18 @@
 
 {% block extra_javascript %}
     <script type="text/javascript" charset="utf-8" src="/javascript/librarian.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/javascript/json2.js"></script>
+
     <script type="text/javascript">
     $(document).ready(function() {
+        $("#form_search_book").submit(function() {
+            get_book_info("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", document.getElementById("id_isbn").value);
+            return false;
+        });
+    });
+    $(document).ready(function() {
         $("#form_add_book").submit(function() {
-            var book = new Book("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", document.getElementById("id_isbn").value);
+            put_book_info("{% url api:api_dispatch_list api_name="v2" resource_name="books/book" %}");
             return false;
         });
     });
@@ -18,7 +26,7 @@
 
 {% block content %}
     <div class="content">
-        <form method="POST" id="form_add_book">{% csrf_token %}
+        <form method="POST" id="form_search_book">{% csrf_token %}
             <p>
                 <label for="id_isbn">ISBN:</label>
                 <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn }}" />
@@ -31,7 +39,7 @@
             {% if book_form.cover_url.value %}
                 <img src="{{ book_form.cover_url.value }}">
             {% endif %}
-            <form method="PUT">
+            <form method="POST" id="form_add_book">
             <ul class="forms">
                 {{ book_form.as_ul }}
             </ul>

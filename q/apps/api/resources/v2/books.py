@@ -1,18 +1,38 @@
 from django.core.urlresolvers import reverse
-from tastypie.resources import ALL, Bundle
+from django.contrib.contenttypes.models import ContentType
+
+from tastypie.resources import ALL, ALL_WITH_RELATIONS
+from tastypie import fields
 from goodreads import GoodReads
 
 from api import base
 from ebooks import models
 
+
 class BookResource(base.NSResource):
     class Meta(base.NSResource.Meta):
         queryset = models.Book.objects.all()
-        resource_name = "book"
+        resource_name = "books/book"
 
         filtering = {
             'id': ALL,
         }
+
+class FormatResource(base.NSResource):
+    book = fields.ForeignKey(BookResource, 'book')
+
+    class Meta(base.NSResource.Meta):
+        queryset = models.Format.objects.all()
+        resource_name = "books/format"
+
+        filtering = {
+            'book': ALL_WITH_RELATIONS,
+        }
+
+    def hydrate(self, bundle):
+        if "book_id" in bundle.data:
+            bundle.obj.book = models.Book.objects.get(
+                pk=bundle.data["book_id"])
 
 class GoodReadsResource(base.Resource):
     class Meta(base.Resource.Meta):

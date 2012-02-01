@@ -72,7 +72,7 @@ def view_user(request, template_name="accounts/dashboard.html", username=None,):
 def login(request, template_name="accounts/login.html"):
     ctx = {}
     if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('books:index'))
 
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)

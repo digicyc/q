@@ -20,7 +20,7 @@
     {% endif %}
     {{ page }}
     {% if page.has_next %}
-        <a href="{% url activity_stream %}?page={{ page.next_page_number }}">Next</a>
+        <a href="{% url books:activity_stream %}?page={{ page.next_page_number }}">Next</a>
     {% endif %}
 </div>
 {% endblock %}
