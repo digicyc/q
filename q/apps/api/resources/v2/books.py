@@ -23,10 +23,6 @@ class GoodReadsResource(base.Resource):
         kwargs = {
             'resource_name': self._meta.resource_name,
             }
-        uri = "http://google.com/" #reverse("api_dispatch_detail", kwargs={'resource_name': self.resource_name})
-        print "!"*20
-        print uri
-        print "!"*20
 
         return uri
 

@@ -284,10 +284,9 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
     """
     Begins the add book wizard process
     """
-    from ebooks.forms import BookForm
     ctx = {}
 
-    book_form = BookForm()
+    book_form = forms.BookForm()
     book = models.Book()
 
     if request.POST.has_key('title'):
@@ -389,7 +388,7 @@ def add_book(request, isbn=None, template_name="ebooks/add/index.html", *args, *
             messages.error(request, "You are trying to add a duplicate book.")
         except models.Book.DoesNotExist:
             pass
-            
+
     ctx.update({'book': book, 'book_form': book_form})
     return render_to_response(template_name,
                               RequestContext(request, ctx))
@@ -402,7 +401,10 @@ class ISBNSearchView(View):
 
     def get(self, request, *args, **kwargs):
         self.template = "ebooks/add/isbn_search.html"
-        return render_to_response(self.template, RequestContext(request, {}))
+        book_form = forms.BookForm()
+        return render_to_response(self.template, RequestContext(request,
+                {'book_form': book_form}
+        ))
 
     def put(self, request, *args, **kwargs):
         book = models.Book()

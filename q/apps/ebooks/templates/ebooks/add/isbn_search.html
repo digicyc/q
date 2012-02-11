@@ -9,8 +9,7 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $("#form_add_book").submit(function() {
-            alert("evented");
-            var book = new Book("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", "978-0451524935");
+            var book = new Book("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", document.getElementById("id_isbn").value);
             return false;
         });
     });
@@ -27,7 +26,6 @@
             </p>
         </form>
 
-    {% if book_form %}
 
         <div class="book-main">
             {% if book_form.cover_url.value %}
@@ -48,7 +46,7 @@
             </p>
             </form>
         </div>
-    {% endif %}
+   </div>
 {% endblock %}
 
 {% block rail %}
