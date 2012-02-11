@@ -1,4 +1,4 @@
-define(["underscore", "backbone-0.9.1", "backbone-tastypie-0.1"],
+define(["underscore", "backbone", "backbone-tastypie"],
     function() {
 
     var Book = Backbone.Model.extend({
@@ -11,4 +11,5 @@ define(["underscore", "backbone-0.9.1", "backbone-tastypie-0.1"],
             this.fetch();
         }
     });
+    return Book;
 });

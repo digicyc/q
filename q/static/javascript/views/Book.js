@@ -1,12 +1,13 @@
-define(["jquery", "underscore", "backbone-0.9.1", "models/Book"],
-    function($, _, Backbone, Book){
+define(["jquery", "underscore", "backbone", "models/Book"],
+    function($, _, bb, Book){
 
-        var PopulateBookForm = Backbone.View.extend({
+        var PopulateBookFormView = Backbone.View.extend({
             el: $("body"),
 
             initialize: function(){
                 console.log("INIT!!");
-                Book.bind("change", function() {
+                this.book = new Book();
+                this.book.bind("change", function() {
                     $("#id_title").val(book.get("title"));
                 });
             },
@@ -22,5 +23,5 @@ define(["jquery", "underscore", "backbone-0.9.1", "models/Book"],
 
             }
         });
-    return PopulateBookForm;
+    return PopulateBookFormView;
 });

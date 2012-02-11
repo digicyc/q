@@ -6,11 +6,9 @@
 
 {% block extra_javascript %}
     <script type="text/javascript">
-        define(["underscore", "backbone-tastypie-0.1"], function() {
-        require(["views/Book"], function() {
-            var pop_add_form = new PopulateBookForm();
+        require(["views/Book"], function(PopulateBookFormView) {
+            var pop_add_form = new PopulateBookFormView();
             console.log(pop_add_form);
-        });
         });
     </script>
 {% endblock %}
