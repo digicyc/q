@@ -7,17 +7,16 @@
 {% block extra_javascript %}
     <script type="text/javascript" charset="utf-8" src="/javascript/librarian.js"></script>
     <script type="text/javascript" charset="utf-8" src="/javascript/json2.js"></script>
-
+    AMD
     <script type="text/javascript">
     $(document).ready(function() {
         $("#form_search_book").submit(function() {
             get_book_info("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", document.getElementById("id_isbn").value);
             return false;
         });
-    });
-    $(document).ready(function() {
+
         $("#form_add_book").submit(function() {
-            put_book_info("{% url api:api_dispatch_list api_name="v2" resource_name="books/book" %}");
+            put_book_info(this,"{% url api:api_dispatch_list api_name="v2" resource_name="books/book" %}");
             return false;
         });
     });

@@ -28,7 +28,7 @@
 				{% endif %}
 				<div class="overlay"></div>
                 {% if book.has_mobi and request.user.get_profile.kindle_email %}
-                <a class="email_kindle" href="{% url email_kindle book.id %}">email to my kindle</a>
+                <a class="email_kindle" href="{% url books:email_kindle book.id %}">email to my kindle</a>
                 {% endif %}
 			</figure>
 
@@ -62,7 +62,7 @@
 			<ul class="formats">
                 {% csrf_token %}
 				{% for format in book.formats %}
-					<li class="{{ format.format }}"><a href="{% url download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
+					<li class="{{ format.format }}"><a href="{% url books:download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
 				{% endfor %}
 			</ul>
             {% endif %}
@@ -72,7 +72,7 @@
         <h2>Others also downloaded...</h2>
         <ul class="also_downloaded">
             {% for b in book.also_downloaded %}
-            <li><a href="{% url book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
+            <li><a href="{% url books:book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
             {% endfor %}
         </ul>
 		</div>
@@ -144,7 +144,7 @@
 			<ul class="byline">
 				<li class="title">written by:</li>
             {% for author in book.authors.all %}
-                <li><a href="{% url books_by_author author.slug %}">{{ author }}</a></li>
+                <li><a href="{% url books:books_by_author author.slug %}">{{ author }}</a></li>
             {% endfor %}
 			</ul>
 

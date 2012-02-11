@@ -15,25 +15,33 @@ function get_book_info(url, isbn) {
     });
 }
 
-function put_book_info(url){
-    this.url = url;
+//series: $("#id_series").val(),
+//series_num: $("#id_series_num").val(),
+//tags: $("#id_tags").val(),
 
-    $.ajax(this.url, {
+
+function put_book_info(form, url){
+    data = JSON.stringify({
+        title: $("#id_title").val(),
+        cover_url: $("#id_cover_url").val(),
+        isbn10: $("#id_isbn10").val(),
+        isbn13: $("#id_isbn13").val(),
+        authors: $("#id_authors").val(),
+        description: $("#id_description").val()
+    });
+
+    $.ajax(url, {
         dataType: "json",
         type: "POST",
-        data: {
-            title: $("#id_title").val(),
-            cover_url: $("#id_cover_url").val(),
-            //authors: $("#id_authors").val(),
-            //series: $("#id_series").val(),
-            series_num: $("#id_series_num").val(),
-            tags: $("#id_tags").val(),
-            isbn10: $("#id_isbn10").val(),
-            isbn13: $("#id_isbn13").val(),
-            description: $("#id_description").val()
-        },
+        contentType: 'application/json',
+        data: data,
+        processData:  false,
         success: function(data) {
-            console.log(data);
+            return false;
+        },
+        error: function(xhr, text_status, error_thrown) {
+            response = JSON.parse(xhr.responseText)
+            console.log(response);
             return false;
         }
     });

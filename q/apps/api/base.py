@@ -1,10 +1,10 @@
-from tastypie.authentication import Authentication
-from tastypie.resources import NamespacedModelResource, Resource
 from django.contrib.auth.models import User
 
-## TODO; change this when you're done testing
+from tastypie.authentication import Authentication
+from tastypie.resources import NamespacedModelResource, Resource, Validation
 from tastypie.authorization import Authorization as DjangoAuthorization
 
+from ebooks import models
 class DjangoAuthentication(Authentication):
     def is_authenticated(self, request, **kwargs):
         if hasattr(request, 'user'):
@@ -51,3 +51,18 @@ class UserNSResource(NSResource):
         resource_name = 'auth/user'
         allowed_methods = ['get']
         excludes = ['password', 'is_staff',]
+
+class BookValidation(Validation):
+    def is_valid(self, bundle, request=None):
+        title = bundle.data.get('title', None)
+
+        errors = dict()
+
+        try:
+            book = models.Book.objects.get(title=title)
+            errors['title'] = "Duplicate title: %s. Has this book already been added?"\
+                % (book.title,)
+        except models.Book.DoesNotExist:
+            pass
+
+        return errors

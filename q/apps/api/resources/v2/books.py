@@ -1,5 +1,12 @@
-from django.core.urlresolvers import reverse
-from django.contrib.contenttypes.models import ContentType
+from tempfile import NamedTemporaryFile
+import urllib2
+
+from django.core.files import File
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.utils.decorators import method_decorator
+
+from django.conf import settings
 
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
@@ -8,15 +15,46 @@ from goodreads import GoodReads
 from api import base
 from ebooks import models
 
-
-class BookResource(base.NSResource):
+class AuthorResource(base.NSResource):
     class Meta(base.NSResource.Meta):
-        queryset = models.Book.objects.all()
-        resource_name = "books/book"
-
+        queryset = models.Author.objects.all()
+        resource_name = "books/author"
         filtering = {
             'id': ALL,
         }
+
+class SeriesResource(base.NSResource):
+    class Meta(base.NSResource.Meta):
+        queryset = models.Series.objects.all()
+        resource_name = "books/series"
+        filtering = {
+            'id': ALL,
+        }
+
+class BookResource(base.NSResource):
+    authors = fields.ToManyField('api.resources.v2.books.AuthorResource', 'authors')
+
+    class Meta(base.NSResource.Meta):
+        queryset = models.Book.objects.all()
+        resource_name = "books/book"
+        validation = base.BookValidation()
+        filtering = {
+            'id': ALL,
+        }
+        excludes=('cover',)
+
+    def hydrate_cover(self, bundle):
+
+        headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
+        f = NamedTemporaryFile(delete=False)
+        f.write(urllib2.urlopen(urllib2.Request(bundle.data["cover_url"], headers=headers)).read())
+        f.filename = f.name
+        f.close()
+
+        bundle.obj.cover = File(open(f.name))
+
+        return bundle
+        #os.unlink(f.name)
 
 class FormatResource(base.NSResource):
     book = fields.ForeignKey(BookResource, 'book')

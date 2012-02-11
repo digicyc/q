@@ -6,6 +6,9 @@ api = NamespacedApi(api_name='v2', urlconf_namespace='api')
 
 api.register(books.BookResource())
 api.register(books.GoodReadsResource())
+api.register(books.AuthorResource())
+api.register(books.FormatResource())
+
 
 urlpatterns = patterns('',
     url(r'^', include(api.urls)),
