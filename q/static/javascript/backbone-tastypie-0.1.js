@@ -5,6 +5,7 @@
  * Backbone-tastypie may be freely distributed under the MIT license.
  * Add or override Backbone.js functionality, for compatibility with django-tastypie.
  */
+define(["backbone-0.9.1", "underscore-1.3.1"], function($) {
 (function( undefined ) {
 	/**
 	 * Override Backbone's sync function, to do a GET upon receiving a HTTP CREATED.
@@ -110,3 +111,4 @@
 		return str + ( ( str.length > 0 && str.charAt( str.length - 1 ) === '/' ) ? '' : '/' );
 	}
 })();
+});

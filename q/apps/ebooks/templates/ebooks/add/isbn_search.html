@@ -5,17 +5,16 @@
 {% block body_class %} class="page-view add-view dashboard"{% endblock %}
 
 {% block extra_javascript %}
-    <script type="text/javascript" charset="utf-8" src="/javascript/librarian.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/javascript/json2.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-        $("#form_search_book").submit(function() {
-            get_book_info("{% url api:api_dispatch_list api_name="v2" resource_name="books/goodreads" %}", document.getElementById("id_isbn").value);
-            return false;
+    define(["jquery", "backbone-tastypie-0.1"], function($){
+        require(["models/Book"], function($) {
+
+
         });
 
-        $("#form_add_book").submit(function() {
-            put_book_info(this,"{% url api:api_dispatch_list api_name="v2" resource_name="books/book" %}");
+        $("#form_search_book").bind("submit", function(event) {
+            var book = new Book();
+            book.search_goodreads($("#id_isbn").val());
             return false;
         });
     });
