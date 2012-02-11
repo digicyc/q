@@ -1,26 +1,26 @@
-var buildBookView = function(book_model, book_controller){
-    var base = document.createElement('div');
-    var bookEl = document.createElement('div');
+define(["jquery", "underscore", "backbone-0.9.1", "models/Book"],
+    function($, _, Backbone, Book){
 
-    base.appendChild(bookEl);
+        var PopulateBookForm = Backbone.View.extend({
+            el: $("body"),
 
-    var render = function() {
-        bookEl.innerHTML = _.template('bookTemplate', {src: book_model.getSrc()});
-    }
+            initialize: function(){
+                console.log("INIT!!");
+                Book.bind("change", function() {
+                    $("#id_title").val(book.get("title"));
+                });
+            },
 
-    book_model.addSubscriber(render);
+            events: {
+                "submit #form_search_book": "search"
+            },
 
-    var show = function() {
-        bookEl.style.display  = '';
+            search: function(event) {
+                console.log("n shit");
+                console.log(event);
+                //this.model.search_goodreads($("#id_isbn").val());
 
-    }
-
-    var hide = function(){
-        bookEl.style.display  = 'none';
-    }
-
-    return{
-        showView: show,
-        hideView: hide
-    }
-}
+            }
+        });
+    return PopulateBookForm;
+});

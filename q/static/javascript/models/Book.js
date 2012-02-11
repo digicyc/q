@@ -1,12 +1,14 @@
-var Book = Backbone.Model.extend({
-    initialize: function() {
-        console.log('init');
-    },
+define(["underscore", "backbone-0.9.1", "backbone-tastypie-0.1"],
+    function() {
 
-    search_goodreads: function(isbn) {
-        console.log(isbn);
-        this.url = "/api/v2/books/goodreads/?format=json&isbn="+isbn;
-        this.fetch();
-        console.log(this);
-    }
+    var Book = Backbone.Model.extend({
+        initialize: function() {
+
+        },
+
+        search_goodreads: function(isbn) {
+            this.url = "/api/v2/books/goodreads/?format=json&isbn="+isbn;
+            this.fetch();
+        }
+    });
 });
