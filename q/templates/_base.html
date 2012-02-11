@@ -34,6 +34,7 @@
   <h1><a href="{% url books:index %}"></a></h1>
   <div class="welcome">Welcome<br/><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
   <ul id="menu">
+    <li><a href="forms.html">browse</a></li>
     {% if request.user.is_superuser %}
     <li><a href="{% url books:activity_stream %}">All activity</a></li>
     <li><a href="{% url accounts:list %}">list users</a></li>
@@ -41,10 +42,6 @@
     {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
     <li><a href="{% url books:add_book %}">add book</a></li>
     {% endif %}
-    <li><a href="forms.html">browse</a></li>
-	<li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
-	<li><a href="http://git.twi.gs/q/">get the code</a></li>
-	<li><a href="{% url logout %}">logout</a></li>
   </ul>
   <div class="push"></div>
 </div>
