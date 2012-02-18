@@ -30,11 +30,11 @@
       <ul>
         <li><a class="active" href="">Activity Stream</a></li>
         {% if request.user.is_superuser %}
-        <li><a href="{% url activity_stream %}">All activity</a></li>
+        <li><a href="{% url books:activity_stream %}">All activity</a></li>
         <li><a href="{% url accounts:list %}">list users</a></li>
         {% endif %}
         {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
-        <li><a href="/#{% url add_book %}">add book</a></a>
+        <li><a href="/#{% url books:add_book %}">add book</a></a>
         {% endif %}
         <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
         <li><a href="http://git.twi.gs/q/">get the code</a></li>
