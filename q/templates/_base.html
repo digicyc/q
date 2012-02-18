@@ -1,64 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="robots" content="noindex, nofollow">
-<title>{% block title %}{% endblock %} | {{ site.name }}</title>
-<link href="{% url books:latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title></title>
+  <meta name="description" content="">
 
-<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Sorts+Mill+Goudy:400,400italic' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
-<link href="/css/styles.css" rel="stylesheet" type="text/css" media="all" />
-<link href="/font/stylesheet.css" rel="stylesheet" type="text/css" media="all" />
+  <meta name="viewport" content="width=device-width">
+  <link href='http://fonts.googleapis.com/css?family=Federo|Arimo:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/css/style.css">
 
-<script data-main="/javascript/main.js" src="/javascript/require-jquery.js"></script>
-
-{% block extra_javascript %}{% endblock %}
-
-
+  <script data-main="/javascript/main.js" src="/javascript/require-jquery.js"></script>
+  <script src="/javascript/libs/modernizr-2.5.2.min.js"></script>
 </head>
-
-<body id="inner">
-<div id="top_nav">
-<ul>
-  <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
-  <li><a href="http://git.twi.gs/q/">get the code</a></li>
-  <li><a href="{% url logout %}">logout</a></li>
-  <li><label>Search:</label><input type="text"/></li>
-</ul>
-</div>
-<div class="left">
-	
-  <h1><a href="{% url books:index %}"></a></h1>
-  <div class="welcome">Welcome<br/><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></div>
-  <ul id="menu">
-    <li><a href="forms.html">browse</a></li>
-    {% if request.user.is_superuser %}
-    <li><a href="{% url books:activity_stream %}">All activity</a></li>
-    <li><a href="{% url accounts:list %}">list users</a></li>
-    {% endif %}
-    {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
-    <li><a href="{% url books:add_book %}">add book</a></li>
-    {% endif %}
-  </ul>
-  <div class="push"></div>
-</div>
-<div class="right">
-  <div class="rshadow">
-    <div class="head">
-        <p>
-			<label>Search:</label>
-			<input type="text"/>
-		</p>
-    </div>
-    <div class="qright">
-    {% block content %}{% endblock %}
-
-    </div>
-    <div class="push"></div>
+<body>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <header>
+    <a href="" id="logo">Q<sup>12</sup></a>
+    <ul>
+      <li><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></li>
+      <li id="notifications">2</li>
+    </ul>
+  </header>
+  <div role="main">
+    <nav id="right_nav">
+      <ul>
+        <li><a class="active" href="">Activity Stream</a></li>
+        {% if request.user.is_superuser %}
+        <li><a href="{% url activity_stream %}">All activity</a></li>
+        <li><a href="{% url accounts:list %}">list users</a></li>
+        {% endif %}
+        {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
+        <li><a href="/#{% url add_book %}">add book</a></a>
+        {% endif %}
+        <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
+        <li><a href="http://git.twi.gs/q/">get the code</a></li>
+      <ul>
+    </nav>
+    <section id="center_content">
+      <div class="inner">
+        <h2>Activity Stream</h2>
+        <ul>
+ 
+        </ul>
+      </div>
+    </section>
+    <aside id="left_aside">
+      
+    </aside>
   </div>
-</div>
+  <footer>
+  </footer>
+
+
+  <script src="/javascript/plugins.js"></script>
+  <script src="/javascript/script.js"></script>
+
+  <script>
+    // var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+    // (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    // g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    // s.parentNode.insertBefore(g,s)}(document,'script'));
+  </script>
 </body>
 </html>
