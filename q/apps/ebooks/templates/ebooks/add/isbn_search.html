@@ -6,9 +6,8 @@
 
 {% block extra_javascript %}
     <script type="text/javascript">
-        require(["views/Book"], function(PopulateBookFormView) {
-            var pop_add_form = new PopulateBookFormView();
-            console.log(pop_add_form);
+        require(["views/Book", "models/Book"], function(BookFormView, Book) {
+            var pop_add_form = new BookFormView({model: Book});
         });
     </script>
 {% endblock %}

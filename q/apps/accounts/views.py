@@ -91,7 +91,7 @@ def login(request, template_name="accounts/login.html"):
                         auth_login(request, user)
                         if request.GET.has_key('next'):
                             return HttpResponseRedirect(request.GET['next'])
-                        return HttpResponseRedirect(reverse('index'))
+                        return HttpResponseRedirect(reverse('ebooks:index'))
                     else:
                         messages.error(request, "Your account is currently deactivated.")
                 else:

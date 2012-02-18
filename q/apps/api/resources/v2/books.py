@@ -52,6 +52,8 @@ class BookResource(base.NSResource):
         f.close()
 
         bundle.obj.cover = File(open(f.name))
+        bundle.obj.save()
+        bundle.obj.cover.save()
 
         return bundle
         #os.unlink(f.name)
@@ -82,7 +84,7 @@ class GoodReadsResource(base.Resource):
             'resource_name': self._meta.resource_name,
             }
 
-        return uri
+        return
 
     def obj_get(self, request=None, **kwargs):
         isbn = kwargs.get('isbn', None)
