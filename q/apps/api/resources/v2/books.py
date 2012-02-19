@@ -43,6 +43,7 @@ class BookResource(base.NSResource):
         filtering = {
             'id': ALL,
         }
+        ordering = ["id",]
         allow_methods = ["get", "post", "put"]
 
     def save_m2m(self, bundle):
