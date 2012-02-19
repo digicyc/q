@@ -1,5 +1,10 @@
-define(["jquery", "underscore", "backbone", "models/Book"],
-    function($, _, bb, Book){
+define([
+    "jquery", 
+    "underscore", 
+    "backbone", 
+    "models/Book"
+    ],
+    function($, _, Backbone, Book){
 
         var BookFormView = Backbone.View.extend({
             el: $("body"),
@@ -34,5 +39,6 @@ define(["jquery", "underscore", "backbone", "models/Book"],
 
             }
         });
+
     return BookFormView;
 });
