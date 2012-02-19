@@ -1,5 +1,6 @@
 <% _.each( results, function( item, i ){ %>
     <li>
-        <h3><%= item.get("title") %></h3>
-   </li>
+		<img src="<%= item.get("cover") %>">	
+        <h3><a href="#"><%= item.get("title") %></a></h3>
+   	</li>
 <% }); %>

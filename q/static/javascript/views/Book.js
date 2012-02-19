@@ -2,7 +2,7 @@ define([
     "jquery", 
     "underscore", 
     "backbone", 
-    "models/Book"
+    "models/Book/Book"
     ],
     function($, _, Backbone, Book){
 

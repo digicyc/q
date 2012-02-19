@@ -20,10 +20,9 @@ define([
     },
     loadBind: function( model ){
         var compiled_template = _.template( listTemplate ),
-            collection = this.collection,
+            collection = this.collection;
             $el = $(this.el);
             $el.html( compiled_template( { results: collection.models } ) );
-
     }
   });
   return new booksListView;

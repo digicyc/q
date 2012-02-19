@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   "tastypie",
-  'models/RecentBooksModel'
+  'models/RecentBooks/RecentBooksModel'
 ], function($, _, Backbone, tastypie, RecentBooksModel){
   var booksCollection = Backbone.Collection.extend({
     url : "/api/v2/books/book/?format=json&order_by=-id",

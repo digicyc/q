@@ -74,6 +74,71 @@ body {
 div[role="main"] {
    height: 100%;
 }
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
+  /* column container */
+  .colmask {
+    position:relative;    /* This fixes the IE7 overflow hidden bug and stops the layout jumping out of place */
+      clear:both;
+      float:left;
+        width:100%;       /* width of whole page */
+    overflow:hidden;    /* This chops off any overhanging divs */
+  }
+  /* holy grail 3 column settings */
+  .holygrail {
+      background:#ff9;      /* Right column background colour */
+  }
+    .holygrail .colmid {
+        float:left;
+        width:200%;
+        margin-left:-200px;   /* Width of right column */
+        position:relative;
+        right:100%;
+        background:#fff;      /* Centre column background colour */
+    }
+    .holygrail .colleft {
+        float:left;
+        width:100%;
+        margin-left:-50%;
+        position:relative;
+        left:420px;           /* Left column width + right column width */
+        background:#FFD8B7;     /* Left column background colour */
+    }
+    .holygrail .col1wrap {
+        float:left;
+      width:50%;
+      position:relative;
+      right:200px;          /* Width of left column */
+      padding-bottom:1em;   /* Centre column bottom padding. Leave it out if it's zero */
+  }
+  .holygrail .col1 {
+        margin:0 215px;       /* Centre column side padding:
+                              Left padding = left column width + centre column left padding width
+                              Right padding = right column width + centre column right padding width */
+        position:relative;
+      left:200%;
+      overflow:hidden;
+  }
+    .holygrail .col2 {
+        float:left;
+        float:right;      /* This overrides the float:left above */
+        width:220px;          /* Width of left column content (left column width minus left and right padding) */
+        position:relative;
+        right:0; 
+                  /* Width of the left-had side padding on the left column */
+    }
+    .holygrail .col3 {
+        float: left;
+float: right;
+width: 214px;
+margin-right: 0;
+position: relative;
+left: 50%;
+    }
+
+
 header {
   height: 50px;
   background: #323438; /* Old browsers */
@@ -129,7 +194,7 @@ header li a {
   letter-spacing: 1px;
 }
 #right_nav {
-  width: 220px;
+  width: 100%;
   float: left;
   height: 100%;
   box-shadow: inset -5px 0 8px -6px rgba(0,0,0,0.3);
@@ -228,12 +293,49 @@ header li a {
   border-radius: 2px;
 }
 #left_aside {
-  width: 27%;
-
+  width: 100%;
   min-height: 100%;
   float: right;
 }
+#recent_books {
+  margin: 18px 0 0 0;
+  padding: 0;
+}
+#recent_books li {
+  list-style: none;
+  clear: both;
+  float: left;
+  padding: 10px 0 10px 16px;
+  width: 100%;
+  border-bottom: 1px dotted #DDD;
+}
+#recent_books li:hover {
+  background: rgba(0,0,0,0.02);
+  box-shadow: inset 0px -3px 6px -5px rgba(0,0,0,0.3);
+}
+#recent_books li h3 {
+  font-weight: 700;
+  font-size: 12px;
+  padding: 2px;
+  font-family: Arimo;
+  color: #445;
+  float: left;
+  width: 70%;
+  margin: 3px 0 0 7px;
+  line-height: 12px;
+}
+#recent_books li h3 a {
 
+}
+#recent_books li img {
+  float: left;
+  width: 36px;
+  padding: 1px;
+  border: 1px solid #DDD;
+  border-radius: 3px;
+  box-shadow: -1px 1px 1px 0px rgba(0,0,0,0.3);
+}
+}
 
 @media only screen and (min-width: 35em) {
   

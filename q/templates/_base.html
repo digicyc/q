@@ -23,44 +23,70 @@
 </head>
 <body>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-  <header>
-    <a href="" id="logo">Q<sup>12</sup></a>
-    <ul>
-      <li><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></li>
-      <li id="notifications">2</li>
-    </ul>
-  </header>
-  <div role="main">
-    <nav id="right_nav">
-      <ul>
-        <li><a class="active" href="">Activity Stream</a></li>
-        {% if request.user.is_superuser %}
-        <li><a href="{% url books:activity_stream %}">All activity</a></li>
-        <li><a href="{% url accounts:list %}">list users</a></li>
-        {% endif %}
-        {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
-        <li><a href="/#{% url books:add_book %}">add book</a></a>
-        {% endif %}
-        <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
-        <li><a href="http://git.twi.gs/q/">get the code</a></li>
-      <ul>
-    </nav>
-    <section id="center_content">
-      <div class="inner">
-        <h2>Activity Stream</h2>
-        <ul>
- 
-        </ul>
-      </div>
-    </section>
-    <aside id="left_aside">
-      <ul id="recent_books">
+<header>
+  <a href="" id="logo">Q<sup>12</sup></a>
+  <ul>
+    <li><a href="{% url accounts:view_user user.username %}">{{ user.username }}</a></li>
+    <li id="notifications">2</li>
+  </ul>
+</header>
 
-      </ul
-    </aside>
+
+<div class="colmask holygrail">
+  <div class="colmid">
+      <div class="colleft">
+          <div class="col1wrap">
+            <div class="col1">
+              <!-- Column 1 start -->
+              <section id="center_content">
+                <div class="inner">
+                  <h2>Activity Stream</h2>
+                  <ul>
+           
+                  </ul>
+                </div>
+              </section>
+              <!-- Column 1 end -->
+            </div>
+          </div>
+            
+          <div class="col2">
+          <!-- Column 2 start -->
+            <nav id="right_nav">
+                <ul>
+                  <li><a class="active" href="">Activity Stream</a></li>
+                  {% if request.user.is_superuser %}
+                  <li><a href="{% url books:activity_stream %}">All activity</a></li>
+                  <li><a href="{% url accounts:list %}">list users</a></li>
+                  {% endif %}
+                  {% if request.user.get_profile.is_librarian or request.user.is_superuser %}
+                  <li><a href="/#{% url books:add_book %}">add book</a></a>
+                  {% endif %}
+                  <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
+                  <li><a href="http://git.twi.gs/q/">get the code</a></li>
+                <ul>
+              </nav>
+          <!-- Column 2 end -->
+          </div>
+        
+          <div class="col3">
+          <!-- Column 3 start -->
+             <aside id="left_aside">
+              <ul id="recent_books">
+
+              </ul
+            </aside>
+          <!-- Column 3 end -->
+          </div>
+    </div>
   </div>
-  <footer>
-  </footer>
+</div>
+
+
+
+
+<footer>
+</footer>
 
 
   <script src="/javascript/plugins.js"></script>
