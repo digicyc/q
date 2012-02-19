@@ -17,7 +17,7 @@ define([
             this.fetch();
         },
         recent_books: function(){
-            this.url = "/api/v2/books/book?format=json&order_by=-id"
+            this.url = "/api/v2/books/book/?format=json&order_by=-id"
             this.fetch();
         } 
     });
