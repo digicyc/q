@@ -59,24 +59,6 @@ class BookResource(base.NSResource):
             os.unlink(f.name)
         return bundle
 
-    def hydrate_cover(self, bundle):
-        print "hydrating cover"
-        #headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
-        #f = NamedTemporaryFile(delete=False)
-        #f.write(urllib2.urlopen(urllib2.Request(bundle.data["cover_url"], headers=headers)).read())
-        #f.filename = f.name
-        #f.close()
-        #
-        #print "----"
-        #print f.name
-        #bundle.obj.cover.save(
-        #    "temp_filename.jpg",
-        #    File(open(f.name))
-        #)
-
-        return bundle
-        #os.unlink(f.name)
-
 class FormatResource(base.NSResource):
     book = fields.ForeignKey(BookResource, 'book')
 
