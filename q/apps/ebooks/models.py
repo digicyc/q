@@ -95,7 +95,7 @@ class Series(models.Model):
         super(Series, self).save(*args, **kwargs)
 
 
-class Book(models.Model, GoodReadsBookMixin):
+class Book(models.Model):
     """
     """
     title = models.CharField(db_index=True, max_length=100)
@@ -122,24 +122,6 @@ class Book(models.Model, GoodReadsBookMixin):
 
     def __unicode__(self):
         return self.title.encode('utf8')
-
-    def _x_get_goodreads_id(self):
-        if self._goodreads_id < 1:
-            self._goodreads_id = self.get_goodreads_id()
-        return self._goodreads_id
-    goodreads_id = property(_x_get_goodreads_id)
-
-    def _x_get_meta_rating(self):
-        if self._metarating == 0.0:
-            self._metarating = self.get_goodreads_rating()
-        return self._metarating
-    metarating = property(_x_get_meta_rating)
-
-    def _x_get_num_goodreads_votes(self):
-        if self._goodreads_num_votes < 1:
-            self._goodreads_num_votes = self.get_goodreads_ratings_count()
-        return self._goodreads_num_votes
-    goodreads_num_votes = property(_x_get_num_goodreads_votes)
 
     def _get_is_physical(self):
         if len(self.owners) > 0:
@@ -276,19 +258,18 @@ class Book(models.Model, GoodReadsBookMixin):
             os.unlink(f.name)
 
     def save(self, *args, **kwargs):
-        cache_book_info=False
-        if kwargs.has_key('cache_book_info'):
-            cache_book_info = bool(kwargs['cache_book_info'])
-        if self.gid != "" and cache_book_info:
-            self.cache_book_info(self.gid)
-
+        #cache_book_info=False
+        #if kwargs.has_key('cache_book_info'):
+        #    cache_book_info = bool(kwargs['cache_book_info'])
+        #if self.gid != "" and cache_book_info:
+        #    self.cache_book_info(self.gid)
         if self.slug == "":
             self.slug = slugify(self.title)
 
-        if self._goodreads_id == 0:
-            self._x_get_goodreads_id()
-            self._x_get_meta_rating()
-            self._x_get_num_goodreads_votes()
+        #if self._goodreads_id == 0:
+        #    self._x_get_goodreads_id()
+        #    self._x_get_meta_rating()
+        #    self._x_get_num_goodreads_votes()
 
         super(Book, self).save()
 tagging.register(Book)

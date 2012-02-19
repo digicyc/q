@@ -1,3 +1,4 @@
+import os
 from tempfile import NamedTemporaryFile
 import urllib2
 
@@ -5,6 +6,7 @@ from django.core.files import File
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.decorators import method_decorator
+from django.db.models import ImageField
 
 from django.conf import settings
 
@@ -42,19 +44,35 @@ class BookResource(base.NSResource):
         filtering = {
             'id': ALL,
         }
-        excludes=('cover',)
+        allow_methods = ["get", "post", "put"]
+
+    def save_m2m(self, bundle):
+        super(BookResource, self).save_m2m(bundle)
+        if bundle.data.has_key('cover_url'):
+            headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
+            f = NamedTemporaryFile(delete=False)
+            f.write(urllib2.urlopen(urllib2.Request(bundle.data["cover_url"], headers=headers)).read())
+            f.filename = f.name
+            f.close()
+
+            bundle.obj.cover.save("temp_name.jpg", File(open(f.name)))
+            os.unlink(f.name)
+        return bundle
 
     def hydrate_cover(self, bundle):
-
-        headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
-        f = NamedTemporaryFile(delete=False)
-        f.write(urllib2.urlopen(urllib2.Request(bundle.data["cover_url"], headers=headers)).read())
-        f.filename = f.name
-        f.close()
-
-        bundle.obj.cover = File(open(f.name))
-        bundle.obj.save()
-        bundle.obj.cover.save()
+        print "hydrating cover"
+        #headers = {'User-Agent': settings.DEFAULT_HTTP_HEADERS}
+        #f = NamedTemporaryFile(delete=False)
+        #f.write(urllib2.urlopen(urllib2.Request(bundle.data["cover_url"], headers=headers)).read())
+        #f.filename = f.name
+        #f.close()
+        #
+        #print "----"
+        #print f.name
+        #bundle.obj.cover.save(
+        #    "temp_filename.jpg",
+        #    File(open(f.name))
+        #)
 
         return bundle
         #os.unlink(f.name)
