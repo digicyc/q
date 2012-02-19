@@ -32,7 +32,6 @@ class SeriesResource(base.NSResource):
         filtering = {
             'id': ALL,
         }
-        ordering = ['-id',]
 
 class BookResource(base.NSResource):
     authors = fields.ToManyField('api.resources.v2.books.AuthorResource', 'authors')
