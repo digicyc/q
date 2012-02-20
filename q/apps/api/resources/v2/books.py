@@ -23,6 +23,8 @@ class AuthorResource(base.NSResource):
         resource_name = "books/author"
         filtering = {
             'id': ALL,
+            'firstname': ALL_WITH_RELATIONS,
+            'lastname': ALL_WITH_RELATIONS,
         }
 
 class SeriesResource(base.NSResource):

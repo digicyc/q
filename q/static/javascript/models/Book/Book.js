@@ -1,7 +1,8 @@
 define([
         "underscore", 
         "backbone", 
-        "tastypie"
+        "tastypie",
+        "models/Book/Author"
     ],
     function() {
 
