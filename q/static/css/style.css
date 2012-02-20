@@ -78,65 +78,70 @@ div[role="main"] {
   height: 100%;
   width: 100%;
 }
-  /* column container */
-  .colmask {
-    position:relative;    /* This fixes the IE7 overflow hidden bug and stops the layout jumping out of place */
-      clear:both;
-      float:left;
-        width:100%;       /* width of whole page */
-    overflow:hidden;    /* This chops off any overhanging divs */
-  }
-  /* holy grail 3 column settings */
-  .holygrail {
-      background:#ff9;      /* Right column background colour */
-  }
-    .holygrail .colmid {
-        float:left;
-        width:200%;
-        margin-left:-200px;   /* Width of right column */
-        position:relative;
-        right:100%;
-        background:#fff;      /* Centre column background colour */
-    }
-    .holygrail .colleft {
-        float:left;
-        width:100%;
-        margin-left:-50%;
-        position:relative;
-        left:420px;           /* Left column width + right column width */
-        background:#FFD8B7;     /* Left column background colour */
-    }
-    .holygrail .col1wrap {
-        float:left;
-      width:50%;
-      position:relative;
-      right:200px;          /* Width of left column */
-      padding-bottom:1em;   /* Centre column bottom padding. Leave it out if it's zero */
-  }
-  .holygrail .col1 {
-        margin:0 215px;       /* Centre column side padding:
-                              Left padding = left column width + centre column left padding width
-                              Right padding = right column width + centre column right padding width */
-        position:relative;
-      left:200%;
-      overflow:hidden;
-  }
-    .holygrail .col2 {
-        float:left;
-        float:right;      /* This overrides the float:left above */
-        width:220px;          /* Width of left column content (left column width minus left and right padding) */
-        position:relative;
-        right:0; 
-                  /* Width of the left-had side padding on the left column */
-    }
-    .holygrail .col3 {
-        float: left;
-float: right;
-width: 214px;
-margin-right: 0;
-position: relative;
-left: 50%;
-    }
+/* column container */
+.colmask {
+  position:relative;    /* This fixes the IE7 overflow hidden bug and stops the layout jumping out of place */
+  clear:both;
+  float:left;
+  width:100%;       /* width of whole page */
+  overflow:hidden;   
+  height: 100%; /* This chops off any overhanging divs */
+}
+/* holy grail 3 column settings */
+.holygrail {
+  height: 100%;     /* Right column background colour */
+}
+.holygrail .colmid {
+  float:left;
+  width:200%;
+  margin-left:-200px;   /* Width of right column */
+  position:relative;
+  right:100%;
+  background:#fff; 
+  height: 100%;     /* Centre column background colour */
+}
+.holygrail .colleft {
+  float: left;
+  width: 100%;
+  margin-left: -50%;
+  position: relative;
+  left: 420px;
+  background: #EEE;
+  height: 100%;
+}
+.holygrail .col1wrap {
+  float:left;
+  width:50%;
+  position:relative;
+  right:200px;
+  padding-bottom:1em;
+  height: 100%;
+}
+.holygrail .col1 {
+  margin: 0 235px 0 200px;
+  position: relative;
+  left: 200%;
+  overflow: hidden;
+  height: 100%;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  z-index: 1;
+}
+.holygrail .col2 {
+  float:left;
+  float:right;      /* This overrides the float:left above */
+  width:220px;          /* Width of left column content (left column width minus left and right padding) */
+  position:relative;
+  right:0; 
+      /* Width of the left-had side padding on the left column */
+}
+.holygrail .col3 {
+  float: left;
+  float: right;
+  width: 214px;
+  margin-right: 0;
+  position: relative;
+  left: 50%;
+}
 
 
 header {
@@ -151,7 +156,7 @@ header {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#323438', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
   box-shadow: 0 2px 3px rgba(0,0,0,0.3);
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
   position: relative;
   font-family: Arimo;
   font-weight: 400;
@@ -248,23 +253,26 @@ header li a {
   box-shadow: inset 0 0 3px -1px rgba(0,0,0,0.2);
 }
 #center_content {
-  width: 50%;
+  width: 100%;
   float: left;
-  padding: 15px;
+  padding: 0;
   font-family: Federo;
   color: #445;
   background: white;
   min-height: 100%;
-  background: #fcfcfc;
+  background: #FCFCFC;
   box-shadow: 5px 0 8px -6px rgba(0,0,0,0.3);
+  height: 100%;
 }
 #center_content .inner {
-  padding: 17px 23px;
   box-shadow: 1px 1px 3px 0 rgba(0,0,0,0.05);
   border-radius: 3px;
   border: 1px dotted rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  background: #FFF;
+  background: white;
+  padding: 18px;
+  margin: 18px;
+  max-width: 500px;
 }
 #center_content h2 {
   text-transform: uppercase;
@@ -294,47 +302,68 @@ header li a {
 }
 #left_aside {
   width: 100%;
-  min-height: 100%;
   float: right;
+
 }
 #recent_books {
-  margin: 18px 0 0 0;
+  margin: 2px 0 0 0;
   padding: 0;
+  overflow-y: scroll;
+}
+#left_aside h2 {
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0;
+  color: #445;
+  font-size: 12px;
+  border-bottom: 1px solid #EEE;
+  padding: 19px 16px 10px;
+  font-family: Federo;
 }
 #recent_books li {
+  position: relative;
   list-style: none;
   clear: both;
   float: left;
   padding: 10px 0 10px 16px;
   width: 100%;
   border-bottom: 1px dotted #DDD;
+  vertical-align: middle;
+  display: table;
+  height: 37px;
+}
+#recent_books li.over img {
+  box-shadow: -1px 1px 0 0 #563714;
+}
+#recent_books .inner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: table;
+  padding: 7px 0 0 14px;
 }
 #recent_books li:hover {
   background: rgba(0,0,0,0.02);
   box-shadow: inset 0px -3px 6px -5px rgba(0,0,0,0.3);
+  cursor: pointer;
 }
 #recent_books li h3 {
-  font-weight: 700;
-  font-size: 12px;
-  padding: 2px;
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 11px;
+  padding: 0 0 0 10px;
   font-family: Arimo;
-  color: #445;
-  float: left;
-  width: 70%;
-  margin: 3px 0 0 7px;
-  line-height: 12px;
 }
 #recent_books li h3 a {
 
 }
 #recent_books li img {
   float: left;
-  width: 36px;
+  width: 24px;
   padding: 1px;
-  border: 1px solid #DDD;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 3px;
-  box-shadow: -1px 1px 1px 0px rgba(0,0,0,0.3);
-}
+  box-shadow: -1px 1px 0 0 rgba(0,0,0,0.3);
 }
 
 @media only screen and (min-width: 35em) {
