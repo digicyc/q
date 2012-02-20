@@ -47,31 +47,33 @@ define([
                 return false;
 
             },
-            add_book: function(event) {
+            
+            _get_authors: function(event) {
+            	this.author_uri = event.attributes.resource_uri;
+            	
             	this.book = new Book();
+
+            	this.book.set({
+            		title: $("#id_title").val(),
+            		cover_url: $("#id_cover_url").val(),
+            		authors: [this.author_uri],
+            		isbn13: $("#id_isbn13").val(),
+            		isbn10: $("#id_isbn10").val(),
+            		description: $("#id_description").val()
+            	});
+            	
+            	this.book.save();
+            	
+            },
+            add_book: function(event) {
             	
             	var firstname = $("#id_authors").val().split(" ")[0];
             	var lastname = $.trim($("#id_authors").val().replace(firstname,""));
             	
             	this.author = new Author();
+            	this.author.bind("change", this._get_authors);
             	this.author.fetch({data: {"firstname": firstname, "lastname": lastname}});
-            	console.log(this.author.id);
-            	
-            	this.book.set({
-            		title: $("#id_title").val(),
-            		cover_url: $("#id_cover_url").val(),
-            		//authors: $("#id_authors").val(),
-            		authors: ["/api/v2/books/author/1/"],
-            		isbn13: $("#id_isbn13").val(),
-            		isbn10: $("#id_isbn10").val(),
-            		description: $("#id_description").val()
-            	});
-                if ($("#id_series").val() != "") {
-                	this.book.set("series", $("#id_series").val());
-                	this.book.set("series_num", $("#id_series_num").val());
-                }
-                
-                this.book.save();
+
             	return false;
             }
         });
