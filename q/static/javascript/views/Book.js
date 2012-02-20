@@ -2,9 +2,10 @@ define([
     "jquery", 
     "underscore", 
     "backbone", 
-    "models/Book/Book"
+    "models/Book/Book",
+    "models/Book/Author"
     ],
-    function($, _, Backbone, Book){
+    function($, _, Backbone, Book, Author){
 
         var BookFormView = Backbone.View.extend({
             el: $("body"),
@@ -47,7 +48,15 @@ define([
 
             },
             add_book: function(event) {
-            	this.book = new Book()
+            	this.book = new Book();
+            	
+            	var firstname = $("#id_authors").val().split(" ")[0];
+            	var lastname = $.trim($("#id_authors").val().replace(firstname,""));
+            	
+            	this.author = new Author();
+            	this.author.fetch({data: {"firstname": firstname, "lastname": lastname}});
+            	console.log(this.author.id);
+            	
             	this.book.set({
             		title: $("#id_title").val(),
             		cover_url: $("#id_cover_url").val(),
