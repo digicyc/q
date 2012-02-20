@@ -13,9 +13,10 @@ define([
     initialize: function(){
       this.collection = new booksCollection;
 
-        _.bindAll(this, "loadBind");
+        _.bindAll(this, "loadBind","sizeBar");
         this.collection.bind("reset", this.loadBind);
         this.collection.fetch();
+
 
     },
     loadBind: function( model ){
@@ -23,6 +24,22 @@ define([
             collection = this.collection;
             $el = $(this.el);
             $el.html( compiled_template( { results: collection.models } ) );
+            this.sizeBar();
+            this.hoverItem();
+    },
+    hoverItem : function() {
+      $('li',this.el).on({
+        mouseenter : function() {
+          $(this).addClass('over');
+        },
+        mouseleave : function() {
+          $(this).removeClass('over');
+        }
+      });
+    },
+    sizeBar : function() {
+      var winHeight = $(window).height();
+      $(this.el).height(winHeight-140);
     }
   });
   return new booksListView;
