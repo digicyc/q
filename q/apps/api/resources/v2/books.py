@@ -3,10 +3,6 @@ from tempfile import NamedTemporaryFile
 import urllib2
 
 from django.core.files import File
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.utils.decorators import method_decorator
-from django.db.models import ImageField
 
 from django.conf import settings
 
@@ -83,12 +79,12 @@ class GoodReadsResource(base.Resource):
         resource_name = "books/goodreads"
         object_class = GoodReads
 
-    def get_resource_uri(self, bundle_or_obj):
-        kwargs = {
-            'resource_name': self._meta.resource_name,
-            }
+    #def get_resource_uri(self, bundle_or_obj):
+    #    kwargs = {
+    #        'resource_name': self._meta.resource_name,
+    #        }
 
-        return
+    #   return
 
     def obj_get(self, request=None, **kwargs):
         isbn = kwargs.get('isbn', None)
@@ -101,7 +97,7 @@ class GoodReadsResource(base.Resource):
             results.append(gr)
         return results
 
-    def obj_get_list(self, request=None, **kwargs):
+    def obj_get_list(self, request=None):
         # Filtering disabled for brevity...
         results = self.get_object_list(request)
         return results

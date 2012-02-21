@@ -1,4 +1,3 @@
-import os
 import os.path
 from hashlib import sha256 as sha
 
@@ -7,13 +6,11 @@ from tagging.fields import TagField
 from djangoratings.fields import RatingField
 
 from django.conf import settings
-from django.db import models, connection, transaction
+from django.db import models, connection
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.files import File
-
-from ebooks.mixins import GoodReadsBookMixin
 
 #from q.common import similarity
 
@@ -201,7 +198,7 @@ class Book(models.Model):
         try:
             cover_link = gbook.GetThumbnailLink().href.replace('zoom=5','zoom=1')
             self.temp_cover_url = cover_link
-        except AttributeError, e:
+        except AttributeError:
             pass
         
         if self.title == "":
@@ -219,7 +216,7 @@ class Book(models.Model):
             gauthor = gauthor.text
             try:
                 author = Author.objects.get(firstname=" ".join(gauthor.split(" ")[:-1]).strip(), lastname=gauthor.split(" ")[-1])
-            except Author.DoesNotExist, e:
+            except Author.DoesNotExist:
                 author = Author()
                 author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
                 author.lastname = gauthor.split(" ")[-1]
@@ -231,16 +228,16 @@ class Book(models.Model):
                 self.authors.add(author)
 
         for identifier in gbook.identifier:
-            id = identifier.text
-            if id.startswith("ISBN:"):
-                isbn = id.replace("ISBN:", "")
+            _id = identifier.text
+            if _id.startswith("ISBN:"):
+                isbn = _id.replace("ISBN:", "")
                 if len(isbn) == 13 and self.isbn13 == "":
                     self.isbn13 = isbn
                 elif len(isbn) == 10 and self.isbn10 == "":
                     self.isbn10 = isbn
             else:
                 if self.gid == "":
-                    self.gid = id
+                    self.gid = _id
 
 
         if cover_link and self.cover is None or self.cover == "" and save_cover:
