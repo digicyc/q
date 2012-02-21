@@ -11,8 +11,7 @@ define([
   var booksListView = Backbone.View.extend({
     el: $("#recent_books"),
     initialize: function(){
-      this.collection = new booksCollection;
-
+        this.collection = new booksCollection;
         _.bindAll(this, "loadBind","sizeBar");
         this.collection.bind("reset", this.loadBind);
         this.collection.fetch();

@@ -18,3 +18,4 @@ bin/
 include/
 !lib/goodreads.py
 lib/
+.buildpath
