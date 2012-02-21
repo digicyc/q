@@ -3,9 +3,9 @@ define([
     "underscore", 
     "backbone", 
     "models/Book/Book",
-    "models/Book/Author"
+    "collections/authors"
     ],
-    function($, _, Backbone, Book, Author){
+    function($, _, Backbone, Book, AuthorCollection){
 
         var BookFormView = Backbone.View.extend({
             el: $("body"),
@@ -49,6 +49,8 @@ define([
             },
             
             _get_authors: function(event) {
+            	console.log(event);
+            	return false;
             	this.author_uri = event.attributes.resource_uri;
             	
             	this.book = new Book();
@@ -70,9 +72,9 @@ define([
             	var firstname = $("#id_authors").val().split(" ")[0];
             	var lastname = $.trim($("#id_authors").val().replace(firstname,""));
             	
-            	this.author = new Author();
-            	this.author.bind("change", this._get_authors);
-            	this.author.fetch({data: {"firstname": firstname, "lastname": lastname}});
+            	this.authors = new AuthorCollection();
+            	this.authors.bind("reset", this._get_authors);
+            	this.authors.fetch({data: {"firstname": firstname, "lastname": lastname}});
 
             	return false;
             }
