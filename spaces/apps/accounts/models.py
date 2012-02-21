@@ -4,6 +4,8 @@ class UserProfile(models.Model):
     """
     Extra information to describe a user.
     """
+    firstname = models.TextField(max_length=100)
+    lastname = models.TextField(max_length=100)
     address1 = models.TextField(max_length=100)
     address2 = models.TextField(max_length=100)
     city = models.TextField(max_length=100)
