@@ -4,7 +4,7 @@ define([
   'underscore',
   'backbone',
   // Pull in the Collection module from above
-  'collections/books',
+  'collections/recentbooks',
   'text!templates/booklist.html'
 
 ], function($, _, Backbone, booksCollection, listTemplate){
