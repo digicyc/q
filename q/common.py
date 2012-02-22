@@ -81,7 +81,6 @@ def touch_wsgi(request):
     after the push is done and usually what needs to be done is the wsgi touched.
     """
     from django.http import HttpResponse, Http404
-    from django.utils import simplejson
 
     if not request.GET.has_key('key'):
         raise Http404()
@@ -119,7 +118,7 @@ def pearson(prefs_dict, obj1, obj2):
     sum2_sq = sum([pow(prefs_dict[obj2][item],2) for item in prefs_dict])
 
     # Sum up the products
-    p_sum = sum([prefs[obj1][item]*prefs[obj2][item] for item in prefs_dict])
+    p_sum = sum([prefs_dict[obj1][item]*prefs_dict[obj2][item] for item in prefs_dict])
 
     # Calculate Pearson score
     numerator = p_sum-(sum1*sum2/n)
