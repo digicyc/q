@@ -3,8 +3,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/Book',
-  'views/RecentBooks'
+  'views/book',
+  'views/recentBooks'
 ], function($, _, Backbone, BookFormView, RecentBooks ){
 
 
