@@ -1,10 +1,7 @@
 from httplib import HTTPConnection
-
-from q import settings
-import json
-
 import xml.etree.cElementTree as ElementTree
 
+from django.conf import settings
 
 class GoodReads(object):
     authors = dict()
