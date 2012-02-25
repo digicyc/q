@@ -27,3 +27,10 @@ require([
   // Again, the other dependencies passed in are not "AMD" therefore don't pass a parameter to this function
   App.initialize();
 });
+
+function strip(html)
+{
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent||tmp.innerText;
+}

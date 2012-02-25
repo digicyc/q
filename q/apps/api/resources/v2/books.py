@@ -9,6 +9,7 @@ from django.conf import settings
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
 from tastypie import fields
 from goodreads import GoodReads
+import googlebooks
 
 from api import base
 from ebooks import models
@@ -87,8 +88,12 @@ class GoodReadsResource(base.Resource):
     #   return
 
     def obj_get(self, request=None, **kwargs):
+
         isbn = kwargs.get('isbn', None)
-        return GoodReads(isbn)
+        gr = GoodReads(isbn)
+        g = googlebooks.GoogleBook(isbn)
+        gr.authors = g.authors
+        return gr
 
     def get_object_list(self, request):
         results = []
