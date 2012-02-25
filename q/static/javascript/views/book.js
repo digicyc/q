@@ -73,10 +73,11 @@ define([
                     var firstname = authors[i].split(" ")[0];
                     var lastname = $.trim(authors[i].replace(firstname,""));
                     
-                    _authors.push({"firstname": firstname, "lastname": lastname});
+                    _authors.push({name: "firstname"+i+"__iexact", value: firstname});
+                    _authors.push({name: "lastname"+i+"__iexact", value: lastname});
                 }
                 console.log(_authors);
-                this.authors.fetch({data: _authors});
+                this.authors.fetch({data: $.param(_authors)}, {add: true});
 
                 console.log(this.authors);
                 return false;
