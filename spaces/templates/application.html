@@ -1,0 +1,112 @@
+{% extends "_base.html" %}
+{% block content %}
+<script type="text/javascript">
+	hs.outlineType = 'rounded-white';
+	hs.showCredits = false;
+	hs.wrapperClassName = 'draggable-header';
+	// Add the simple close button
+	hs.registerOverlay({
+		html: '<div class="closebutton" onclick="return hs.close(this)" title="Close"></div>',
+		position: 'top right',
+		fade: 2 // fading the semi-transparent overlay looks bad in IE
+	});
+</script>
+
+<div id="wrapper">
+	<div id="container">
+		<h1>{{ program }}</h1> <!-- add margin-top in css -->
+        <p>Please fill out the form completely. All fields marked with an asterisk* are required. Please observe all English grammar and capitalization rules&mdash;in other words, don't enter information as if you were texting your BFF.</p>
+        
+        <form action="addapp.php" method=post enctype="multipart/form-data">
+        
+            <!-- this hidden value contains the ProgramID for SPACELab. The idea of inserting it here is to use the same php file (addapp.php) to process applications for the two other exhibition programs SPACES has. -->    
+            <input type="hidden" name="ProgramID" value="3" />
+            
+            <!-- Below we prompt for the data to be added to the database as form inputs -->
+            
+            <h2>Name</h2>
+            <div class="grid_6 alpha">
+                <label for="first">First:</label>
+                <input type="text" name="First_Name" value="" size=20 />
+            </div>
+            <div class="grid_6 omega">
+                <label for ="last">* Last:</label>
+                <input type="text" name="Last_Name" value="" size=25 />
+                <span class="caption">(If applying as a collective, or a single-named artist, enter that name here and leave the "First" field blank)</span>
+            </div><div class="clear"></div>
+            
+            
+            <h2>Contact Information</h2>
+            <div class="grid_12 alpha omega">
+                <label for="street">* Street:</label>
+                <input type="text" name="Street" value="" size=25 />
+            </div>
+            <div class="grid_4 alpha">
+                <label for ="city">* City:</label>
+                <input type="text" name="City" value="" size=20 />
+            </div>
+            <div class="grid_2">
+                <label for="state">* State:</label>
+                <input type="text" name="State" value="" size=12 />
+            </div>
+            <div class="grid_3">
+                <label for="zip">* Zip:</label>
+                <input type="text" name="Zip" value="" size=5 />
+            </div>
+            <div class="grid_3 omega">
+                <label for="country">Country:</label>
+                <input type="text" name="Country" value="" size=20 />
+            </div>
+            <div class="grid_4 alpha">
+                <label for="phone1">* Primary Phone:</label>
+                <input type="text" name="Phone1" value="Example: 216.621.2314" size=12 onfocus="clearDefault(this)" />
+            </div>
+            <div class="grid_4">
+                <label for="phone2">Secondary Phone:</label>
+                <input type="text" name="Phone2" value="" size=15 />
+            </div>
+            <div class="grid_4 omega">
+                <label for="email">* Email:</label>
+                <input type="text" name="Email" value="" size=30 />
+            </div><div class="clear"></div>
+            
+            
+            <h2>Other Information</h2>
+            <div class="grid_12 alpha omega">
+                <label for="website">Website: [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'Website' })">?</a>
+        		<span class="highslide-maincontent">Only enter a portfolio website here or a site that is indicative of your art practice. We don't need to see your vacation photos on your family blog.<br /><br /><strong>Be sure to include the http://</strong><br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
+                <input type="text" name="Website" value="http://" size=30 />
+            </div><div class="clear"></div>
+            
+            <div class="grid_6 alpha">
+                <label for="artiststatement">* Artist Statement (Remaining characters: <span id="limitOne">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'Artist Statement' })">?</a>
+        		<span class="highslide-maincontent">This statement should address your general practice and be very specific. Please refrain from using well-worn art-speak&mdash;we can all use a break from that. This is also not a project proposal, so please don't talk about what work you would like to make as part of SPACELab.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
+                <textarea rows=8 cols=20 name="Artist_Statement" value="" maxlength="950" showremain="limitOne" onfocus="clearDefault(this)">950 characters maximum</textarea>
+            </div>
+            <div class="grid_6 omega">
+                <label for="spacelabstatement">* SPACELab Statement (Remaining characters: <span id="limitTwo">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'SPACELab Statement' })">?</a>
+        		<span class="highslide-maincontent">This statement should address specifically why you would like to participate in SPACELab. This is not a project proposal, so please don't talk about what work you would like to make as part of SPACELab.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
+                <textarea rows=8 cols=20 name="Program_Statement" value="" maxlength="950" showremain="limitTwo" onfocus="clearDefault(this)">950 characters maximum</textarea> 
+				
+            </div>
+            <div class="grid_12 alpha omega">
+                <label for="upload">Upload your CV as a .pdf [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'PDF' })">?</a>
+        		<span class="highslide-maincontent">PDF stands for Portable Document Format. It is often a preferred format for two-dimensional information since PDF viewing software is free and ubiquitous as opposed to more proprietary formats like Microsoft Word, PowerPoint, etc. It is also less susceptible to viral infection than some other formats.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+                <input type="file" name="CV" id="cv_userfile" title="Select file for upload" class="upload" />
+            </div>
+            
+            <div class="grid_12 alpha omega">
+                <label for="hear">How did you hear about us?</label>
+                <textarea rows=1 cols=40 name="Response" value=""></textarea>
+            </div>
+            
+               
+            <input type="submit" name="upload" value="Next" title="Click to add artwork"> 
+        </form>
+       	<p><a href="/apply/spacelab">&larr; Return to Main Menu</a></p>
+        <p>Questions or problems? Call 216.621.2314 or email <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#115;&#105;&#109;&#109;&#111;&#110;&#115;&#64;&#115;&#112;&#97;&#99;&#101;&#115;&#103;&#97;&#108;&#108;&#101;&#114;&#121;&#46;&#111;&#114;&#103;&#63;&#115;&#117;&#98;&#106;&#101;&#99;&#116;&#61;&#81;&#117;&#101;&#115;&#116;&#105;&#111;&#110;&#32;&#97;&#98;&#111;&#117;&#116;&#32;&#116;&#104;&#101;&#32;&#111;&#110;&#108;&#105;&#110;&#101;&#32;&#97;&#112;&#112;&#108;&#105;&#99;&#97;&#116;&#105;&#111;&#110;&#32;&#102;&#111;&#114;&#109;">&#109;&#115;&#105;&#109;&#109;&#111;&#110;&#115;&#64;&#115;&#112;&#97;&#99;&#101;&#115;&#103;&#97;&#108;&#108;&#101;&#114;&#121;&#46;&#111;&#114;&#103;</a></p>
+	</div>
+</div>
+
+{% endblock content %}
