@@ -17,76 +17,79 @@
 		<h1>{{ program }}</h1> <!-- add margin-top in css -->
         <p>Please fill out the form completely. All fields marked with an asterisk* are required. Please observe all English grammar and capitalization rules&mdash;in other words, don't enter information as if you were texting your BFF.</p>
         
-        <form action="addapp.php" method=post enctype="multipart/form-data">
-        
-            <!-- this hidden value contains the ProgramID for SPACELab. The idea of inserting it here is to use the same php file (addapp.php) to process applications for the two other exhibition programs SPACES has. -->    
-            <input type="hidden" name="ProgramID" value="3" />
-            
-            <!-- Below we prompt for the data to be added to the database as form inputs -->
-            
+        <form action="/contact/" method=post enctype="multipart/form-data">
+		{{ form.non_field_errors }}
             <h2>Name</h2>
             <div class="grid_6 alpha">
+            {{ form.firstname.errors }}
                 <label for="first">First:</label>
-                <input type="text" name="First_Name" value="" size=20 />
+                {{ form.firstname }}
             </div>
             <div class="grid_6 omega">
+            {{ form.lastname.errors }}
                 <label for ="last">* Last:</label>
-                <input type="text" name="Last_Name" value="" size=25 />
+                {{ form.lastname }}
                 <span class="caption">(If applying as a collective, or a single-named artist, enter that name here and leave the "First" field blank)</span>
             </div><div class="clear"></div>
-            
-            
             <h2>Contact Information</h2>
             <div class="grid_12 alpha omega">
+            {{ form.street.errors }}
                 <label for="street">* Street:</label>
-                <input type="text" name="Street" value="" size=25 />
+                {{ form.street }}
             </div>
             <div class="grid_4 alpha">
+            {{ form.city.errors }}
                 <label for ="city">* City:</label>
-                <input type="text" name="City" value="" size=20 />
+                {{ form.city }}
             </div>
             <div class="grid_2">
+            {{ form.state.errors }}
                 <label for="state">* State:</label>
-                <input type="text" name="State" value="" size=12 />
+                {{ form.state }}
             </div>
             <div class="grid_3">
+            {{ form.zip.errors }}
                 <label for="zip">* Zip:</label>
-                <input type="text" name="Zip" value="" size=5 />
+                {{ form.zip }}
             </div>
             <div class="grid_3 omega">
+            {{ form.country.errors }}
                 <label for="country">Country:</label>
-                <input type="text" name="Country" value="" size=20 />
+                {{ form.country }}
             </div>
             <div class="grid_4 alpha">
+            {{ form.phone1.errors }}
                 <label for="phone1">* Primary Phone:</label>
-                <input type="text" name="Phone1" value="Example: 216.621.2314" size=12 onfocus="clearDefault(this)" />
+                {{ form.phone1 }}
             </div>
             <div class="grid_4">
+            {{ form.phone2.errors }}
                 <label for="phone2">Secondary Phone:</label>
-                <input type="text" name="Phone2" value="" size=15 />
+                {{ form.phone2 }}
             </div>
             <div class="grid_4 omega">
+            {{ form.email.errors }}
                 <label for="email">* Email:</label>
-                <input type="text" name="Email" value="" size=30 />
+                {{ form.email }}
             </div><div class="clear"></div>
-            
-            
             <h2>Other Information</h2>
             <div class="grid_12 alpha omega">
+			{{ form.website.errors }}
                 <label for="website">Website: [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'Website' })">?</a>
         		<span class="highslide-maincontent">Only enter a portfolio website here or a site that is indicative of your art practice. We don't need to see your vacation photos on your family blog.<br /><br /><strong>Be sure to include the http://</strong><br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
-                <input type="text" name="Website" value="http://" size=30 />
+                {{ form.website }}
             </div><div class="clear"></div>
-            
             <div class="grid_6 alpha">
-                <label for="artiststatement">* Artist Statement (Remaining characters: <span id="limitOne">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'Artist Statement' })">?</a>
+			{{ form.artist_statement.errors }}
+                <label for="artist_statement">* Artist Statement (Remaining characters: <span id="limitOne">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'Artist Statement' })">?</a>
         		<span class="highslide-maincontent">This statement should address your general practice and be very specific. Please refrain from using well-worn art-speak&mdash;we can all use a break from that. This is also not a project proposal, so please don't talk about what work you would like to make as part of SPACELab.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
-                <textarea rows=8 cols=20 name="Artist_Statement" value="" maxlength="950" showremain="limitOne" onfocus="clearDefault(this)">950 characters maximum</textarea>
+               {{ form.artist_statement }}
             </div>
             <div class="grid_6 omega">
-                <label for="spacelabstatement">* SPACELab Statement (Remaining characters: <span id="limitTwo">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'SPACELab Statement' })">?</a>
+            {{ form.program_statement.errors }}
+                <label for="program_statement">* SPACELab Statement (Remaining characters: <span id="limitTwo">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'SPACELab Statement' })">?</a>
         		<span class="highslide-maincontent">This statement should address specifically why you would like to participate in SPACELab. This is not a project proposal, so please don't talk about what work you would like to make as part of SPACELab.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
-                <textarea rows=8 cols=20 name="Program_Statement" value="" maxlength="950" showremain="limitTwo" onfocus="clearDefault(this)">950 characters maximum</textarea> 
+                {{ form.program_statement }} 
 				
             </div>
             <div class="grid_12 alpha omega">
@@ -97,8 +100,9 @@
             </div>
             
             <div class="grid_12 alpha omega">
-                <label for="hear">How did you hear about us?</label>
-                <textarea rows=1 cols=40 name="Response" value=""></textarea>
+            {{ form.referral.errors }}
+                <label for="referral">How did you hear about us?</label>
+                {{ form.referral }}
             </div>
             
                
