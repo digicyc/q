@@ -16,7 +16,7 @@
 	<div id="container">
 		<h1>{{ program }}</h1> <!-- add margin-top in css -->
         <p>Please fill out the form completely. All fields marked with an asterisk* are required. Please observe all English grammar and capitalization rules&mdash;in other words, don't enter information as if you were texting your BFF.</p>
-        
+        {% block form %}
         <form action="/contact/" method=post enctype="multipart/form-data">
 		{{ form.non_field_errors }}
             <h2>Name</h2>
@@ -87,7 +87,7 @@
             </div>
             <div class="grid_6 omega">
             {{ form.program_statement.errors }}
-                <label for="program_statement">* SPACELab Statement (Remaining characters: <span id="limitTwo">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'SPACELab Statement' })">?</a>
+                <label for="program_statement">* {{ program }} Statement (Remaining characters: <span id="limitTwo">950</span>): [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'SPACELab Statement' })">?</a>
         		<span class="highslide-maincontent">This statement should address specifically why you would like to participate in SPACELab. This is not a project proposal, so please don't talk about what work you would like to make as part of SPACELab.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
                 {{ form.program_statement }} 
 				
@@ -108,6 +108,7 @@
                
             <input type="submit" name="upload" value="Next" title="Click to add artwork"> 
         </form>
+        {% endblock form %}
        	<p><a href="/apply/spacelab">&larr; Return to Main Menu</a></p>
         <p>Questions or problems? Call 216.621.2314 or email <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#109;&#115;&#105;&#109;&#109;&#111;&#110;&#115;&#64;&#115;&#112;&#97;&#99;&#101;&#115;&#103;&#97;&#108;&#108;&#101;&#114;&#121;&#46;&#111;&#114;&#103;&#63;&#115;&#117;&#98;&#106;&#101;&#99;&#116;&#61;&#81;&#117;&#101;&#115;&#116;&#105;&#111;&#110;&#32;&#97;&#98;&#111;&#117;&#116;&#32;&#116;&#104;&#101;&#32;&#111;&#110;&#108;&#105;&#110;&#101;&#32;&#97;&#112;&#112;&#108;&#105;&#99;&#97;&#116;&#105;&#111;&#110;&#32;&#102;&#111;&#114;&#109;">&#109;&#115;&#105;&#109;&#109;&#111;&#110;&#115;&#64;&#115;&#112;&#97;&#99;&#101;&#115;&#103;&#97;&#108;&#108;&#101;&#114;&#121;&#46;&#111;&#114;&#103;</a></p>
 	</div>
