@@ -1,0 +1,106 @@
+
+<!-- Begin Artist Info --> 
+	<div class="grid_10 alpha omega" style="border-bottom: 1px solid #666; padding-bottom: 10px; margin-bottom: 5px;">
+        <div class="grid_3 alpha">
+            <h2>Artist</h2> 
+            <strong>{{ firstname }} {{ lastname }}</strong>
+        </div>
+        
+        <div class="grid_3">
+            <h2>Address</h2>
+            {{ street }}<br />
+            {{ city }}, {{ state }} {{ zip }}<br />
+            {{ country }} 
+        </div>
+        
+        <div class="grid_4 omega">      
+            <h2>Other Information</h2>
+            <span class="app-header">Primary Phone:</span> {{ phone1 }}<br />
+            <!-- optional field --><span class="app-header">Secondary Phone:</span> {{ phone2 }}<br />
+            <span class="app-header">Email:</span> <a href="mailto:{{ email }}?subject=Re: Your SPACES Application" title="Send an email to the applicant">{{ email }}</a></span>
+            <!-- optional field --><br /><span class="app-header">Website:</span> <a href="{{ website }}">{{ website }}</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+<!-- End Artist Info -->     
+
+
+<!-- Begin Images if image files exist-->
+    <div class="grid_10 alpha omega thumbnails highslide-gallery">
+    <h2>Images</h2>
+       		<div class="grid_1{% if ($i == 3) ( alpha ) elseif ($i == 13) ( omega ) %}">
+                <a href="/uploads/spacelab/{{ imagefile[] }}" rel="highslide" class="highslide" title="Click to view image">
+                    <img src="/image.php?width=56&amp;height=56&amp;cropratio=1:1&amp;image=/uploads/spacelab/{{ imagefile[] }}" alt="{{ firstname }} {{ lastname }}: " />
+                </a>
+                <div class="highslide-caption">
+                    <p><strong>{{ firstname }} {{ lastname }}</strong><br />
+                    <em>{{ image[].title }}</em>, {{ image[].year }}><br />
+                    {{ image[].medium }}
+                    <!-- optional field --><br />{{ image[].extent }} 
+					<!-- optional field --><br />Description: {{ image[].description }}</p>
+                </div>
+            </div>
+	</div>
+    <div class="clear"></div> 
+<!-- End Images -->      
+  
+    
+<!-- Begin Audio  -->
+    
+	<div class="grid_10 alpha omega">
+	<h2>Audio</h2>
+			 <div class="grid_5 alpha">
+				<embed type="application/x-shockwave-flash" flashvars="audioUrl=/uploads/spacelab/{{ audiofile[] }}" src="http://www.google.com/reader/ui/3523697345-audio-player.swf" width="380" height="27" quality="best"></embed>
+				<div class="caption">
+					<p><em>{{ audio[].title }}</em>, {{ audio[].year }}<br />
+                    {{ audio[].medium }}<br />
+                    {{ audio[].extent }}
+                   <!-- optional file --><br />Description: {{ audio[].description }}<br />
+					<em>Click play button above to listen to audio track</em></p>
+				</div>	
+			</div>
+	</div>
+	<div class="clear"></div> 
+<!-- End Audio -->
+
+<!-- Begin Video -->  
+    <div class="grid_12 alpha omega">
+		<h2>Video</h2>
+        <script type="text/javascript" src="/inc/swfobject.js"></script>
+                    <div id="{{ mediavar? }}">If you see only this text, and no video. Please refresh the screen. If the problem persists, please contact Chris or Marilyn.</div>
+                    <script type="text/javascript">
+                        var so = new SWFObject("/inc/player.swf","mpl","780","531","9");
+                        so.addParam("allowfullscreen","true");
+                        so.addParam("allowscriptaccess","always");
+                        so.addParam("wmode","opaque");
+                        so.addVariable('bufferlength','10');
+                        so.addVariable("file","http://www.thisisnotthe.com/uploads/spacelab/<? echo $dir . $scan[$i] ?>");
+                        so.write('<? echo $mediavar ?>');
+                    </script>
+                       
+                    <p style="font-size: 0.8em; color: #666;">Some videos are quite large, so be patient. If your connection or computer are terribly slow, you can come by SPACES to watch them on disc.<br />   
+                    Click to watch in a separate window: <a href="/uploads/spacelab/{{ videofile[] }}" target="_blank" title="Click to view video in a new window">{{ ? }}</a></p>
+    	</div><div class="clear"></div>
+    
+<!-- End Video --> 
+
+
+<!--Begin Texts -->      
+    <div class="grid_5 alpha">
+    	<h2>Artist Statement</h2>
+    	{{ artist_statement }}
+    </div>
+    
+    <div class="grid_5 omega">  
+    	<h2>{{ program }} Statement</h2>
+    	{{ program_statement }}
+    </div>
+    <div class="clear"></div>
+    
+    <div class="grid_10 alpha omega">
+    <h2>CV</h2>    
+    <iframe src="http://docs.google.com/gview?url=http://thisisnotthe.com/uploads/spacelab/{{ artist_id }}_{{ lastname|lowercase }}/{{ filenameCV }}&embedded=true" style="width:780px; height:500px;" frameborder="0"></iframe>
+			<br />
+			<br />Or click to download: <a href="../../uploads/spacelab/{{ artist_id }}_{{ lastname|lowercase }}/{{ filename }}" target="_blank" title="Opens document in a new window">{{ filenameCV }}</a>
+			{% else <span class='app-header'>No CV was uploaded.</span> %}
+    </div>
