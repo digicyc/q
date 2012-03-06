@@ -1,17 +1,21 @@
 {% extends "_base.html" %}
 
-{% block title %}Select a program{% endblock %}
+{% block title %}Getting Started{% endblock %}
 
 {% block content %}
-        <div id="nav" class="grid_2 alpha">
-{% block nav %}
-            <h2>I would like to:</h2>
-            <ul>
-                <li><a href="">Apply for R&D</a></li>
-                <li><a href="">Apply for SWAP</a></li> <!-- can you make it so like which one they pick is the first like variable or piece of data we collect? -->
-            </ul><!-- i need to edit the css to add some margin-bottom -->
+<form action="/account/createAccount" method="post">
+          <ul class="errors">          
+                    </ul>
+
+          <h2>Sign Up</h2>        
+          <ul>
+            <li><input type="text" name="user_name" placeholder="username" /></li>
+            <li><input type="text" name="user_email" placeholder="email" /></li>
+            <li><input type="radio" name="program" value="rd" />R&D</li>
+			<li><input type="radio" name="program" value="swap" />SWAP</li>
+            <li><button type="submit">Create Account</button></li>
+          </ul>
+        </form>
 <h4>Been here before?</h4>
-<a href="">Login:</a>
-{% endblock %}
-        </div>
+<a href="">Login</a>
 {% endblock %}
