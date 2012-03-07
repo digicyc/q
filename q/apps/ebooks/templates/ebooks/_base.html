@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="robots" content="noindex, nofollow">
+
+	<title>{% block title %}{% endblock %} | {{ site.name }}</title>
+
+	<link href="{% url ebooks.views.latest_books_rss %}" rel="alternate" type="application/rss+xml" title="Q Latest Books" />
+
+	<link href="/css/master.css" rel="stylesheet" />
+    <link href="/css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="/javascript/jquery-ui-1.8.16.min.js"></script>
+	<script src="/javascript/yetii-min.js"></script>
+	<script src="/javascript/kinderhook.js"></script>
+    {% if show_welcome_message %}
+    <script language="javascript">
+        $(document).ready(function () {
+            $('#dialog-welcome').dialog({title: 'Welcome!',modal: true, autoOpen: true});
+        });
+    </script>
+    {% endif %}
+    
+	{% block extra_javascript %}{% endblock %}
+</head>
+<body{% block body_class %}{% endblock %}>
+<div id="dialog-welcome" style="display:none"><b>Welcome to {{ site.name }}!</b><p>{{ site.name }} is an ebook repository. keep it on the downlow or be banned.</p><br/><p><b>New!</b> Add your kindle's email address to your <a href="{% url edit_profile %}">user profile</a> and q@zzq.org to your kindle's whitelist to send books directly to your kindle!</p></div>
+		<header class="main"> 
+			<div class="body-width">
+				<h1 id="logo"><a href="{% url index %}">{{ site.name }}</a></h1>
+                <h3 id="logo">{{ book_count }}</h3>
+
+				<ul id="main-account-details">
+					<li>logged in as: <a href="{% url view_user user.username %}">{{ user }}</a></li>
+                    {% if request.user.get_profile.is_librarian %}
+                    <li><a href="{% url add_book %}">add book</a></li>
+                    {% endif %}
+                    {% if request.user.is_staff %}
+                    <li><a href="{% url activity_stream %}">activity stream</a></li>
+                    {% endif %}
+                    <li><a href="http://bugs.twi.gs/issues/Q/">report a problem</a></li>
+                    <li><a href="http://git.twi.gs/q/">get the code</a></li>
+					<li><a href="{% url logout %}">logout</a></li>
+				</ul>
+			</div>
+		</header>
+        <section id="messages">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </section>
+		<section id="global-search">
+			<div class="body-width wrap">
+				<form action="{% url books_by_type "search" %}" method="get" class="search">
+					<label for="search">Search:</label>
+					<div class="search-outline">
+						<input type="text" name="q" value="{{ request.GET.q }}" class="input-text">
+						<input type="submit" name="search-submit" class="input-submit" value="Submit" />
+                    </div>
+				</form>
+
+				<div id="sort-alphabet">
+					<h3 class="title">Alphabetically by&nbsp;</h3>
+					<ul id="sort-alphabet-nav">
+						<li><a href="#sort-author">Author</a></li>
+						<li><a href="#sort-title">Title</a></li>
+					</ul>
+					<ul class="tab" id="sort-author">
+						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
+					    <li><a href="{% url ebooks.views.books_by_type "author" char %}">{{ char }}</a></li>
+						{% endfor %}
+					</ul>
+
+					<ul class="tab" id="sort-title">
+						{% for char in "abcdefghijklmnopqrstuvwxyz" %}
+					    <li><a href="{% url ebooks.views.books_by_type "title" char %}">{{ char }}</a></li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<div class="body-width">
+			<section id="content">
+				{% block content %}{% endblock %}
+			</section>
+
+			<aside id="rail">
+				{% block rail %}
+					{% comment %}
+					<h2 class="section-title">Most Popular</h2>
+					<h2 class="section-title">Recent Comments</h2>
+					{% endcomment %}
+				{% endblock %}
+			</aside>
+		</div>
+
+		<footer class="main body-width">
+			<hr />
+			<p>&copy; 2012 zzq | version {{ version }} | {{ hostname }}</p>
+		</footer>
+
+<script type="text/javascript">
+var alphabetSort = new Yetii({ id: 'sort-alphabet', persist: true });
+</script>
+</body>
+</html>

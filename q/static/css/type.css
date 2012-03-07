@@ -1,0 +1,64 @@
+@font-face {
+	font-family: 'DroidSerifRegular';
+	src: url('fonts/DroidSerif-Regular-webfont.eot');
+	src: local('☺'), url('fonts/DroidSerif-Regular-webfont.woff') format('woff'), url('fonts/DroidSerif-Regular-webfont.ttf') format('truetype'), url('fonts/DroidSerif-Regular-webfont.svg#webfontOAAhrq6s') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DroidSerifItalic';
+	src: url('fonts/DroidSerif-Italic-webfont.eot');
+	src: local('☺'), url('fonts/DroidSerif-Italic-webfont.woff') format('woff'), url('fonts/DroidSerif-Italic-webfont.ttf') format('truetype'), url('fonts/DroidSerif-Italic-webfont.svg#webfontKHo48rSK') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DroidSerifBold';
+	src: url('fonts/DroidSerif-Bold-webfont.eot');
+	src: local('☺'), url('fonts/DroidSerif-Bold-webfont.woff') format('woff'), url('fonts/DroidSerif-Bold-webfont.ttf') format('truetype'), url('fonts/DroidSerif-Bold-webfont.svg#webfontcY5tFAO2') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'DroidSerifBoldItalic';
+	src: url('fonts/DroidSerif-BoldItalic-webfont.eot');
+	src: local('☺'), url('fonts/DroidSerif-BoldItalic-webfont.woff') format('woff'), url('fonts/DroidSerif-BoldItalic-webfont.ttf') format('truetype'), url('fonts/DroidSerif-BoldItalic-webfont.svg#webfont7Z4rXpYC') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'BebasNeueRegular';
+	src: url('fonts/BebasNeue-webfont.eot');
+	src: local('☺'), url('fonts/BebasNeue-webfont.woff') format('woff'), url('fonts/BebasNeue-webfont.ttf') format('truetype'), url('fonts/BebasNeue-webfont.svg#webfontf0WP9KEe') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+body { font: 12px/18px 'DroidSerifRegular', 'Georgia', 'Palatino', 'Times New Roman', 'Baskerville', 'Hoefler Text', serif; color: rgb(83,55,27); text-shadow: 0 1px 0 rgba(255,255,255,.5); }
+a:focus { outline: 1px dotted invert; }
+
+hr { border: 0 rgba(172,157,142,.25) solid; border-top-width: 1px; clear: both; height:0; }
+
+ol { list-style: decimal; }
+ul { list-style: square; }
+li { margin-left: 30px; }
+
+p, dl, hr, h1, h2, h3, h4, h5, h6,
+ol, ul, pre, table, address, fieldset {	margin-bottom: 18px; line-height: 18px; }
+
+h1 { font: 48px/48px BebasNeueRegular; margin-bottom: 0; }
+h2 { font: 24px/28px BebasNeueRegular; }
+h3 { font: 18px/18px BebasNeueRegular; }
+h4 { font-size: 14px; line-height: 18px; }
+h5 { font-size: 12px; line-height: 18px; }
+h6 { font-size: 8px; line-height: 12px; }
+
+blockquote { margin: 18px 36px; }
+
+a { color: #3098be; border-bottom: 1px dotted #3098be; text-decoration: none; }
+a img { border-bottom: none; text-decoration: none; }
+a:hover, a:focus { color: #333; border-bottom: 1px solid #333; text-decoration: none; }

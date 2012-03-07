@@ -1,0 +1,85 @@
+{% extends 'ebooks/_base.html' %}
+
+{% block title %}search results{% endblock %}
+
+{% block body_class %} class="search-view"{% endblock %}
+
+{% block content %}
+	<h2 class="section-title">Search Results</h2>
+	
+	{% if page %}
+		{% for book in page.object_list %}
+		<article class="book">
+			<div class="book-sidebar">
+				<figure class="cover">
+
+				{% if book.slug %}
+					<a href="{% url book_info book.slug %}">
+				{% else %}
+					<a href="/">
+				{% endif %}
+
+				{% if book.cover %}
+					<img src="{{ book.cover.url }}" width="110" />
+				{% else %}
+					<img src="/images/book-no-cover.png" width="110" />
+				{% endif %}
+					</a>
+				</figure>
+			</div>
+			
+			<div class="book-summary">
+				{% comment %}
+				<p class="series"><a href="">Series Title:</a> Book 3</p>
+				{% endcomment %}
+				<h3>
+					{% if book.slug %}
+						<a href="{% url book_info book.slug %}">
+					{% else %}
+						<a href="">
+					{% endif %}
+					{{ book.title }}
+					</a>
+				</h3>
+				
+				<ul class="byline">
+					<li class="title">written by:</li>
+	                {% for author in book.authors.all %}
+                    <li>{{ author }}</li>
+	                {% endfor %}
+				</ul>
+				
+				<hr />
+				<p>{{ book.description|truncatewords:100|safe }}</p>
+				
+				<hr />
+				<ul class="formats">
+					<li class="title">Available Formats:</li>
+					{% for format in book.formats %}
+						<li><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
+					{% endfor %}
+				</ul>
+
+			</div>
+		</article>
+		{% endfor %}
+        <br/>
+{% if page.has_previous %}
+{% if letter %}
+<a href="{% url books_by_type type letter page.previous_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Previous</a>
+{% else %}
+<a href="{% url books_by_type type page.previous_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Previous</a>
+{% endif %}
+{% endif %}
+{{ page }}
+{% if page.has_next %}
+{% if letter %}
+<a href="{% url books_by_type type letter page.next_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Next</a>
+{% else %}
+<a href="{% url books_by_type type page.next_page_number %}{% if request.GET.q %}?q={{ request.GET.q }}{% endif %}">Next</a>
+{% endif %}
+{% endif %} {% else %}
+<p>You Suck at Searching, Try Again</p>
+{% endif %}
+
+{% endblock %}

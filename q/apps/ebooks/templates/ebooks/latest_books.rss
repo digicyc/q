@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="2.0">
+
+<channel>
+  <title>Q Latest Books</title>
+  <link>http://q.zzq.org/books/</link>
+  <description>Yaaaarrr</description>
+  {% for book in books %}
+  <item>
+    <title>{{ book.title }} by {{ book.authors.all.0 }}</title>
+    <link>http://q.zzq.org/books/{{ book.slug }}/</link>
+    <pubDate>{{ book.create_time|date:"D, d N Y H:i:s T" }}</pubDate>
+    <description>{{ book.description }}</description>
+  </item>
+  {% endfor %}
+</channel>
+
+</rss>

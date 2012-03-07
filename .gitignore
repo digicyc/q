@@ -9,6 +9,7 @@ local_settings.py
 /.externalToolBuilders
 /.project
 /.pydevproject
+<<<<<<< HEAD
 /activity_stream
 /threadedcomments
 /.metadata
@@ -19,3 +20,8 @@ include/
 !lib/goodreads.py
 lib/
 .buildpath
+=======
+activity_stream
+threadedcomments
+/.metadata
+>>>>>>> 66699a44d1221f787ff082fbc7af769d87228cba

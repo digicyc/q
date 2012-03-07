@@ -1,0 +1,64 @@
+/* -- LOGIN FILE -- */
+html, body { background: url('/images/stripe-bg.png');background-color: #ffffff; font-family: Helvetica, "DejaVu Sans", "Liberation sans", "Bitstream Vera Sans", sans-serif; color: #6d6e71; line-height: 1.3em;  }
+html { border-top: 9px solid #6d6e71; }
+	
+p { font-size: 1.1em; }
+body { margin: 150px auto 0 auto; width: 350px; }
+#logo { text-align: center; text-transform: uppercase;}
+#logo a { border: none; color: inherit; text-decoration: none; }
+	
+.wrap, form {
+	margin: 0 auto;
+	width: 300px;
+	padding: 20px;
+	text-align: left;
+	border: 1px solid #dedede;
+	overflow: hidden;
+	background: #f9f9f9;
+}
+	form ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+	
+		form ul li {
+			margin: 0;
+			padding: 7px 0;
+		}
+	
+	form input {
+		background: #FBFBFB;
+		border: 1px solid #E5E5E5;
+		font-size: 20px;
+		margin-top: 2px;
+		padding: 5px;
+		width: 97%;
+
+	}
+	form label {
+		display: block;
+		font: 11px/11px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: normal;
+		margin-bottom: 5px;
+		color: #6D6E71;
+	}
+	
+	.submit {
+	    text-decoration: none;
+		white-space: nowrap;
+		padding: 7px 15px 10px 15px;
+		float: right;
+		cursor: pointer;
+		font: 12px/12px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: bold;	
+		-moz-border-radius: 15px;
+		border-radius: 15px;
+		background: #6d6e71;
+		color: #fff; 
+	}
+
+/* errors */
+.errorlist { color: #B22222; font-size: 10px;}
+
+	

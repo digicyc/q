@@ -1,0 +1,19 @@
+{% extends "ebooks/_base.html" %}
+{% load gravatar %}
+{% load tagging_tags %}
+
+{% block title %}books needing tags{% endblock %}
+
+{% block content %}
+
+{% for book in books %}
+<div class="activity-download">
+    <div class="activity-ico"></div>
+       {% tags_for_object book as tag_list %}
+       <a href="{% url book_info book.slug %}">{{ book.title }}</a>
+       <strong>only has {{ tag_list|length }} tags</strong><br/>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

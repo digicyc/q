@@ -1,0 +1,85 @@
+{% extends 'ebooks/_base.html' %}
+{% load activity_tags %}
+
+{% block title %}home{% endblock %}
+
+{% block body_class %} class="home"{% endblock %}
+
+{% block content %}
+	<h2 class="section-title">Recent Additions</h2>
+
+	{% if books %}
+		{% for book in books %}
+		<article class="book">
+			<figure class="cover">
+
+				{% if book.slug %}
+					<a href="{% url book_info book.slug %}">
+				{% else %}
+					<a href="/">
+				{% endif %}
+
+			{% if book.cover %}
+				<img src="{{ book.cover.url }}" height="140" />
+			{% else %}
+				<img src="/images/book-no-cover.png" height="140" />
+			{% endif %}
+				</a>
+
+				<div class="overlay"></div>
+			</figure>
+			<div class="book-summary">
+			<div class="summary-wrap">
+				{% comment %}
+				<p class="series"><a href="">Series Title:</a> Book 3</p>
+				{% endcomment %}
+				<h3>
+					{% if book.slug %}
+						<a href="{% url book_info book.slug %}">
+					{% else %}
+						<a href="">
+					{% endif %}
+					{{ book.title }}
+					</a>
+				</h3>
+
+                <ul class="byline">
+					<li class="title">written by:</li>
+                {% for author in book.authors.all %}
+                    <li>{{ author }}</li>
+                {% endfor %}
+				</ul>
+
+				<hr />
+				<p>{{ book.description|truncatewords:40|safe }}</p>
+				<hr />
+				<ul class="formats">
+					<li class="title">Available Formats:</li>
+					{% for format in book.formats %}
+						<li><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
+					{% endfor %}
+				</ul>
+			</div><!-- /.book-summary -->
+			</div><!-- /.summary-wrap -->
+		</article>
+		{% endfor %}
+	{% else %}
+		<p>Search for something</p>
+	{% endif %}
+
+	<br clear="all"/>
+	<h2 class="section-title">Recent Activity</h2>
+    <ul id="activity-stream">
+    {% for item in action_stream %}
+        <li>{% display_action item %}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+{% block rail %}
+    <h2 class="section-title">Tag Cloud</h2>
+    <ul id="tagcloud">
+    {% for tag in tags %}
+        <a href="{% url view_tag tag %}"><font size="{{ tag.font_size }}">{{ tag }}</font></a>
+    {% endfor %}
+    </ul>
+{% endblock %}
