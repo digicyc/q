@@ -74,8 +74,8 @@
                         so.addParam("allowscriptaccess","always");
                         so.addParam("wmode","opaque");
                         so.addVariable('bufferlength','10');
-                        so.addVariable("file","http://www.thisisnotthe.com/uploads/spacelab/<? echo $dir . $scan[$i] ?>");
-                        so.write('<? echo $mediavar ?>');
+                        so.addVariable("file","http://www.thisisnotthe.com/uploads/spacelab/{{ videofile[] }}");
+                        so.write('{{ $mediavar? }}');
                     </script>
                        
                     <p style="font-size: 0.8em; color: #666;">Some videos are quite large, so be patient. If your connection or computer are terribly slow, you can come by SPACES to watch them on disc.<br />   

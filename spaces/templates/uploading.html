@@ -1,0 +1,73 @@
+{% extends personal_info.html %}
+{% block content %}
+<div class="grid_3 alpha">
+            <h2>Artist</h2> 
+            <strong>{{ firstname }} {{ lastname }}</strong>
+</div>
+<form action="" method=post enctype="multipart/form-data">
+{% block form %}
+<div class="grid_4 alpha">
+<h1>CV</h1>
+<label for="upload">Upload your CV as a .pdf [ <a href="#" onclick="return hs.htmlExpand(this, { headingText: 'PDF' })">?</a>
+<span class="highslide-maincontent">PDF stands for Portable Document Format. It is often a preferred format for two-dimensional information since PDF viewing software is free and ubiquitous as opposed to more proprietary formats like Microsoft Word, PowerPoint, etc. It is also less susceptible to viral infection than some other formats.<br /><br /><a href="#" onclick="return hs.close(this)">Close (esc)</a></span> ]</label>
+<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+<input type="file" name="CV" id="cv_userfile" title="Select file for upload" class="upload" />
+
+<h1>Artwork Upload</h1>
+<h2>Artwork #{{ loopnum }}</h2>
+
+<input type="hidden" value="39" name="ArtistID" />
+
+<input type="hidden" value="jas" name="First_Name" />
+
+<input type="hidden" value="isniceof" name="Last_Name" />
+
+<!-- <input type="radio" name="kind" value="jpg" /> jpg <input type="radio" name="kind" value="mov" /> mov <input type="radio" name="kind" value="mp3" /> mp3 -->
+
+<input type="hidden" name="MAX_FILE_SIZE" value="50000000" />
+
+<input type="file" name="ufile" id="ufile_0" />
+
+<label for="title1">Title:</label><input type="text" name="Title" value="" size=45>
+
+<label for="year1">Year:</label><input type="text" name="Year" value="" size=4 />
+
+<label for="media1">Media:</label><input type="text" name="Medium" size=30>
+
+<label for="dimesions1">Dimensions (H" x W" x D") or<br />Duration (HH:MM:SS):</label><input type="text" name="Extent" value="" size=16 />
+
+<label for="description1">Description (Remaining characters: <span id="limit1">400</span>):</label>
+
+<textarea rows=4 cols=46 name="Desc" value="" maxlength="400" showremain="limit1" onfocus="clearDefault(this)">400 characters maximum</textarea>
+
+</div>
+
+<input type="submit" name="submission" value="Add more artwork or finalize your application" />
+{% endblock form %}               
+        </form>
+<div class="grid_8 omega">
+
+<p>Upload up to ten samples of your work including pertinent information to help potential jurors evaluate the work. You may submit up to 10 still images, and you may substitute video and audio for images using the following formula: 1 video = 3 images; 1 audio file = 2 images. For example, you may upload 3 videos and 1 image; or 1 video, 3 audio files and 3 images.</p>
+
+
+
+<h2>Accepted Formats</h2>
+
+<p><strong>Images:</strong> Submit all still images as JPG files. All uploaded images should be 72dpi, no smaller than 800px wide, and no larger than 1MB. You may include detail shots of work, but please limit the number of detail shots so jurors may get a broader sampling of your work. If your work is performance or time-based, we recommend submitting video over still images since it allows the jurors to more fully experience your work.</p>
+
+
+
+<p><strong>Video:</strong> Video must be uploaded as a Quicktime file with a .mov filetype. Videos should be no longer than 2 minute samples and can not be larger than 50MB.</p>
+
+
+
+<p><strong>Audio:</strong> Audio files should be uploaded as MP3s. Files should be no longer than 2 minute samples.</p>
+
+
+
+<p>If you are considering submitting a file that is not a .jpg, .mov, or .mp3 DON'T! Your file will wreak havoc to the application page the jurors see, thereby rendering your application unviewable. It also tells us that you are horrible at following directions.</p>
+
+</div>
+<p><a href="/apply/spacelab">&larr; Return to Main Menu</a></p>
+<div class="clear"></div>
+{% endblock content %}
