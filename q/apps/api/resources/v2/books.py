@@ -3,7 +3,7 @@ from tempfile import NamedTemporaryFile
 import urllib2
 
 from django.core.files import File
-
+from django.db.models.query import Q, QuerySet
 from django.conf import settings
 
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
@@ -14,6 +14,7 @@ import googlebooks
 from api import base
 from ebooks import models
 
+
 class AuthorResource(base.NSResource):
     class Meta(base.NSResource.Meta):
         queryset = models.Author.objects.all()
@@ -23,6 +24,33 @@ class AuthorResource(base.NSResource):
             'firstname': ALL_WITH_RELATIONS,
             'lastname': ALL_WITH_RELATIONS,
         }
+        
+    def get_object_list(self, request):
+        """
+        """
+        from django.db import connection
+        
+        number = (len(request.GET)/2)
+        cursor = connection.cursor()
+        ids = list()
+        for x in range(0, number):
+            fn_val = request.GET["firstname%s__iexact" % x]
+            ln_val = request.GET["lastname%s__iexact" % x]
+
+            query = "SELECT id FROM ebooks_author WHERE firstname='%s' AND lastname='%s'" % (fn_val, ln_val)
+            
+            row = cursor.execute(query).fetchone()
+            if row is not None:
+                ids.append(row[0])
+            else:
+                author = models.Author()
+                author.firstname = fn_val
+                author.lastname = ln_val
+                author.save()
+                ids.append(author.id)
+        authors = models.Author.objects.filter(id__in=ids)
+        #print authors
+        return authors
 
 class SeriesResource(base.NSResource):
     class Meta(base.NSResource.Meta):
@@ -100,7 +128,7 @@ class GoodReadsResource(base.Resource):
         for isbn in request.REQUEST['isbn'].split(','):
             gr = self.obj_get(request, isbn=isbn)
             results.append(gr)
-        return results
+        return results 
 
     def obj_get_list(self, request=None):
         # Filtering disabled for brevity...
