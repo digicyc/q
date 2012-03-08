@@ -4,6 +4,9 @@ import urllib2
 
 from django.core.files import File
 from django.db.models.query import Q, QuerySet
+from django.db import connection
+from django.template.defaultfilters import slugify
+
 from django.conf import settings
 
 from tastypie.resources import ALL, ALL_WITH_RELATIONS
@@ -27,10 +30,10 @@ class AuthorResource(base.NSResource):
         
     def get_object_list(self, request):
         """
-        """
-        from django.db import connection
-        
+        """    
         number = (len(request.GET)/2)
+        if number < 2:
+            return super(AuthorResource, self).get_object_list(request)
         cursor = connection.cursor()
         ids = list()
         for x in range(0, number):
@@ -46,10 +49,10 @@ class AuthorResource(base.NSResource):
                 author = models.Author()
                 author.firstname = fn_val
                 author.lastname = ln_val
+                author.slug = slugify("%s %s" % (fn_val, ln_val))
                 author.save()
                 ids.append(author.id)
         authors = models.Author.objects.filter(id__in=ids)
-        #print authors
         return authors
 
 class SeriesResource(base.NSResource):

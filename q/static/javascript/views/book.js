@@ -76,10 +76,8 @@ define([
                     _authors.push({name: "firstname"+i+"__iexact", value: firstname});
                     _authors.push({name: "lastname"+i+"__iexact", value: lastname});
                 }
-                console.log(_authors);
-                this.authors.fetch({data: $.param(_authors)}, {add: true});
+                this.authors.fetch({data: $.param(_authors)});
 
-                console.log(this.authors);
                 return false;
             }
         });
