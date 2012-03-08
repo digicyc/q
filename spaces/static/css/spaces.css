@@ -1,0 +1,415 @@
+/***********************
+ *
+ * SPACES CSS or SPACSS
+ * Boo-yah! 07.09.2009
+ *
+ ***********************/
+
+body {
+	margin: 0;
+	padding: 0;
+	font: 14px/1.4em helvetica, arial, gill sans, sans-serif;
+	color: #000;
+	text-align: left;
+}
+
+a:link {
+	color: #f09;
+	text-decoration: underline;
+}
+
+a:visited {
+	color: #f09; 
+	text-decoration: none;
+}
+
+a:hover {
+	color: #fff;
+	background: #000;
+	text-decoration: none;
+}
+
+a:active { color: #f09; }
+
+a.image:link, a.image:visited, a.image:hover, a.image:active, a img {
+	text-decoration: none;
+	background-color: transparent;
+	border: 0;
+} 
+
+blockquote {
+	margin: .5em 5em 1em 5em;
+	padding: .5em 1em 1em 1em;
+	background-color: #fff;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	font: italic 1.25em/1.4em georgia, times new roman, serif;
+	color: #666;
+}
+
+blockquote.excerptl {
+	float: left;
+	width: 50%;
+	margin: .5em 1.25em .5em 0;
+	padding: .2em .5em .5em 0;
+	background-color: #fff;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	font: 1.25em/1.4em georgia, times new roman, serif;
+	color: #666;
+	font-style: italic;
+}
+
+blockquote.excerptr {
+	float: right;
+	width: 50%;
+	margin: .5em 0 .5em 1.25em;
+	padding: .2em 0 .5em .5em;
+	background-color: #fff;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	font: 1.25em/1.4em georgia, times new roman, serif;
+	color: #666;
+	font-style: italic;
+}
+
+embed { z-index: 1; }
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+	padding: 5px 0;
+}
+
+h1, h1 a:link, h1 a:visited {
+	font: 1.5em/.9em helvetica, arial, gill sans, sans-serif;
+	color: #F09;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: normal;
+	letter-spacing: .05em;
+}
+
+h1 #artist { font: 2em/.8em helvetica, arial, gill sans, sans-serif; color: #4A0506; }
+
+h2, h2 a:link, h2 a:visited {
+	font: 1.25em/1.2em helvetica, arial, gill sans, sans-serif;
+	color: #f09;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: normal;
+	letter-spacing: .1em;
+}
+
+h3, h3 a:link, h3 a:visited, h4, h4 a:link, h4 a:visited {
+	margin: 0;
+	padding: 0;
+	font: 1em/1.1em helvetica, arial, gill sans, sans-serif;
+	color: #f09;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: normal;
+	letter-spacing: .1em;
+}
+h4, h4 a:link, h4 a:visited { text-transform: none; }
+
+h1 a:hover, h2 a:hover, h3 a:hover {
+	text-decoration: underline;
+	font-weight: normal;
+	background-color: transparent;
+}
+
+h4, h5, h6 { font-size: 1em; }
+
+p { margin: 0; padding: 1em 0 .7em 0; }
+p + p { padding: .7em 0; }
+h2 + p, h3 + p { padding: 0 0 .7em 0; }
+p + h2, p+h3 { padding: .7em 0 0 0; }
+
+ul { margin: 0; padding: 5px 0; list-style-type: none; }
+ul li { margin: 0; padding: 0; }
+ul li ul { padding: 0 0 10px 0; }
+
+ul.bullet { margin: 0 0 0 10px; padding: 0 0 15px 25px; list-style-type: disc; }
+ul.checklist { margin: 0 0 0 10px; padding: 0 0 15px 25px; list-style-type: square; }
+ul.nobullet { margin: 0; padding: 0; list-style-type: none; }
+ul.outline { margin: 0; padding: 0 0 15px 25px; list-style-type: none; }
+
+
+/* ============= FORMS ============= */
+
+form button { width: 100%; margin-top: 5px; font: normal 1em/1.3em helvetica-neue, helvetica, arial, sans-serif; color: #fff; background-color: #666; }
+form button:hover { background-color: #000; cursor: pointer; }
+form label { display: block; font: normal 1em/1.3em helvetica-neue, helvetica, arial, sans-serif; color: #666;  }
+form input, form textarea { width: 100%; margin: 0 0 10px 0; padding: 3px; background-color: #ecf7fa; font: normal 1em/1.3em helvetica-neue, helvetica, arial, sans-serif; border: 1px solid #888778; }
+form input.upload { width: 25%; background-color: transparent; background: none; border: none; display: inline; }
+
+
+/* GRID
+---------------------------------------------------------------------*/
+
+.grid_1, .grid_2, .grid_3, .grid_4, .grid_5, .grid_6, .grid_7, .grid_8, .grid_9, .grid_10, .grid_11, .grid_12 { 
+	display:inline; 
+	float:left; 
+	position:relative; 
+	margin-left:10px; 
+	margin-right:10px
+ }
+
+.alpha { margin-left:0 }
+.omega { margin-right:0 }
+
+.grid_1 { width:60px }
+.grid_2 { width:140px }
+.grid_3 { width:220px }
+.grid_4 { width:300px }
+.grid_5 { width:380px }
+.grid_6 { width:460px }
+.grid_7 { width:540px }
+.grid_8 { width:620px }
+.grid_9 { width:700px }
+.grid_10 { width:780px }
+.grid_11 { width:860px }
+.grid_12 { width:940px }
+
+.clear {
+	clear:both;
+	display:block;
+	overflow:hidden;
+	width:0;
+	height:0 
+}
+
+.clearfix:after { 
+	clear:both; 
+	content:' '; 
+	display:block; 
+	font-size:0; 
+	line-height:0; 
+	visibility:hidden; 
+	width:0; 
+	height:0
+}
+
+/* ============= IDs ============= */
+
+
+
+#container { padding: 0 10px; }
+#container h2 { block; margin: 15px 0 0 0; }
+
+#content { margin: 1em 0 0 0; float: right; }
+
+#footer {
+	border-top: 1px solid #666;
+	padding: 1em;
+	text-align: center;
+	font: .8em/1.3em Helvetica, arial, verdana, sans-serif;
+	color: #999;
+	}
+	
+#footer a:link, #footer a:visited, #footer:active { 
+	background: transparent;
+	text-decoration: underline;
+	color: #999;
+}
+
+#footer a:hover { 
+	color: #999;
+	background: transparent;
+	color: #f30;
+	text-decoration: underline;
+}
+
+#header { margin: 0 0 0 10px; padding: 0 0 10px 0; width: 98%; background: #fff; border-bottom: 1px solid #999; }
+#header img { margin: 0 0 0 -15px; padding: 0; }
+
+#wrapper { position: relative; margin: 0; padding: 0; width:960px }
+
+
+
+/* ============= CLASSES ============= */
+.hidden { display: none; }
+
+.app-header { font-weight: bold; color: f09; }
+
+.caption {
+	font: .9em/1.5em helvetica, arial, gill sans, sans-serif;
+	color: #666;
+}
+
+.concurrent {
+	position: relative;
+	width: 220px;
+	margin: 1em 0 0 0;
+	float: right; 
+	font: .9em/1.3em helvetica, arial, gill sans, sans-serif;
+}
+
+.concurrent h1, .concurrent h1 a:link, .concurrent h2, .concurrent h2 a:link, .concurrent h3, .concurrent h3 a:link {
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: normal;
+	letter-spacing: .05em;
+}
+
+.concurrent h1, .concurrent h1 a:link, .concurrent h1 a:visited {
+	margin: 0 0 .6em 0;
+	font: 1.2em/.9em helvetica, arial, gill sans, sans-serif;
+	color: #4A0506;
+	border-bottom: 1px solid #666;
+}
+
+.concurrent .entryheader h2, .concurrent .entryheader h2 a:link, .concurrent .entryheader h2 a:visited {
+	font: 1em/1em helvetica, arial, gill sans, sans-serif;
+	color: #666;
+	letter-spacing: .05em;
+}
+
+.concurrent .entryheader h3, .concurrent .entryheader h3 a:link, .concurrent .entryheader h3 a:visited {
+	font: 1em/1.2em helvetica, arial, gill sans, sans-serif;
+	color: #4A0506;
+	letter-spacing: .1em;
+}
+
+.concurrent .entryheader .dates, .concurrent .entryheader .subtitle { font: .8em/1.1em helvetica, arial, gill sans, sans-serif; }
+.concurrent .entryheader .subtitle { color: #000; }
+
+.concurrent .entryheader { position: relative; height: 115px; }
+.concurrent img { position: absolute; }
+
+.concurrent .entryheader .info {
+	position: absolute;
+	margin-top: .7em;
+	display: inline-block;
+	padding: 1em 1em 1em .4em;
+	background: url('/i/white.png') repeat;
+	z-index: 6;
+}
+
+.dates {
+	font: 1em/1.1em helvetica, arial, gill sans, sans-serif;
+	color: #666;
+}
+
+.entryblock {
+	position: absolute;
+	z-index: 5;
+}
+
+.entryheader { position: relative; height: 315px; }
+.entryheader img { position: absolute; }
+
+.entryheader .info {
+	position: absolute;
+	margin-top: 2em;
+	display: inline-block;
+	padding: 1em 1em 1em .4em;
+	background: url('/i/white.png') repeat;
+	z-index: 6;
+}
+
+.entryheader h1, .entryheader h1 a:link, .entryheader h1 a:visited {
+	margin: 0 0 .5em 0;
+	font: 1em/.8em helvetica, arial, gill sans, sans-serif;
+	color: #666;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: normal;
+	letter-spacing: .1em;
+}
+
+.entryheader h2, .entryheader h2 a:link, .entryheader h2 a:visited {
+	font: 1.5em/.8em helvetica, arial, gill sans, sans-serif;
+	color: #4A0506;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: normal;
+	letter-spacing: .05em;
+}
+
+.mainentry { position: relative; width: 460px; float: left; padding: 0 0 .7em 0; }
+
+.thumbnails .clear { padding-bottom: 20px; }
+
+/* ============= COLUMNS ============= */
+
+.maincol { width: 680px; margin: 5px 0 0 0; float: left; overflow: visible; }
+
+.twocol1 { width: 340px; margin: 5px 0 0 0; float: left; overflow: hidden; }
+.twocol1 h1, .twocol1 h1 a:link, .twocol1 h1 a:visited, .twocol2 h1, .twocol2 h1 a:link, .twocol2 h1 a:visited {
+	font: 1em/.8em helvetica, arial, gill sans, sans-serif;
+	color: #666;
+	letter-spacing: .05em;
+}
+.twocol1 h2, .twocol1 h2 a:link, .twocol1 h2 a:visited, .twocol2 h2, .twocol2 h2 a:link, .twocol2 h2 a:visited {
+	font: bold 1.2em/1em helvetica, arial, gill sans, sans-serif;
+	color: #000;
+	letter-spacing: .05em;
+}
+
+.twocol2 { width: 340px; margin: 5px 0 0 0; float: right; }
+
+.maincol { position: relative; width: 700px; margin: 0 0 50px 0; overflow: hidden; z-index: 4; }
+
+.clearfix:after {
+     content: "."; 
+     display: block; 
+     height: 0; 
+     clear: both; 
+     visibility: hidden;
+}
+.clearfix {display: inline-block;}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+
+
+/* Use the '.last' class to strip the extra gutter margin from the last column */
+.last { margin-right: 0 !important; }
+
+/* Use the '.tier' class to create a block element with a height separation equal to the gutter width */
+.tier { margin-bottom: 10px; }
+
+
+/* ============= NAVIGATION =============== */
+
+#nav { overflow: hidden; margin-bottom: 25px; }
+
+#nav h2 {
+	font: normal 1em/1.3em helvetica, arial, gill sans, sans-serif;
+	color: #000;
+}
+
+#nav ul, #nav ul li ul {
+	font: normal .85em/1.2em helvetica, arial, gill sans, sans-serif;
+	list-style: none;
+}
+
+#nav ul li {	position: relative; }
+#nav ul li + li { border-top: 1px solid #ccc; }
+#nav ul li ul li { border: 1px solid #ccc; }
+#nav ul li ul li +li {border-top: none; }	
+	
+/* Styles for Menu Items */
+#nav ul li a, ul#social li a {
+	display: block;
+	text-decoration: none;
+	color: #555;
+	background: #fff; /* IE6 Bug */
+	padding: .43em;
+	border-bottom: 0;
+	z-index: 1001;
+}
+
+/* Fix IE. Hide from IE Mac \*/
+* html #nav ul li { float: left; height: 1%; }
+* html #nav ul li a { height: 1%; }
+/* End */
+
+#nav ul li a:hover, ul#social li a:hover { color: #fff; background: #000; } /* Hover Styles */
+			
+#nav ul li ul li a { padding: 2px 5px; } /* Sub Menu Styles */
+		
+#nav ul li:hover ul, #nav ul li.over ul { display: block; } /* The magic */
