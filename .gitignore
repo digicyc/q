@@ -19,3 +19,6 @@ include/
 !lib/goodreads.py
 lib/
 .buildpath
+activity_stream
+threadedcomments
+/.metadata

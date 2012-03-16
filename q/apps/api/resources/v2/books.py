@@ -30,7 +30,9 @@ class AuthorResource(base.NSResource):
         
     def get_object_list(self, request):
         """
-        """    
+        """
+        # Dear future me, this is super hacky. I'm sorry.
+        # -present me
         number = (len(request.GET)/2)
         if number < 2:
             return super(AuthorResource, self).get_object_list(request)
@@ -56,6 +58,8 @@ class AuthorResource(base.NSResource):
         return authors
 
 class SeriesResource(base.NSResource):
+    books = fields.ToManyField('api.resources.v2.books.BookResource', 'books')
+    
     class Meta(base.NSResource.Meta):
         queryset = models.Series.objects.all()
         resource_name = "books/series"
@@ -66,7 +70,8 @@ class SeriesResource(base.NSResource):
 
 class BookResource(base.NSResource):
     authors = fields.ToManyField('api.resources.v2.books.AuthorResource', 'authors')
-
+    series = fields.ToOneField('api.resources.v2.books.SeriesResource', 'series')
+    
     class Meta(base.NSResource.Meta):
         queryset = models.Book.objects.all()
         resource_name = "books/book"

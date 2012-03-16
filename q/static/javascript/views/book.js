@@ -57,6 +57,8 @@ define([
                     authors: authors_array,
                     isbn13: $("#id_isbn13").val(),
                     isbn10: $("#id_isbn10").val(),
+                    series: $("#id_series").val(),
+                    series_num: $("#id_series_num").val(),
                     description: $("#id_description").val()
                 });
                 book.save();
