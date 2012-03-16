@@ -9,3 +9,8 @@ class ActivityStreamResource(base.NSResource):
     class Meta(base.NSResource.Meta):
         queryset = actstream_models.Action.objects.all()
         resource_name = "accounts/activity_stream"
+        filtering = {
+            'id': ALL,
+        }
+        ordering = ["id",]
+        allow_methods = ["get", "post", "put"]
