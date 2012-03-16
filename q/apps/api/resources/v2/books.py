@@ -40,15 +40,9 @@ class AuthorResource(base.NSResource):
         cursor = connection.cursor()
         ids = list()
         for x in range(0, number):
-            if request.GET.get("firstname__iexact", False):
-                fn_val = request.GET['firstname__iexact']
-                ln_val = request.GET['lastname__iexact']
-                slug = slugify("%s %s" % (fn_val, ln_val))
-
-            else:
-                fn_val = request.GET["firstname%s__iexact" % x]
-                ln_val = request.GET["lastname%s__iexact" % x]
-                slug = slugify("%s %s" % (fn_val, ln_val))
+            fn_val = request.GET["firstname%s__iexact" % x]
+            ln_val = request.GET["lastname%s__iexact" % x]
+            slug = slugify("%s %s" % (fn_val, ln_val))
 
             query = "SELECT id FROM ebooks_author WHERE slug='%s'" % (slug)
             row = cursor.execute(query).fetchone()
