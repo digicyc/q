@@ -11,6 +11,7 @@ class ActivityStreamResource(base.NSResource):
         resource_name = "accounts/activity_stream"
         filtering = {
             'id': ALL,
+            'public': ALL,
         }
         ordering = ["id",]
         allow_methods = ["get", "post", "put"]
