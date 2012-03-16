@@ -26,6 +26,7 @@ class AuthorResource(base.NSResource):
             'id': ALL,
             'firstname': ALL_WITH_RELATIONS,
             'lastname': ALL_WITH_RELATIONS,
+            'slug': ALL_WITH_RELATIONS,
         }
         
     def get_object_list(self, request):
@@ -39,11 +40,17 @@ class AuthorResource(base.NSResource):
         cursor = connection.cursor()
         ids = list()
         for x in range(0, number):
-            fn_val = request.GET["firstname%s__iexact" % x]
-            ln_val = request.GET["lastname%s__iexact" % x]
+            if request.GET.get("firstname__iexact", False):
+                fn_val = request.GET['firstname__iexact']
+                ln_val = request.GET['lastname__iexact']
+                slug = slugify("%s %s" % (fn_val, ln_val))
 
-            query = "SELECT id FROM ebooks_author WHERE firstname='%s' AND lastname='%s'" % (fn_val, ln_val)
-            
+            else:
+                fn_val = request.GET["firstname%s__iexact" % x]
+                ln_val = request.GET["lastname%s__iexact" % x]
+                slug = slugify("%s %s" % (fn_val, ln_val))
+
+            query = "SELECT id FROM ebooks_author WHERE slug='%s'" % (slug)
             row = cursor.execute(query).fetchone()
             if row is not None:
                 ids.append(row[0])
@@ -55,10 +62,10 @@ class AuthorResource(base.NSResource):
                 author.save()
                 ids.append(author.id)
         authors = models.Author.objects.filter(id__in=ids)
+        
         return authors
 
 class SeriesResource(base.NSResource):
-    books = fields.ToManyField('api.resources.v2.books.BookResource', 'books')
     
     class Meta(base.NSResource.Meta):
         queryset = models.Series.objects.all()
@@ -70,7 +77,7 @@ class SeriesResource(base.NSResource):
 
 class BookResource(base.NSResource):
     authors = fields.ToManyField('api.resources.v2.books.AuthorResource', 'authors')
-    series = fields.ToOneField('api.resources.v2.books.SeriesResource', 'series')
+    series = fields.ToOneField('api.resources.v2.books.SeriesResource', 'series', null=True)
     
     class Meta(base.NSResource.Meta):
         queryset = models.Book.objects.all()

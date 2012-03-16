@@ -8,6 +8,7 @@ api.register(books.BookResource())
 api.register(books.GoodReadsResource())
 api.register(books.AuthorResource())
 api.register(books.FormatResource())
+api.register(books.SeriesResource())
 
 api.register(accounts.ActivityStreamResource())
 
