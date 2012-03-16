@@ -64,6 +64,7 @@ define([
                 for (var i=0;i<authors.length;i++) {
                     authors_array.push(authors[i].resource_uri);
                 }
+                console.debug(series);
                 var book = new Book();
                 book.set({
                     title: $("#id_title").val(),
@@ -71,7 +72,7 @@ define([
                     authors: authors_array,
                     isbn13: $("#id_isbn13").val(),
                     isbn10: $("#id_isbn10").val(),
-                    series: series.resource_uri,
+                    series: series[0].resource_uri,
                     series_num: $("#id_series_num").val(),
                     description: $("#id_description").val()
                 });
