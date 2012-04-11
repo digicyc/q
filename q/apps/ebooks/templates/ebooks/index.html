@@ -54,8 +54,10 @@
         {% for letter in letter_list %}
 
 			{% for book in letter.list %}
+                {% if book.slug %}
 			    {% if forloop.counter0 == 0 %}<h3 id="{{ letter.grouper|upper }}">{{ letter.grouper|upper }}</h3> {% endif %}<li><a href="{% url books:book_info book.slug %}">{{ book.title }}</a></li>
-			{% endfor %}
+			    {%  endif %}
+            {% endfor %}
         {% endfor %}
 		</ul>
 	</div>
