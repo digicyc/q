@@ -2,6 +2,8 @@ import os
 import os.path
 import sys
 
+import dj_database_url
+
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'lib'))
@@ -28,6 +30,8 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
+
+DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = "q@zzq.org"
