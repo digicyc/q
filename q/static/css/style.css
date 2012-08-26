@@ -5,3 +5,7 @@ body {
 .center {
   text-align: center;
 }
+
+.icon-very-very-large {
+  font-size: 64px;
+}

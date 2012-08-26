@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'ebooks/_base.html' %}
 
 {% block title %}add book{% endblock %}
 
@@ -12,11 +12,11 @@
 
 {% block content %}
     <div class="content">
-        <form method="POST" id="form_search_book">{% csrf_token %}
+        <form method="POST" class="form-search">{% csrf_token %}
             <p>
                 <label for="id_isbn">ISBN:</label>
-                <input type="text" name="isbn" id="id_isbn" value="{{ book.isbn }}" />
-                <input type="submit" value="Search" class="submit-large" /><img src="/images/loading.gif">
+                <input type="text" class="input-medium search-query" name="isbn" value="{{ book.isbn }}" />
+                <input type="submit" class="btn btn-success" value="Search" class="submit-large" /><img src="/images/loading.gif">
             </p>
         </form>
 
@@ -25,7 +25,7 @@
             {% if book_form.cover_url.value %}
                 <img src="{{ book_form.cover_url.value }}">
             {% endif %}
-            <form method="POST" id="form_add_book">
+            <form method="POST" class="form-horizontal" id="form_add_book">
             <ul class="forms">
                 {{ book_form.as_ul }}
             </ul>
