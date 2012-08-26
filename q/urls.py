@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import *
-from django.conf import settings
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from django.conf import settings
 
 admin.autodiscover()
 
@@ -14,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^comments/', include('django.contrib.comments.urls')),
     url(r'^api/', include('api.urls', namespace="api")),
 )
+
 urlpatterns += patterns('accounts.views',
     url(r'^$', 'login'),
     url(r'^signup/$', 'signup', name="signup"), 
@@ -22,27 +25,24 @@ urlpatterns += patterns('accounts.views',
     url(r'^invited/(?P<invitation_key>[\w\d\-]+)/$', 'invited', name='invitation_invited'),
 )
 
-if settings.DEBUG:
-    import os.path
-    urlpatterns += patterns('django.views.static',
-        (r'^css/(?P<path>.*)$', 'serve',
-            {'document_root': os.path.join(settings.MEDIA_ROOT,'css')}),
-        (r'^images/(?P<path>.*)$', 'serve',
-             {'document_root': os.path.join(settings.MEDIA_ROOT,'images')}),
-        (r'^javascript/(?P<path>.*)$', 'serve',
-             {'document_root': os.path.join(settings.MEDIA_ROOT,'javascript')}),
-        (r'^font/(?P<path>.*)$', 'serve',
-             {'document_root': os.path.join(settings.MEDIA_ROOT,'font')}),
-    )
 
-    if settings.DEFAULT_FILE_STORAGE == "django.core.files.storage.FileSystemStorage":
-    
-        urlpatterns += patterns('django.views.static',
-            (r'books/covers/(?P<path>.*)$', 'serve',
-                 {'document_root': os.path.join(settings.MEDIA_ROOT,'books','covers')}),
-            (r'books/files/(?P<path>.*)$', 'serve',
-                 {'document_root': os.path.join(settings.MEDIA_ROOT,'books','files')}),
-    )
+urlpatterns += staticfiles_urlpatterns()
+
+urlpatterns += patterns('',
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_ROOT, 'show_indexes': True}),
+)
+urlpatterns += patterns('',
+    (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),
+)
+
+if settings.DEFAULT_FILE_STORAGE == "django.core.files.storage.FileSystemStorage":
+
+    urlpatterns += patterns('django.views.static',
+        (r'books/covers/(?P<path>.*)$', 'serve',
+             {'document_root': os.path.join(settings.MEDIA_ROOT,'books','covers')}),
+        (r'books/files/(?P<path>.*)$', 'serve',
+             {'document_root': os.path.join(settings.MEDIA_ROOT,'books','files')}),
+)
 
 
 #view user profiles.

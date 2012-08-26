@@ -1,0 +1,12 @@
+Django<=1.4
+South>=0.7,<0.8
+PIL>=1.1,<1.2
+coverage==3.5
+django-tastypie>=0.9,<1.0
+django-tagging
+django-ratings
+https://github.com/justquick/django-activity-stream/zipball/master
+https://github.com/HonzaKral/django-threadedcomments/tarball/master
+gdata
+#psycopg2==2.4.5
+dj-database-url==0.2.0

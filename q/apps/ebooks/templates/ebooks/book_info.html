@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'ebooks/_base.html' %}
 {% load gravatar %}
 {% load tagging_tags %}
 {% load threadedcomments_tags  %}
@@ -6,267 +6,136 @@
 {% load range %}
 {% load truncate %}
 
-{% block title %}{{ book.title }} by {{ book.authors.all.0 }}{% endblock %}
+{% block title %}home{% endblock %}
 
-{% block extra_javascript %}
-	<script src="/javascript/librarian.js"></script>
-	<!-- <link rel="stylesheet" type="text/css" href="/css/jquery.taghandler.css" /> -->
-	<script src="/javascript/jquery.taghandler.js"></script>
-	<script type="text/javascript" src="/javascript/jquery.autocomplete.js"></script>
-{% endblock %}
-
-{% block body_class %} class="page-view"{% endblock %}
 {% block content %}
-	{% if book %}
-
-		<div class="book_sidebar">
-			<figure class="cover">
-				{% if book.cover %}
-					<img src="{{ book.cover.url }}" width="160" />
-				{% else %}
-					<img src="/images/book-no-cover.png" width="160" />
-				{% endif %}
-				<div class="overlay"></div>
-                {% if book.has_mobi and request.user.get_profile.kindle_email %}
-                <a class="email_kindle" href="{% url books:email_kindle book.id %}">email to my kindle</a>
-                {% endif %}
-			</figure>
-
-            <input type="checkbox" class="ive-read-this" id="{{ book.id }}"{% if read %} checked{% endif %}> I've read this<br />
-            {% comment %}
-            {% if read %}
-                {% num_range 5 as vote_range %}
-                {% rating_by_user request.user on read.rating as vote %}
-                my rating: {% for x in vote_range %}<a href="{% url rate_book read.id x %}">{% if x == vote %}<b>{% endif %}{{ x }}{% if x == vote %}</b>{% endif %}</a> {% endfor %}<br>
-            {% endif %}
-            {% endcomment %}
-			
-            {% if book.goodreads_id > 0 %}
-                gr rating: {{ book.metarating }} ({{ book.goodreads_num_votes }} votes)<br/>
-            {% endif %}
-			
-            q rating: {{ book.rating }} (? votes)
-
-            {% if request.user.get_profile.is_librarian %}
-                {% if error %}
-                    {{ error }}
-                {% endif %}
-                <form id="upload_form" method="post" enctype="multipart/form-data">{% csrf_token %}
-                	{{ format_form.as_p }}
-                	<input type="submit" value="upload">
-                </form>
-            {% endif %}
-
-            {% if book.formats|length > 0 %}
-			<h2 class="section-title">Formats</h2>
-			<ul class="formats">
-                {% csrf_token %}
-				{% for format in book.formats %}
-					<li class="{{ format.format }}"><a href="{% url books:download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
-				{% endfor %}
-			</ul>
-            {% endif %}
-
-        {% if book.also_downloaded|length > 0 %}
-		<div id="other_books">
-        <h2>Others also downloaded...</h2>
-        <ul class="also_downloaded">
-            {% for b in book.also_downloaded %}
-            <li><a href="{% url books:book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
-            {% endfor %}
-        </ul>
-		</div>
+    <br>
+    <div class="span2 well center">
+        {% if book.cover %}
+            <img src="{{ book.cover.url }}" width="160" />
+        {% else %}
+            <img src="/images/book-no-cover.png" width="160" />
         {% endif %}
+        <p></p>
+        <p class="btn-group">
+            <button class="btn" href="{% url books:email_kindle book.id %}"><i class="icon-book"></i></button>
+            <button class="btn" href="{% url books:email_kindle book.id %}"><i class="icon-bookmark-empty"></i></button>
+            <button class="btn" href="{% url books:email_kindle book.id %}"><i class="icon-download-alt"></i></button>
+            <button class="btn btn-danger" href="{% url books:email_kindle book.id %}"><i class="icon-exclamation-sign"></i></button>
+        </p>
 
-        {% if my_ownership %}
-				<div id="i-own-this-box">
-                    <h2 class="section-title">My QR Code</h2>
-                    <p>
-                        <div class="qr-code">
-                        	<img src="{{ my_ownership.qr_url }}" />
-                        {% comment %}
-                            <a href="{% url book_checkout my_ownership.key %}">
-                                <img src="{{ my_ownership.qr_url }}" />
-                            </a>
-                        {% endcomment %}
-                        </div>
-                        <div id="i-own-this" style="text-align: right; padding: 7px">
-                            <small><a href="#" id="book_{{ book.pk }}">. . . I don't own this.</a></small>
-                        </div>
-                    </p>
-                </div>
-                {% else %}
-
-             {% if user.is_authenticated %}
-                <div id="i-own-this-box">
-                    <p id="i-own-this">
-                        <a href="#" id="book_{{ book.pk }}">i own this</a>
-                    </p>
-                </div>
+        <p>
+            {% if book.goodreads_id > 0 %}
+            gr rating: {{ book.metarating }} ({{ book.goodreads_num_votes }} votes)<br/>
             {% endif %}
-				{% endif %}
-
-            {% if book.is_physical %}
-                {% with book.owners as owners %}
-                {% if owners %}
-                    <h2 id="owners-box" class="section-title">Owners</h2>
-                        <ul style="list-style-type: none; margin: 0 0 15px 0;">
-                            {% for owner in owners %}
-                                <li id="owner_{{ owner.pk }}" style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
-                                 <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
-                                    <a href="{% url accounts:view_user owner.user.username  %}" style="border: none">
-                                        {% gravatar owner.user 35 %}
-                                    </a>
-                                 </div>
-                                 <div style=" float: left; margin-left: 10px">
-                                     {% if owner.checked_out %}
-                                     <a href="{% url accounts:view_user owner.checked_out.user.username  %}">{{ owner.checked_out.user.username }}</a> has<br/>{{ owner.user.username }}'s copy.
-                                     {% else %}
-                                     Ask <a href="{% url accounts:view_user owner.user.username  %}"> {{ owner.user.username }}</a><br /> to borrow it.
-                                     {% endif %}
-                                 </div>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                {% endif %}
-                {% endwith %}
-			{% endif %}
-		</div>
-
-		<div id="book_main">
-            {% if book.series %}
-			<p class="series-info"><a href="{% url books_by_series book.series.slug %}">{{ book.series.name }}</a> - Book {{ book.series_num }}</p>
-			<hr />
+            q rating: {{ book.rating }} (? votes)
+        </p>
+        <p>
+            <button class="btn btn-success">I've read this!</button>
+        </p>
+        <p>
+            {% if book.formats|length > 0 %}
+            <h4>Formats</h4>
+            <ul>
+                {% csrf_token %}
+                {% for format in book.formats %}
+                    <li class="{{ format.format }}"><a href="{% url books:download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
+                {% endfor %}
+            </ul>
             {% endif %}
-			
-	        <h1 class="editable" id="title_{{ book.id }}">{{ book.title }}</h1>
-			
-			<ul class="byline">
-				<li class="title">written by:</li>
-            {% for author in book.authors.all %}
-                <li><a href="{% url books:books_by_author author.slug %}">{{ author }}</a></li>
-            {% endfor %}
-			</ul>
+        </p>
 
-			<h2 class="sub_title">Description:</h2>
-			<p class="editable" id="description_{{ book.id }}">{{ book.description|safe }}</p>
+        <p>
+            {% if book.also_downloaded|length > 0 %}
+            <h4>Others also downloaded...</h4>
+            <ul>
+                {% for b in book.also_downloaded %}
+                    <li><a href="{% url books:book_info b.slug %}">{{ b.title|truncatechars:17 }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </p>
+    </div>
 
-			{% get_comment_list for book as comment_list %}
-  			<div id="discussion_list">
-            <h2 class="sub_title">Discussion:</h2>
+    <div class="span6 well">
+        <h3>{{ book.title }}</h3>
+        <hr>
+        <h4>Description:</h4>
+        {{ book.description }}
+        <hr>
+
+        {% get_comment_list for book as comment_list %}
+
+        <div id="discussion_list">
+            <h4>Discussion:</h4>
             {% for comment in comment_list|fill_tree|annotate_tree %}
 
                 {% ifchanged comment.parent_id %}{% else %}
-                </li>
+                    </li>
                 {% endifchanged %}
 
                 {% if not comment.open and not comment.close %}
-                </li>
+                    </li>
                 {% endif %}
 
                 {% if comment.open %}
-				<ul>
+                    <ul>
                 {% endif %}
 
-                <li{% if comment.last %} class="last"{% endif %}>
-    				<div class="comment">
-    					
-                        <div class="activity-avatar">
-                            {% gravatar comment.user 35 %}
-                        </div>
-    					
-                        <p class="comment-body">
-    		                {{ comment.comment }}
-    		            </p>
-                        <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
+            <li{% if comment.last %} class="last"{% endif %}>
+                <div class="comment">
 
-    					<div id="reply-{{comment.pk}}"></div>
-    				</div><!-- /.comment -->
+                    <div class="activity-avatar">
+                        {% gravatar comment.user 35 %}
+                    </div>
 
-                    {% if comment.added_path %} ADDED {% endif %}
-                    {% for close in comment.close %}
+                    <p class="comment-body">
+                        {{ comment.comment }}
+                    </p>
+                    <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
 
-                </li>
-                </ul>
+                    <div id="reply-{{comment.pk}}"></div>
+                </div><!-- /.comment -->
+
+                {% if comment.added_path %} ADDED {% endif %}
+                {% for close in comment.close %}
+
+                    </li>
+                    </ul>
                 {% endfor %}
             {% endfor %}
-			</div><!-- /!discussion-list -->
-			<!--- COMMENT FORM -->
-			<div id="form_withparent" >
-				<form method="post" action="/comments/post/" class="comment-form">{% csrf_token %}
-				<h3>Leave a Comment</h3>
-				<hr />
-				{% get_comment_form for book as form %}
-				{% for field in form %}
-					{% if field.is_hidden %}
-						{{ field }}
-					{% else %}
-					{% ifnotequal field.name "comment" %}
+        </div><!-- /!discussion-list -->
+        <!--- COMMENT FORM -->
+        <div id="form_withparent" >
+            <form method="post" action="/comments/post/" class="comment-form">{% csrf_token %}
+                <h4>Leave a Comment:</h4>
+                {% get_comment_form for book as form %}
+                {% for field in form %}
+                    {% if field.is_hidden %}
+                        {{ field }}
+                    {% else %}
+                        {% ifnotequal field.name "comment" %}
 
                             {% ifequal field.value None %}
-						        <input type="hidden" name="{{field.html_name}}" value="" />
+                                <input type="hidden" name="{{field.html_name}}" value="" />
                             {% else %}
                                 <input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
                             {% endifequal %}
-					{% else %}
-					<p><textarea name="{{field.html_name}}"></textarea></p>
+                        {% else %}
+                            <p><textarea name="{{field.html_name}}"></textarea></p>
 
-					{% endifnotequal %}
+                        {% endifnotequal %}
 
-					{% endif %}
-				{% endfor %}
-					<input type="hidden" name="next" value="{{ request.path }}" />
-					<p><input type="submit" name="post" value="Ответить!" class="submit-large" /></p>
-				</form>
-			</div>
-			<!---#END COMMENT FORM -->
-
-
-
-			<h2 class="sub-title">Tags:</h2>
-            {% tags_for_object book as tags %}
-
-           <ul id="book-tags"></ul>
-			<script>
-            var csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
-			$("#book-tags").tagHandler({
-				assignedTags: [ {% for tag in tags %}'{{tag}}', {% endfor %} ],
-				autocomplete: true,
-				autoUpdate: true,
-				updateURL: '/books/api/update_tag/',
-				updateData: {'csrfmiddlewaretoken':csrfmiddlewaretoken, book_id:"{{book.pk}}"},
-				allowEdit: true
-			});
-			</script>
-		</div>
-	{% endif %}
-
+                    {% endif %}
+                {% endfor %}
+                <input type="hidden" name="next" value="{{ request.path }}" />
+                <p><input type="submit" name="post" value="Ответить!" class="submit-large" /></p>
+            </form>
+        </div>
+        <!---#END COMMENT FORM -->
+    </div>
 {% endblock %}
 
-{% block rail %}
-    {% if book.is_physical %}
-	<h2 class="section-title">Check Out History</h2>
-	<ul>
-	{% for checkout in checkouts %}
-	    <li style="overflow: hidden; border-bottom: 1px dotted #dedede; padding: 5px 0; margin: 0 ">
-    	    <div style="border: 1px solid #dedede; height: 35px; width: 35px; float: left; margin-left: 15px">
-    	       <a href="{% url accounts:view_user checkout.user.username %}" style="border: none">
-                   {% gravatar checkout.user 35 %}
-    	       </a>
-    	    </div>
-    	    <div style=" float: left; margin-left: 10px; width: 150px">
-    	        <a href="{% url accounts:view_user checkout.user.username  %}">
-    	            {{ checkout.user.username }}
-    	        </a>
-    	        checked it out<br /> on <em>{{ checkout.create_time|date:"F j, Y" }}.</em>
-    	        {% if checkout.check_in_time %}
-    	        <div style="border-top: 1px dashed  #dedede; margin-top: 7px; padding: 7px 0;">
-    	        Then it was returned on <em>{{ checkout.check_in_time|date:"F j, Y" }}.</em>
-    	        </div>
-    	        {% endif %}
-    	    </div>
-	    </li>
-	{% endfor %}
-    </ul>
-    {% endif %}
+{% block below_footer %}
+
 {% endblock %}

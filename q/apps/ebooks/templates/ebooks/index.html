@@ -1,71 +1,33 @@
-{% extends '_base.html' %}
+{% extends 'ebooks/_base.html' %}
 {% load activity_tags %}
 {% load cache %}
 
 {% block title %}home{% endblock %}
 
-{% block extra_javascript %}
-    <script type="text/javascript">
+{% block content %}
+    <div class="span3"></div>
+    <div class="span6">
+        <h3 id="recent_title">Recent Additions</h3>
+        <div id="recent_books_carousel" class="carousel slide">
+        <div class="carousel-inner offset1">
 
-        define(["jquery"], function($){
-            require(["slides.min.jquery"], function($) {
-            });
-        });
-    </script>
+               {% for book in books %}
+                   {% if forloop.counter0|divisibleby:5 %}
+            {% if forloop.counter0 == 0 %}<div class="active item">{% else %}</div><div class="item">{% endif %}
+                   {% endif %}
+                   <a href="{% url books:book_info book.slug %}"><img src="{{ book.cover_url }}" height="140" border="0"></a>
+               {% endfor %}
+           </div>
+        </div>
+        <a class="carousel-control left" href="#recent_books_carousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#recent_books_carousel" data-slide="next">&rsaquo;</a>
+      </div>
+    </div>
+    <div class="span3"></div>
 {% endblock %}
 
-{% block body_class %} class="home"{% endblock %}
-
-{% block content %}
-	<h3 id="recent_title">Recent Additions</h3>
-    <div class="content" id="slides" style="text-align: center">
-       <div class="slides_container"><div>
-       
-       {% for book in books %}
-       {% if forloop.counter0 > 1 %}
-       {% if forloop.counter0|divisibleby:5 %}
-       </div>
-       <div>
-       {% endif %}
-       {% endif %}
-         <a href="{% url books:book_info book.slug %}"><img src="{{ book.cover_url }}" height="140" border="0"></a>
-       {% endfor %}
-       </div></div>
-       <a href="#" class="prev">&lsaquo;</a>
-       <a href="#" class="next">&rsaquo;</a>
-       </div>
-<script type="text/javascript">
-</script>
-
-   {% cache 500 latest_activity_stream %}
-    <div id="activity-stream">
-        <h3>Activity Stream</h3>
-           <ul>
-           {% for activity_item in activity_stream %}
-               <li>{% display_action activity_item %}</li>
-           {% endfor %}
-    	</ul>
-    </div>
-    {% endcache %}
-	<h2 class="all_books">All Books</h2>
-	<div id="all_books">
-        {% regroup all_books by letter as letter_list %}
-		<ul>
-        {% for letter in letter_list %}
-
-			{% for book in letter.list %}
-                {% if book.slug %}
-			    {% if forloop.counter0 == 0 %}<h3 id="{{ letter.grouper|upper }}">{{ letter.grouper|upper }}</h3> {% endif %}<li><a href="{% url books:book_info book.slug %}">{{ book.title }}</a></li>
-			    {%  endif %}
-            {% endfor %}
-        {% endfor %}
-		</ul>
-	</div>
-	<ul id="alphabet">
-        {% for letter in "#ABCDEFGHIJKLMNOPQRSTUVWXYZ" %}
-            <li><a href="#{{ letter }}">{{ letter }}</a></li>
-        {% endfor %}
-	</ul>
-
-
+{% block below_footer %}
+    <script type="text/javascript">
+      $('.carousel').carousel('pause');
+    </script>
 {% endblock %}
