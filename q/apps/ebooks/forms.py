@@ -27,7 +27,7 @@ class BookForm(forms.Form):
     isbn10 = forms.CharField(max_length=20, label="ISBN10", required=False)
     isbn13 = forms.CharField(max_length=20, label="ISBN13", required=False)
     description = forms.CharField(label="Description*", widget=forms.Textarea, required=True)
-    metarating = forms.FloatField(label="metarating", widget=forms.HiddenInput, initial="0.0")
+    #metarating = forms.FloatField(label="metarating", widget=forms.HiddenInput, initial="0.0")
 
 class UploadFormatForm(forms.Form):
     book = forms.FileField(label="")

@@ -11,36 +11,40 @@
 {% endblock %}
 
 {% block content %}
-    <div class="content">
+    <div class="span3">
         <form method="POST" class="form-search">{% csrf_token %}
-            <p>
-                <label for="id_isbn">ISBN:</label>
-                <input type="text" class="input-medium search-query" name="isbn" value="{{ book.isbn }}" />
-                <input type="submit" class="btn btn-success" value="Search" class="submit-large" /><img src="/images/loading.gif">
-            </p>
+            <label for="isbn">ISBN:</label>
+            <input type="text" class="input-medium search-query" name="isbn" value="{{ book.isbn }}" />
+            <input type="submit" class="btn btn-success" value="Search" /><img src="/images/loading.gif">
         </form>
+    </div>
 
+    <div class="span3">
+        <form method="POST" class="form-horizontal" id="form_add_book">
+        <ul class="forms">
+            {% for element in book_form %}
+            <div class="control-group">
+                <label class="control-label" for="{{ element.name }}">{{ element.label }}</label>
+                <div class="controls">{{ element }}</div>
+            </div>
+            {% endfor %}
+        </ul>
+        <hr />
 
-        <div class="book-main">
-            {% if book_form.cover_url.value %}
-                <img src="{{ book_form.cover_url.value }}">
-            {% endif %}
-            <form method="POST" class="form-horizontal" id="form_add_book">
-            <ul class="forms">
-                {{ book_form.as_ul }}
-            </ul>
-            <hr />
-
-            {% if book.temp_cover_url %}
-                <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}" />
-            {% endif %}
-            {% csrf_token %}
-            <p>
-             <input type="submit" value="Add" class="submit-large" />
-            </p>
-            </form>
-        </div>
-   </div>
+        {% if book.temp_cover_url %}
+            <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}" />
+        {% endif %}
+        {% csrf_token %}
+        <p>
+         <input type="submit" value="Add" class="submit-large" />
+        </p>
+        </form>
+    </div>
+    <div class="span2 pull-left">
+        {% if book_form.cover_url.value %}
+            <img src="{{ book_form.cover_url.value }}">
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block rail %}
