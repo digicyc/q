@@ -15,7 +15,7 @@
         <form method="POST" class="form-search">{% csrf_token %}
             <label for="isbn">ISBN:</label>
             <input type="text" class="input-medium search-query" name="isbn" value="{{ book.isbn }}" />
-            <input type="submit" class="btn btn-success" value="Search" /><img src="/images/loading.gif">
+            <input type="submit" name="command" class="btn btn-success" value="search" /><img src="/images/loading.gif">
         </form>
     </div>
 
@@ -36,7 +36,7 @@
         {% endif %}
         {% csrf_token %}
         <p>
-         <input type="submit" value="Add" class="submit-large" />
+         <input type="submit" value="add" name="command" class="submit-large" />
         </p>
         </form>
     </div>

@@ -411,10 +411,8 @@ class ISBNSearchView(View):
         book = models.Book()
 
         book.title = request.PUT.get("title", "")
-        book.isbn10 = request.PUT.get("isbn10", "")
-        book.isbn13 = request.PUT.get("isbn13", "")
-        book.description = request.PUT.get("description", "")
-        print book
+        book.isbn10 = request.PUT.get("isbn10", 0)
+        book.isbn13 = request.PUT.get("isbn13", 0)
         book.save()
 
         for gauthor in request.PUT['authors'].split(','):
@@ -425,26 +423,33 @@ class ISBNSearchView(View):
                 author.firstname = " ".join(gauthor.split(" ")[:-1]).strip()
                 author.lastname = gauthor.split(" ")[-1]
                 author.save()
+
             book.authors.add(author)
 
-        series_name = request.PUT["series"]
-        series_num = request.PUT["series_num"]
+        series_name = request.PUT.get("series", None)
+
         try:
             series = models.Series.objects.get(name__exact=series_name)
         except models.Series.DoesNotExist:
             series = models.Series()
             series.name = series_name
             series.save()
-        book.series = series
-        book.series_num = series_num
 
-        return book.save()
+        book.series = series
+        #book.series_num = request.PUT.get("series_num", None)
+
+        book.save()
+        return book
 
 
     def post(self, request, *args, **kwargs):
         self.template = "ebooks/add/isbn_search.html"
 
-        isbn = request.POST["isbn"]
+        if request.POST.get("command", False) == "add":
+            request.PUT = request.POST
+            book = self.put(request, *args, **kwargs)
+            return HttpResponseRedirect(reverse("books:book_info", args=(book.slug,)))
+        isbn = request.POST.get("isbn", None)
         gr_book_data = goodreads.GoodReads(isbn)
 
         form_data = dict()
