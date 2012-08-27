@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'ebooks/_base.html' %}
 
 {% block title %}search results{% endblock %}
 
@@ -6,89 +6,75 @@
 
 {% block content %}
 	<h2 class="section-title">Search Results</h2>
-	
+	<br/>
 	{% if page %}
-		{% for book in page.object_list %}
-		<article class="book">
-			<div class="book-sidebar">
-				<figure class="cover">
+        <div class="span10">
+            {% for book in page.object_list %}
+            <div class="well row-fluid">
+                <div class="span1">
+                    <a href="{% url books:book_info book.slug %}">
+                    {% if book.cover %}
+                        <img src="{{ book.cover.url }}" width="110" />
+                    {% else %}
+                        <img src="/images/book-no-cover.png" width="110" />
+                    {% endif %}
+                    </a>
+                </div>
 
-				{% if book.slug %}
-					<a href="{% url book_info book.slug %}">
-				{% else %}
-					<a href="/">
-				{% endif %}
+                <div class="span9">
+                    {% comment %}
+                    <p class="series"><a href="">Series Title:</a> Book 3</p>
+                    {% endcomment %}
+                    <h3><a href="{% url books:book_info book.slug %}">{{ book.title }}</a></h3>
 
-				{% if book.cover %}
-					<img src="{{ book.cover.url }}" width="110" />
-				{% else %}
-					<img src="/images/book-no-cover.png" width="110" />
-				{% endif %}
-					</a>
-				</figure>
-			</div>
-			
-			<div class="book-summary">
-				{% comment %}
-				<p class="series"><a href="">Series Title:</a> Book 3</p>
-				{% endcomment %}
-				<h3>
-					{% if book.slug %}
-						<a href="{% url book_info book.slug %}">
-					{% else %}
-						<a href="">
-					{% endif %}
-					{{ book.title }}
-					</a>
-				</h3>
-				
-				<ul class="byline">
-					<li class="title">written by:</li>
-	                {% for author in book.authors.all %}
-                    <li>{{ author }}</li>
-	                {% endfor %}
-				</ul>
-				
-				<hr />
-				<p>{{ book.description|truncatewords:100|safe }}</p>
-				
-				<hr />
-				<ul class="formats">
-					<li class="title">Available Formats:</li>
-					{% for format in book.formats %}
-						<li><a href="{% url download_format format.download_key %}">{{ format.format }}</a></li>
-					{% endfor %}
-				</ul>
+                    <ul class="byline">
+                        <li class="title">written by:</li>
+                        {% for author in book.authors.all %}
+                        <li>{{ author }}</li>
+                        {% endfor %}
+                    </ul>
 
-			</div>
-		</article>
-		{% endfor %}
-        <br/>
+                    <hr />
+                    <p>{{ book.description|truncatewords:100 }}</p>
 
-        {% if page.has_previous %}
-            {% if type %}
-                {% if letter %}
-                    <a href="{% url books_by_type type letter page.previous_page_number %}">Previous</a>
-                {% else %}
-                    <a href="{% url books_by_type type page.previous_page_number %}">Previous</a>
-                {% endif %}
-            {% endif %}
-            {% if author %}
-                <a href="{% url books_by_author author.slug %}?page={{ page.previous_page_number }}">Previous</a>
-            {% endif %}
-        {% endif %}
-        {{ page }}
-            {% if page.has_next %}
+                    <hr />
+                    <ul class="formats">
+                        <li class="title">Available Formats:</li>
+                        {% for format in book.formats %}
+                            <li><a href="{% url books:download_format format.download_key %}">{{ format.format }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endfor %}
+
+            <br/>
+
+            {% if page.has_previous %}
                 {% if type %}
-                {% if letter %}
-                    <a href="{% url books_by_type type letter page.next_page_number %}">Next</a>
-                {% else %}
-                    <a href="{% url books_by_type type page.next_page_number %}">Next</a>
+                    {% if letter %}
+                        <a href="{% url books:books_by_type type letter page.previous_page_number %}">Previous</a>
+                    {% else %}
+                        <a href="{% url books:books_by_type type page.previous_page_number %}">Previous</a>
+                    {% endif %}
+                {% endif %}
+                {% if author %}
+                    <a href="{% url books:books_by_author author.slug %}?page={{ page.previous_page_number }}">Previous</a>
                 {% endif %}
             {% endif %}
-            {% if author %}
-                <a href="{% url books_by_author author.slug %}?page={{ page.next_page_number }}">Next</a>
-            {% endif %}
+            {{ page }}
+                {% if page.has_next %}
+                    {% if type %}
+                    {% if letter %}
+                        <a href="{% url books:books_by_type type letter page.next_page_number %}">Next</a>
+                    {% else %}
+                        <a href="{% url books:books_by_type type page.next_page_number %}">Next</a>
+                    {% endif %}
+                {% endif %}
+                {% if author %}
+                    <a href="{% url books:books_by_author author.slug %}?page={{ page.next_page_number }}">Next</a>
+                {% endif %}
+            </div>
         {% endif %}
 
 {% else %}
