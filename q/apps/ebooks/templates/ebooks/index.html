@@ -5,25 +5,27 @@
 {% block title %}home{% endblock %}
 
 {% block content %}
-    <div class="span3"></div>
-    <div class="span6">
-        <h3 id="recent_title">Recent Additions</h3>
-        <div id="recent_books_carousel" class="carousel slide">
-        <div class="carousel-inner offset1">
 
-               {% for book in books %}
-                   {% if forloop.counter0|divisibleby:5 %}
-            {% if forloop.counter0 == 0 %}<div class="active item">{% else %}</div><div class="item">{% endif %}
-                   {% endif %}
-                   <a href="{% url books:book_info book.slug %}"><img src="{{ book.cover_url }}" height="140" border="0"></a>
-               {% endfor %}
-           </div>
+    <div class="row">
+        <div class="span12">
+            <h1>Recent Additions</h1>
+            <ul class="thumbnails estante">
+                {% for book in books %}
+                    <li class="span2 animated fadeInLeft"> <a href="{% url books:book_info book.slug %}" class="thumbnail"> <img src="{% if book.cover_url %}{{ book.cover_url }}{% else %}/images/book-no-cover.png{% endif %}" height="220" width="160" alt=""> </a> </li>
+                {% endfor %}
+            </ul>
+            <div align="center" class="pagination">
+                <ul>
+                    <li class="disabled"><a href="#">«</a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">»</a></li>
+                </ul>
+            </div>
         </div>
-        <a class="carousel-control left" href="#recent_books_carousel" data-slide="prev">&lsaquo;</a>
-        <a class="carousel-control right" href="#recent_books_carousel" data-slide="next">&rsaquo;</a>
-      </div>
     </div>
-    <div class="span3"></div>
 {% endblock %}
 
 {% block below_footer %}

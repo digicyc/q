@@ -11,39 +11,41 @@
 {% endblock %}
 
 {% block content %}
-    <div class="span3">
-        <form method="POST" class="form-search">{% csrf_token %}
-            <label for="isbn">ISBN:</label>
-            <input type="text" class="input-medium search-query" name="isbn" value="{{ book.isbn }}" />
-            <input type="submit" name="command" class="btn btn-success" value="search" /><img src="/images/loading.gif">
-        </form>
-    </div>
+    <div class="row well">
+        <div class="span2">
+            <form method="POST" class="form-search">{% csrf_token %}
+                <label for="isbn">ISBN:</label>
+                <input type="text" class="input-medium search-query" name="isbn" value="{{ book.isbn }}" />
+                <input type="submit" name="command" class="btn btn-success" value="search" /><img src="/images/loading.gif">
+            </form>
+        </div>
 
-    <div class="span3">
-        <form method="POST" class="form-horizontal" id="form_add_book">
-        <ul class="forms">
-            {% for element in book_form %}
-            <div class="control-group">
-                <label class="control-label" for="{{ element.name }}">{{ element.label }}</label>
-                <div class="controls">{{ element }}</div>
-            </div>
-            {% endfor %}
-        </ul>
-        <hr />
+        <div class="span3">
+            <form method="POST" class="form-horizontal" id="form_add_book">
+            <ul class="forms">
+                {% for element in book_form %}
+                <div class="control-group">
+                    <label class="control-label" for="{{ element.name }}">{{ element.label }}</label>
+                    <div class="controls">{{ element }}</div>
+                </div>
+                {% endfor %}
+            </ul>
+            <hr />
 
-        {% if book.temp_cover_url %}
-            <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}" />
-        {% endif %}
-        {% csrf_token %}
-        <p>
-         <input type="submit" value="add" name="command" class="submit-large" />
-        </p>
-        </form>
-    </div>
-    <div class="span2 pull-left">
-        {% if book_form.cover_url.value %}
-            <img src="{{ book_form.cover_url.value }}">
-        {% endif %}
+            {% if book.temp_cover_url %}
+                <input type="hidden" name="cover_url" value="{{ book.temp_cover_url }}" />
+            {% endif %}
+            {% csrf_token %}
+            <p>
+             <input type="submit" value="add" name="command" class="submit-large" />
+            </p>
+            </form>
+        </div>
+        <div class="span2 offset2 pull-left">
+            {% if book_form.cover_url.value %}
+                <img src="{{ book_form.cover_url.value }}">
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
 

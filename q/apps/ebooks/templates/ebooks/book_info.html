@@ -9,6 +9,7 @@
 {% block title %}home{% endblock %}
 
 {% block content %}
+    <div class="row">
     <br>
     <div class="span10 well center">
         <div class="row center">
@@ -19,7 +20,7 @@
                     <img src="/images/book-no-cover.png" width="160" />
                 {% endif %}
             </div>
-            <div class="span9">
+            <div class="span8">
                 <h3>{{ book.title }}</h3>
                 <p>
                     {% if book.goodreads_id > 0 %}
@@ -45,7 +46,7 @@
                     {% endif %}
                 </p>
             </div>
-            <div class="span11">
+            <div class="span10">
                 <hr>
                 <h4>Description:</h4>
                 {{ book.description }}
@@ -132,6 +133,7 @@
                 <!---#END COMMENT FORM -->
             </div>
         </div>
+    </div>
     </div>
 {% endblock %}
 
