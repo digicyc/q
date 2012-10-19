@@ -125,6 +125,7 @@
                     {% endfor %}
                 </div><!-- /!discussion-list -->
                 <!--- COMMENT FORM -->
+                <hr>
                 <div id="form_withparent" >
                     <form method="post" action="/comments/post/" class="comment-form">{% csrf_token %}
                         <h4>Leave a Comment:</h4>
@@ -141,14 +142,30 @@
                                         <input type="hidden" name="{{field.html_name}}" value="{{field.value}}" />
                                     {% endifequal %}
                                 {% else %}
-                                    <p><textarea name="{{field.html_name}}"></textarea></p>
+                                    <div class="message-feed bottom-margin">
+                                        <div class="float-left">
+                                            {% gravatar request.user 55 %}
+                                        </div>
+                                        <div class="msg-post-right">
+                                            <div class="message-wrapper right custom-widget-msg">
+                                                <div class="arrow"></div>
+                                                <div class="inner">
+                                                    <div class="content textarea-padding">
+                                                        <textarea name="{{field.html_name}}"></textarea>
+                                                    </div>
+                                                </div>
+                                              <div class="msg-footer">
+                                                  <p class="pull-right"><input type="submit" name="post" value="Submit" class="submit-large" /></p>
+                                              </div>
 
+                                            </div>
+                                        </div>
+                                    </div>
                                 {% endifnotequal %}
 
                             {% endif %}
                         {% endfor %}
                         <input type="hidden" name="next" value="{{ request.path }}" />
-                        <p><input type="submit" name="post" value="Ответить!" class="submit-large" /></p>
                     </form>
                 </div>
                 <!---#END COMMENT FORM -->
