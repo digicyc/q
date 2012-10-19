@@ -66,41 +66,59 @@
 
                 <div id="discussion_list">
                     <h4>Discussion:</h4>
+
+
                     {% for comment in comment_list|fill_tree|annotate_tree %}
-
-                        {% ifchanged comment.parent_id %}{% else %}
-                            </li>
-                        {% endifchanged %}
-
-                        {% if not comment.open and not comment.close %}
-                            </li>
-                        {% endif %}
-
-                        {% if comment.open %}
-                            <ul>
-                        {% endif %}
-
-                    <li{% if comment.last %} class="last"{% endif %}>
-                        <div class="comment">
-
-                            <div class="activity-avatar">
-                                {% gravatar comment.user 35 %}
+                        <div class="message-feed bottom-margin">
+                            <div class="float-left">
+                                {% gravatar comment.user 55 %}
                             </div>
-
-                            <p class="comment-body">
-                                {{ comment.comment }}
-                            </p>
-                            <a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a>
-
-                            <div id="reply-{{comment.pk}}"></div>
-                        </div><!-- /.comment -->
-
-                        {% if comment.added_path %} ADDED {% endif %}
-                        {% for close in comment.close %}
-
-                            </li>
-                            </ul>
-                        {% endfor %}
+                            <div class="msg-post-right">
+                                <div class="message-wrapper right custom-widget-msg">
+                                    <div class="arrow"></div>
+                                    <div class="inner">
+                                        <h3 class="title"><i class="icon-share-alt"></i> <a href="#">Nadya</a> invited you to the group <a href="#">AntiGalau</a>. June 20, 1:58pm</h3>
+                                        <div class="content with-footer">
+                                            <p>{{ comment.comment }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="msg-footer">
+                                        <p><a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a><span id="reply-{{comment.pk}}"></span><a href="#" class="btn btn-small btn-success">visit group</a> <a href="#" class="btn btn-small btn-primary">accept</a> <a href="#" class="btn btn-small btn-danger">ignore</a> </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{##}
+{#                        {% ifchanged comment.parent_id %}{% else %}#}
+{#                            </li>#}
+{#                        {% endifchanged %}#}
+{##}
+{#                        {% if not comment.open and not comment.close %}#}
+{#                            </li>#}
+{#                        {% endif %}#}
+{##}
+{#                        {% if comment.open %}#}
+{#                            <ul>#}
+{#                        {% endif %}#}
+{##}
+{#                    <li{% if comment.last %} class="last"{% endif %}>#}
+{#                        <div class="comment">#}
+{##}
+{#                            <div class="activity-avatar">#}
+{##}
+{#                            </div>#}
+{##}
+{#                            <p class="comment-body">#}
+{#                            </p>#}
+{##}
+{#                        </div><!-- /.comment -->#}
+{##}
+{#                        {% if comment.added_path %} ADDED {% endif %}#}
+{#                        {% for close in comment.close %}#}
+{##}
+{#                            </li>#}
+{#                            </ul>#}
+{#                        {% endfor %}#}
                     {% endfor %}
                 </div><!-- /!discussion-list -->
                 <!--- COMMENT FORM -->
