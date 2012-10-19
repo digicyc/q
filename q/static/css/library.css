@@ -299,3 +299,9 @@ h3 [class^="icon-"], [class*=" icon-"] {
   float: left;
   margin-right: 10px;
 }
+
+.navbar .brand {
+  font-family: 'Gentium Book Basic', serif;
+  font-size: 30px;
+  position:absolute;
+}
