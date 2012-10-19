@@ -11,7 +11,7 @@
 {% block content %}
     <div class="row">
     <br>
-    <div class="span10 well center">
+    <div class="span10 well center book-info">
         <div class="row center">
             <div class="span2">
                 {% if book.cover %}
@@ -29,18 +29,18 @@
                     q rating: {{ book.rating }} (? votes)
                 </p>
                 <p class="btn-group">
-                    <button class="btn" href="{% url books:email_kindle book.id %}">K</button>
+                    <button class="btn" onclick="window.location.href='{% url books:email_kindle book.id %}'">K</button>
                     <button class="btn" href="{% url books:email_kindle book.id %}"><i class="icon-bookmark-empty"></i></button>
-                    <button class="btn" href="{% url books:email_kindle book.id %}"><i class="icon-download-alt"></i></button>
+                    <button class="btn dropdown" href="{% url books:email_kindle book.id %}"><i class="icon-download-alt"></i></button>
                     <button class="btn btn-danger" href="{% url books:email_kindle book.id %}"><i class="icon-exclamation-sign"></i></button>
                 </p>
                 <p>
                     {% if book.formats|length > 0 %}
                         <h4>Formats</h4>
-                        <ul>
+                        <ul class="book-formats">
                             {% csrf_token %}
                             {% for format in book.formats %}
-                                <li class="{{ format.format }}"><a href="{% url books:download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
+                                <li class="{{ format.format }}"><i class="icon-check-empty"></i> <a href="{% url books:download_format format.download_key %}">{{ format.format }}</a> <input class="verify-toggle" id="{{ format.id }}" type="checkbox"{% if format.verified %} CHECKED{%endif%}> verified</li>
                             {% endfor %}
                         </ul>
                     {% endif %}

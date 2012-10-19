@@ -11,7 +11,7 @@
             <h1>Recent Additions</h1>
             <ul class="thumbnails estante">
                 {% for book in books %}
-                    <li class="span2 animated fadeInLeft"> <a href="{% url books:book_info book.slug %}" class="thumbnail"> <img src="{% if book.cover_url %}{{ book.cover_url }}{% else %}/images/book-no-cover.png{% endif %}" height="220" width="160" alt=""> </a> </li>
+                    <li class="span2 animated fadeInLeft"> <a id="{{ book.slug }}" href="{% url books:book_info book.slug %}" class="thumbnail"> <img style="width: 170px;height:220px" src="{% if book.cover_url %}{{ book.cover_url }}{% else %}/images/book-no-cover.png{% endif %}" alt=""> </a> </li>
                 {% endfor %}
             </ul>
             <div align="center" class="pagination">
@@ -28,8 +28,5 @@
     </div>
 {% endblock %}
 
-{% block below_footer %}
-    <script type="text/javascript">
-      $('.carousel').carousel('pause');
-    </script>
+{% block js_footer %}
 {% endblock %}

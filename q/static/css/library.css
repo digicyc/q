@@ -2,9 +2,9 @@ body {
 	background-image: url(../img/bg.jpg);
 }
 @media(min-width:980px) {
-body {
-	padding-top: 60px;
-}
+  body {
+    padding-top: 60px;
+  }
 }
 input.search-library {
 	-webkit-border-radius: 14px;
@@ -102,4 +102,13 @@ h3 [class^="icon-"], [class*=" icon-"] {
 }
 .breadcrumb li {
 	text-shadow: 1px 1px 3px #CCC;
+}
+
+.book-formats a {
+  color:#8AB833;
+  text-decoration: underline;
+}
+
+.book-formats i {
+  color:#8AB833;
 }
