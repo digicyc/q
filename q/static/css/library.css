@@ -209,7 +209,9 @@ h3 [class^="icon-"], [class*=" icon-"] {
   width: 0;
   height: 0;
 }
-.message-wrapper .inner {border: 1px solid #8C8C8C;}
+.message-wrapper .inner {
+  border: 1px solid #8C8C8C;
+}
 .message-wrapper .title {
   padding: 5px 10px;
   margin:0;
@@ -221,6 +223,8 @@ h3 [class^="icon-"], [class*=" icon-"] {
 .message-wrapper .content {
   background-color: #ffffff;
   padding: 10px;
+  min-height: 65px;
+
 }
 .message-wrapper .content textarea {
   -webkit-border-radius: 0px;
@@ -269,6 +273,11 @@ h3 [class^="icon-"], [class*=" icon-"] {
   background-color: white;
   padding: 10px;
 }
+.message-wrapper .content hr {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
 .message-wrapper .content.with-footer {
   padding-bottom: 55px;
 }

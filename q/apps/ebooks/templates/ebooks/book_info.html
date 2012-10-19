@@ -74,17 +74,20 @@
                                 {% gravatar comment.user 55 %}
                             </div>
                             <div class="msg-post-right">
-                                <div class="message-wrapper right custom-widget-msg">
+                                <div class="message-wrapper right {# custom-widget-msg #}">
                                     <div class="arrow"></div>
                                     <div class="inner">
-                                        <h3 class="title"><i class="icon-share-alt"></i> <a href="#">Nadya</a> invited you to the group <a href="#">AntiGalau</a>. June 20, 1:58pm</h3>
-                                        <div class="content with-footer">
+{#                                        <h3 class="title">{{ comment.user }} posted on {{ comment.submit_date }}</h3>#}
+
+                                        <div class="content {# with-footer #}">
+                                            <p>{{ comment.user }} posted on {{ comment.submit_date }}</p>
+                                            <hr>
                                             <p>{{ comment.comment }}</p>
                                         </div>
                                     </div>
-                                    <div class="msg-footer">
-                                        <p><a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a><span id="reply-{{comment.pk}}"></span><a href="#" class="btn btn-small btn-success">visit group</a> <a href="#" class="btn btn-small btn-primary">accept</a> <a href="#" class="btn btn-small btn-danger">ignore</a> </p>
-                                    </div>
+{#                                    <div class="msg-footer">#}
+{#                                        <p><a href="#" class="thread-reply-btn" id="comment_{{ comment.pk}}">reply</a><span id="reply-{{comment.pk}}"></span><a href="#" class="btn btn-small btn-success">visit group</a> <a href="#" class="btn btn-small btn-primary">accept</a> <a href="#" class="btn btn-small btn-danger">ignore</a> </p>#}
+{#                                    </div>#}
                                 </div>
                             </div>
                         </div>
